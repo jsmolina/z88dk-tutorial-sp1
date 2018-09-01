@@ -10,4 +10,6 @@ Some utilities have been included for easier management in utilszx, like in the 
 
 Interesting to read as well is sp1 library tutorial:
 https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_01_GettingStarted.md
+ https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_02_SimpleMaskedSprite.md
+
 
