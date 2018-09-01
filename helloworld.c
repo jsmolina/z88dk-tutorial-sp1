@@ -13,7 +13,7 @@
 
 int main()
 {
-
+  uint16_t kempston_input;
   zx_cls(PAPER_WHITE);
   while( 1 ) {
 
@@ -26,6 +26,12 @@ int main()
     printf("Scan for o returns 0x%04X\n",   in_key_pressed( IN_KEY_SCANCODE_o ));
     printf("Scan for p returns 0x%04X\n",   in_key_pressed( IN_KEY_SCANCODE_p ));
     printf("Scan for <sp> returns 0x%04X\n\n", in_key_pressed( IN_KEY_SCANCODE_SPACE ));
+
+
+    kempston_input = in_stick_kempston();
+
+
+    printf("Joystick input value is 0x%04X\n", kempston_input);
   }
 }
 
