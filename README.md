@@ -6,3 +6,8 @@ You'll need z88dk, of course, so you could download it from here:
 http://nightly.z88dk.org/
 
 Some utilities have been included for easier management in utilszx, like in the original tutorial
+
+
+Interesting to read as well is sp1 library tutorial:
+https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_01_GettingStarted.md
+
