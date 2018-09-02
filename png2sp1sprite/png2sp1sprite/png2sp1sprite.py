@@ -57,13 +57,16 @@ def binary_formatted(column):
 
 def main():
 
-    parser = ArgumentParser(description="png2sprite",
+    parser = ArgumentParser(description="png2sp1sprite",
                             epilog="Copyright (C) 2018 Jordi Sesmero",
                             )
 
     parser.add_argument("--version", action="version", version="%(prog)s "  + __version__)
     parser.add_argument("-i", "--id", dest="id", default="sprite", type=str,
                         help="variable name (default: sprite)")
+
+    parser.add_argument("-f", "--fsize", dest="fsize", default=0, type=int,
+                        help="Frame width, frames are aligned horizontally, with one pixel offset")
 
     parser.add_argument("image", help="image to convert", nargs="?")
 
@@ -82,15 +85,23 @@ def main():
     if w % 8 or h % 8:
         parser.error("%r size is not multiple of 8" % args.image)
 
-    # so we support both RGB and RGBA images
-    data = list(zip(list(image.getdata(0)), list(image.getdata(1)), list(image.getdata(2))))
+    if args.fsize and w % args.fsize:
+        parser.error("%s frame width must be multiple of total image width" % args.fsize)
 
+    if args.fsize == 0:
+        fsize = w
+    else:
+        fsize = args.fsize
 
     bloques = []
 
     # si son 32px ira de 8 en 8, son 4 bloques
-    for bloque in range(0, w, 8):
+    for bloque_num, bloque in enumerate(range(0, fsize, 8)):
         row = []
+
+        if fsize != w:
+            row.append("._{}{}_f{}".format(args.id, bloque_num + 1, 1))
+
         for y in range(0, h):
             col = []
             mask_col = []
@@ -103,7 +114,25 @@ def main():
             # cada fila es mascara, columna
             row.append(" defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
 
+        # add the frames (if they exist) now
+        for frame_num, frame_offset in enumerate(range(fsize, w, fsize)):
+            row.append("")
+            row.append("._{}{}_f{}".format(args.id, bloque_num + 1, frame_num + 2))
+            bloque_frame = bloque + frame_offset
+            for y in range(0, h):
+                col = []
+                mask_col = []
+                # vamos al bloque de 8 que toca pero con el offset del frame
+                for x in range(bloque_frame, bloque_frame + 8):
+                    pixel = image.getpixel((x, y))
+                    col.append(get_value(pixel))
+                    mask_col.append(get_mask_value(pixel))
+
+                # cada fila es mascara, columna
+                row.append(" defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
+
         bloques.append(row)
+
 
     print("SECTION rodata_user")
     print("")
