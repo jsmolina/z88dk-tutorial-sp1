@@ -37,25 +37,45 @@ MASK = (0, 0, 0)
 COLORS = [INK, PAPER, MASK,]
 
 
-def get_value(rgb):
+def get_value(rgb, animated=False):
+    """
+    Obtains pixel value if it is enabled. Color is not supported yet here.
+    :param rgb:
+    :param animated: It is a WTF from SP1. If I do animation it requires me to invert the values...
+    :return:
+    """
+
     if rgb[0] > 0 or rgb[1] > 0 or rgb[2] > 0:
-        return "1"
+        return "1" if not animated else "0"
     else:
-        return "0"
+        return "0" if not animated else "1"
 
 
-def get_mask_value(rgb):
+def get_mask_value(rgb, animated=False):
+    """
+        Obtains mask value if it is enabled. It is the opposite of pixel, as expected
+        :param rgb:
+        :param animated: It is a WTF from SP1. If I do animation it requires me to invert the values...
+        :return:
+        """
+
     if rgb[0] > 0 or rgb[1] > 0 or rgb[2] > 0:
-        return "0"
+        return "0" if not animated else "1"
     else:
-        return "1"
+        return "1" if not animated else "0"
 
 
 def binary_formatted(column):
+    """
+    Generates binary formatted value from column array
+    :param column:
+    :return:
+    """
     return '@{}'.format(''.join(column))
 
 
 def main():
+    animated = False
 
     parser = ArgumentParser(description="png2sp1sprite",
                             epilog="Copyright (C) 2018 Jordi Sesmero",
@@ -92,14 +112,15 @@ def main():
         fsize = w
     else:
         fsize = args.fsize
+        animated = True
 
     bloques = []
 
-    # si son 32px ira de 8 en 8, son 4 bloques
+    # if image has 32px it will be 4 blocks of 8 pixels
     for bloque_num, bloque in enumerate(range(0, fsize, 8)):
         row = []
-
-        if fsize != w:
+        # if image is animated, we mark here the first frame
+        if animated is True:
             row.append("._{}{}_f{}".format(args.id, bloque_num + 1, 1))
 
         for y in range(0, h):
@@ -108,13 +129,14 @@ def main():
             # vamos al bloque de 8 que toca (ej: 0 al 8, 8 al 16, 16 al 24, 24 al 32)
             for x in range(bloque, bloque + 8):
                 pixel = image.getpixel((x, y))
-                col.append(get_value(pixel))
-                mask_col.append(get_mask_value(pixel))
+                col.append(get_value(pixel, animated=animated))
+                mask_col.append(get_mask_value(pixel, animated=animated))
 
             # cada fila es mascara, columna
             row.append(" defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
 
-        # add the frames (if they exist) now
+        # add the frames for animation (if they exist) now, no need to check animated flag
+        # code is a bit repeated from before, but improvements are for later...
         for frame_num, frame_offset in enumerate(range(fsize, w, fsize)):
             # prepend a margin before frame
             row.append("")
@@ -130,8 +152,8 @@ def main():
                 # vamos al bloque de 8 que toca pero con el offset del frame
                 for x in range(bloque_frame, bloque_frame + 8):
                     pixel = image.getpixel((x, y))
-                    col.append(get_value(pixel))
-                    mask_col.append(get_mask_value(pixel))
+                    col.append(get_value(pixel, animated=animated))
+                    mask_col.append(get_mask_value(pixel, animated=animated))
 
                 # cada fila es mascara, columna
                 row.append(" defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
