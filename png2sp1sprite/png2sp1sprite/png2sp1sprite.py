@@ -106,7 +106,7 @@ def main():
         bloques.append(row)
 
     print("SECTION rodata_user")
-    print("; Original: {}, {}".format( w, h))
+    print("; Original: {}, {} (={} x {} chars)".format(w, h, w/8, h/8))
     print("; Blocks: {}".format(len(bloques)))
     for i in range(0, 7):
         print("defb @11111111, @00000000")
