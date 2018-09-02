@@ -66,3 +66,9 @@ int main()
 * Do as many calls to sp1_AddColSpr as the script generated. See that last one is 'special'
 
 And it works!
+
+## What about animated sprites?
+Just add the next frame next to current sprite (in x), and then use -f WIDTH of each sprite frame.
+
+e.g. an image of 64 px width will generate TWO frames:
+`png2sp1sprite cat_animated.png -i sprite_protar -f 32`
