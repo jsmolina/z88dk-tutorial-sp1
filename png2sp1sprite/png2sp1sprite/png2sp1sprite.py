@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-png2sprite.py
+png2sp1sprite.py
 
 Copyright (C) 2018 Jordi Sesmero
 Based on the original idea from Juan J. Martinez

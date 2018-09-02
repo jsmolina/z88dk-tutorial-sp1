@@ -1,4 +1,8 @@
 # Prerequisites
+build/
+dist/
+*.egg-info/
+
 .idea
 *.d
 helloworld.tap
