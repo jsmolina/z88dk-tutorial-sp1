@@ -106,20 +106,24 @@ def main():
         bloques.append(row)
 
     print("SECTION rodata_user")
+    print("")
     print("; Original: {}, {} (={} x {} chars)".format(w, h, w/8, h/8))
     print("; Blocks: {}".format(len(bloques)))
     for i in range(0, 7):
-        print("defb @11111111, @00000000")
+        print(" defb @11111111, @00000000")
+
+    print("")
 
     for i, bloque in enumerate(bloques):
         bloque_num = i + 1
         print("PUBLIC _{}{}".format(args.id, bloque_num))
         print("_.{}{}".format(args.id, bloque_num))
+        print("")
         for row in bloque:
             print(row)
         print("")
         for i in range(0, 8):
-            print("defb @11111111, @00000000")
+            print(" defb @11111111, @00000000")
         print("")
 
 
