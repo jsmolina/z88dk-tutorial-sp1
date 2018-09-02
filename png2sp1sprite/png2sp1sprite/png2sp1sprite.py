@@ -116,6 +116,10 @@ def main():
 
         # add the frames (if they exist) now
         for frame_num, frame_offset in enumerate(range(fsize, w, fsize)):
+            # prepend a margin before frame
+            for i in range(0, 8):
+                row.append(" defb @11111111, @00000000")
+
             row.append("")
             row.append("._{}{}_f{}".format(args.id, bloque_num + 1, frame_num + 2))
             bloque_frame = bloque + frame_offset
