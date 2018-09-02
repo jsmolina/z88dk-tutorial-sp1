@@ -117,7 +117,7 @@ def main():
     for i, bloque in enumerate(bloques):
         bloque_num = i + 1
         print("PUBLIC _{}{}".format(args.id, bloque_num))
-        print("_.{}{}".format(args.id, bloque_num))
+        print("._{}{}".format(args.id, bloque_num))
         print("")
         for row in bloque:
             print(row)
