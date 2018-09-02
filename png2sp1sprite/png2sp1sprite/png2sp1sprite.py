@@ -117,6 +117,7 @@ def main():
         # add the frames (if they exist) now
         for frame_num, frame_offset in enumerate(range(fsize, w, fsize)):
             # prepend a margin before frame
+            row.append("")
             for i in range(0, 8):
                 row.append(" defb @11111111, @00000000")
 
