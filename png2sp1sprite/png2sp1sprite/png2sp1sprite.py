@@ -44,6 +44,13 @@ def get_value(rgb):
         return "0"
 
 
+def get_mask_value(rgb):
+    if rgb[0] > 0 or rgb[1] > 0 or rgb[2] > 0:
+        return "0"
+    else:
+        return "1"
+
+
 def binary_formatted(column):
     return '@{}'.format(''.join(column))
 
@@ -91,7 +98,7 @@ def main():
             for x in range(bloque, bloque + 8):
                 pixel = image.getpixel((x, y))
                 col.append(get_value(pixel))
-                mask_col.append(get_value(pixel))
+                mask_col.append(get_mask_value(pixel))
 
             # cada fila es mascara, columna
             row.append("defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
@@ -99,7 +106,8 @@ def main():
         bloques.append(row)
 
     print("SECTION rodata_user")
-    print("; Blocks: ".format(len(bloques)))
+    print("; Original: {}, {}".format( w, h))
+    print("; Blocks: {}".format(len(bloques)))
     for i in range(0, 7):
         print("defb @11111111, @00000000")
 
