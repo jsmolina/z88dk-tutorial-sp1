@@ -101,7 +101,7 @@ def main():
                 mask_col.append(get_mask_value(pixel))
 
             # cada fila es mascara, columna
-            row.append("defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
+            row.append(" defb {}, {}".format(binary_formatted(mask_col), binary_formatted(col)))
 
         bloques.append(row)
 
