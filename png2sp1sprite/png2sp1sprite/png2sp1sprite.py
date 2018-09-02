@@ -104,8 +104,9 @@ def main():
         print("defb @11111111, @00000000")
 
     for i, bloque in enumerate(bloques):
-        print("PUBLIC _{}{}".format(args.id, i))
-        print("_.{}{}".format(args.id, i))
+        bloque_num = i + 1
+        print("PUBLIC _{}{}".format(args.id, bloque_num))
+        print("_.{}{}".format(args.id, bloque_num))
         for row in bloque:
             print(row)
         print("")
