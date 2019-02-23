@@ -6,7 +6,6 @@
 * Do you know how ZX Spectrum paging works?
 * Do you have read about IM2 interruptions? (ISR z88dk)
 * Read about `SECTION` and how to define public vars from ASM code `PUBLIC`
-o Mac.
 * You'll need z88dk, of course, so you could download it from here: http://nightly.z88dk.org/
 * Some utilities have been included for easier management in utilszx, like in the original tutorial
 * Interesting to read as well is sp1 library tutorial: https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_01_GettingStarted.md https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_02_SimpleMaskedSprite.md
