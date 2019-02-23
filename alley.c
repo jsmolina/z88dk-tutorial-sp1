@@ -6,6 +6,7 @@
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include <stdlib.h>
+#include <intrinsic.h>
 
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -61,6 +62,13 @@ struct sp1_ss * add_sprite_misifu() {
 
 int main()
 {
+  intrinsic_di();
+  page(7);
+  memcpy(16384, cartoon0, 6912);
+  page(0);
+  intrinsic_ei();
+  in_wait_key();
+/*
   struct sp1_ss* sp = add_sprite_misifu();
   zx_border(INK_WHITE);
 
@@ -70,15 +78,12 @@ int main()
   sp1_Invalidate(&full_screen);
 
   sp1_UpdateNow();
-  page(7);
-  memcpy(16384, cartoon0, 6912);
-  page(0);
 
   while(1) {
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(sp, &full_screen, (void*) 1, 10, 12, 0, 0);
      sp1_UpdateNow();
-  }
+  }*/
 }
 
 /**
