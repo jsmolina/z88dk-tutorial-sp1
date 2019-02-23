@@ -168,7 +168,7 @@ int main()
 I'd like to move it move it, ... sure!
 ```C
   while(1) {
-     // sprite, rectangle, offset (animations, use 1 if animated), y, x, rotationy, rotationx
+     // sprite, rectangle, offset (animations, use 1 instead of zero if animated), y, x, rotationy, rotationx
      sp1_MoveSprAbs(sp, &full_screen, (void*) 1, 10, 12, 0, 0);
   }
 ```
