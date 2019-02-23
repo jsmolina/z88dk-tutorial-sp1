@@ -1,6 +1,6 @@
-*SP1 TUTORIAL*
+# SP1 TUTORIAL
 
-**Considerations before start**
+## Considerations before start
 
 * Do you want to make a 48k game or a 128k game?
 * Do you know how ZX Spectrum paging works?
@@ -12,7 +12,7 @@ o Mac.
 * Interesting to read as well is sp1 library tutorial: https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_01_GettingStarted.md https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_02_SimpleMaskedSprite.md
 * png2sp1sprite.py Quick and dirty png to sprite converter. Right now it only uses 1-bit sprites (no color), and ignores color info. Based on https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_04_BiggerSprites.md
 
-**Drawing on the screen with SP1**
+### Drawing on the screen with SP1
 
 Graphics are usually composed of pixel information (all pixels are stored as on or off) and color information that goes 
 in 8x8 blocks. You'll see that Attribute clash is present everywhere everytime two sprites with different INK appear 
@@ -28,7 +28,7 @@ to repaint them if a sprite is on top of an UDG.
 
 Sprites are more intended for moving overlapping items, like the game hero, enemies, ...
 
-*** sprites ***
+### sprites 
 There are also a lot of ways to draw a sprite, main ones are:
 1. with SP1_DRAW_MASK2LB => Do you remember target:renegade? sprites were mostly with a border. But 
 as a counterpart, it takes MORE memory (double, for sprite info and for mask info)
@@ -40,7 +40,9 @@ In all cases SP1 will take care for you of the redrawing of background after spr
 Also, the spectrum has the 'border' and the 'paper', as defined in basic, thus border is only used for
 color effects usually.
 
-** First steps **
+## First steps 
+
+### A C program:
 Write a simple program called `alley.c` with black border and black background
 ```C
 #include <z80.h>
@@ -109,7 +111,7 @@ If you had a loading screen you might be adding: `-Cz--screen=screen.scr `
 
 so boring isn't it?
 
-** Adding a sprite **
+### Adding a sprite
 I would recommend using SevenUP (see other tutorials) 
 or an automatic sprite to asm creator like mine:
  * cloning my repo: `$ git clone https://github.com/jsmolina/png2sp1sprite.git`
