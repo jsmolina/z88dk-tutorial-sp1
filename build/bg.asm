@@ -1,6 +1,6 @@
-SECTION rodata_user
+SECTION BANK_7_DATA
 
 
 PUBLIC _cartoon0
 _cartoon0:
-BINARY "top_screen.scr"
+BINARY "intro.scr"

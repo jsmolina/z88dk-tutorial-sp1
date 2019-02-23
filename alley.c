@@ -5,6 +5,7 @@
 #include <input.h>
 #include <sound.h> // for bit_beepfx()
 #include <string.h>
+#include <stdlib.h>
 
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -13,6 +14,27 @@ extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
 extern uint8_t sprite_protar3[];
 extern uint8_t sprite_protar4[];
+
+extern uint8_t cartoon0[];
+
+
+void page(unsigned char bank) {
+//CAUTION BEAUTIFER SCEWS ALL!!!!!
+  if (bank == 0) {
+    __asm
+    ld a, 0xFE
+    ld i, a
+    __endasm;
+  } else {
+    __asm
+    ld a, 0
+    ld i, a
+    __endasm;
+  }
+
+  GLOBAL_ZX_PORT_7FFD = 0x10 + bank;
+  IO_7FFD = 0x10 + bank;
+}
 
 static void initialiseColour(unsigned int count, struct sp1_cs *c)
 {
@@ -48,6 +70,9 @@ int main()
   sp1_Invalidate(&full_screen);
 
   sp1_UpdateNow();
+  page(7);
+  memcpy(16384, cartoon0, 6912);
+  page(0);
 
   while(1) {
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
