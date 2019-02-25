@@ -170,3 +170,33 @@ I'd like to move it move it, ... sure!
      sp1_MoveSprAbs(sp, &full_screen, (void*) 1, 10, 12, 0, 0);
   }
 ```
+
+### How to do paging (128k)
+To be able to page, normal compiling won't be enough so you'll need to create a custom loader.
+
+This loader will be a BASIC PROGRAM, like this loader.bas:
+```
+10 BORDER 0: PAPER 0
+20 CLEAR VAL "24499"
+25 POKE VAL "23739",VAL "111"
+30 LOAD ""SCREEN$
+40 LOAD ""CODE
+45 POKE VAL "23388",VAL "22"
+50 OUT VAL "32765",PEEK VAL "23388"
+60 LOAD ""CODE
+65 POKE VAL "23388",VAL "16"
+70 OUT VAL "32765",PEEK VAL "23388"
+80 RANDOMIZE USR VAL "24500"
+
+```
+
+And then you'll convert the .bin files to real TAP files, and concat them finally in one unique file:
+```
+	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
+	appmake +zx -b alley_CODE.bin --org 24500 --noloader --blockname code -o code.tap
+	appmake +zx -b alley_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
+	touch alley.tap
+	rm alley.tap
+	cat loader.tap screen.tap code.tap bank6.tap > alley.tap
+
+```
