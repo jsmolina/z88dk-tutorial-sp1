@@ -1,6 +1,6 @@
 # Prerequisites
-.bin
-.tap
+*.bin
+*.tap
 dist/
 *.egg-info/
 
