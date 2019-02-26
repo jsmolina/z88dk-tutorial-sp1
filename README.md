@@ -189,6 +189,12 @@ This loader will be a BASIC PROGRAM, like this loader.bas:
 80 RANDOMIZE USR VAL "24500"
 
 ```
+1. Skip that Bytes: name message that is printed up on loading the code block overwrite part of the screen: POKE VAL "23739",VAL "111"
+2. By using 'POKE 23388,16+n' where 'n' is a number between 0 and 7, you can make the
+computer switch in page 'n' of the RAM. You will then be able to use
+PEEK and POKE in the normal way to examine and change the page.
+3. Actual change of value using port: OUT VAL "32765",PEEK VAL "23388"
+4. Run the game from CRT_ORG_CODE (defined in zpragma.inc): RANDOMIZE USR VAL "24500"
 
 And then you'll convert the .bin files to real TAP files, and concat them finally in one unique file:
 ```
@@ -200,3 +206,7 @@ And then you'll convert the .bin files to real TAP files, and concat them finall
 	cat loader.tap screen.tap code.tap bank6.tap > alley.tap
 
 ```
+1. loader.tap is the previous BASIC code
+2. screen.tap is just the conversion of the screen to tap with first appmake
+3. code.tap is the actual game code.
+4. bank6 is the data/code for 6th bank.
