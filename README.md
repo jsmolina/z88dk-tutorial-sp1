@@ -198,6 +198,9 @@ PEEK and POKE in the normal way to examine and change the page.
 
 And then you'll convert the .bin files to real TAP files, and concat them finally in one unique file:
 ```
+    # linker:
+   	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
+
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b alley_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	appmake +zx -b alley_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
