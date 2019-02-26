@@ -8,13 +8,17 @@
 #include <stdlib.h>
 #include <intrinsic.h>
 
+#define RIGHTC1 1
+#define RIGHTC2 33
+#define LEFTC1 65
+#define LEFTC2 87
+
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 // it comes from built binaries:
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
-extern uint8_t sprite_protar3[];
-extern uint8_t sprite_protar4[];
+
 
 extern uint8_t cartoon0[];
 
@@ -49,12 +53,10 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_BLACK;
 }
 
-struct sp1_ss * add_sprite_misifu() {
+struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
    sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 1);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
 
@@ -71,7 +73,7 @@ int main()
   in_wait_key();
 
   // now sp1
-  struct sp1_ss* sp = add_sprite_misifu();
+  struct sp1_ss * sp = add_sprite();
   zx_border(INK_WHITE);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,

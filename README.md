@@ -118,8 +118,10 @@ or an automatic sprite to asm creator like mine:
 Now  
 1. Create a `/build` directory.
 2. Add a png file (it needs to be size multiple of 8)
-3. Execute `png2sp1sprite ./build/cat_sprites.png -i sprite_protar -f 32 > ./build/misifu.asm`
-4. That will generate a `misifu.asm` file, that you can now.
+3. Execute `png2sp1sprite ./build/cat_sprites.png -i sprite_protar -f 16 > ./build/misifu.asm`. 
+-f is the frame size, if your sprite has animations. If you don't specify more options the script will automatically 
+generate a default mask.
+4. That will generate a `misifu.asm` file, that you can now add it.
 5. Create a text file named `binaries.lst` and add in first line just the filename so it can be 
 found by compiler: `misifu`.
 6. Add a link to binaries.lst in `zproject.lst`: `@build/binaries.lst`
@@ -190,11 +192,12 @@ This loader will be a BASIC PROGRAM, like this loader.bas:
 
 ```
 1. Skip that Bytes: name message that is printed up on loading the code block overwrite part of the screen: POKE VAL "23739",VAL "111"
-2. By using 'POKE 23388,16+n' where 'n' is a number between 0 and 7, you can make the
+2. Load in page 0 both code and screen: `30 LOAD ""SCREEN$` and `40 LOAD ""CODE`
+3. By using POKE 23388,16+n'` where 'n' is a number between 0 and 7, you can make the
 computer switch in page 'n' of the RAM. You will then be able to use
 PEEK and POKE in the normal way to examine and change the page.
-3. Actual change of value using port: OUT VAL "32765",PEEK VAL "23388"
-4. Run the game from CRT_ORG_CODE (defined in zpragma.inc): RANDOMIZE USR VAL "24500"
+4. Actual change of value using port: `OUT VAL "32765",PEEK VAL "23388"
+5. Run the game from CRT_ORG_CODE (defined in zpragma.inc): `RANDOMIZE USR VAL "24500"`
 
 And then you'll convert the .bin files to real TAP files, and concat them finally in one unique file:
 ```
