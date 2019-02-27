@@ -216,3 +216,68 @@ And then you'll convert the .bin files to real TAP files, and concat them finall
 2. screen.tap is just the conversion of the screen to tap with first appmake
 3. code.tap is the actual game code.
 4. bank6 is the data/code for 6th bank.
+
+### How to load complex backgrounds and let SP1 manage them
+(Copied from z88dk forums)
+
+Yes but I think I would use "sp1_IterateUpdateRect(rect,func)" for this instead.  If you pass it a rectangle that covers the full screen, this function will visit all the "struct sp1_update" in the screen in left to right, top to bottom order.  Each "struct sp1_update" is one character square.  So you could do something like this:
+
+
+```
+unsigned char screen[6144];
+
+unsigned char csx, csy;
+unsigned char *csdst;
+
+void copy_screen(struct sp1_update *u)
+{
+   unsigned char *p;
+
+   // locate character square on screen
+
+   p = zx_cxy2saddr(csx, csy);
+
+   // store graphic location and colour in struct update
+
+   u->tile = (unsigned int)csdst;
+   u->colour = *zx_saddr2aaddr(p);
+
+   // copy screen graphics to screen buffer
+
+   for (unsigned char i = 0; i != 8; ++i)
+   {
+      *csdst++ = *p;
+      p += 256;
+   }
+
+   // next character square
+
+   if (++csx == 32)
+   {
+      csx = 0;
+      ++csy;
+   }
+}
+
+...
+
+// copy screen from memory bank
+...
+memcpy(16384,...);
+
+// create screen in buffer from screen$
+
+csx = csy = 0;
+csdst = screen;
+
+sp1_IterateUpdateRect(&fs, copy_screen);   // fs = sp1_Rect covering full screen
+```
+You need 6144 bytes to store the pixels of the screen$ if your display is full size (here I made an array "screen" but you probably want to control where that is placed).
+
+Instead of storing your screens full size you can compress them.  zx7 is included in z88dk so you can simply do "zx7 -f intro.scr" to compress the screen$ before including it as a binary.  In your program:
+
+
+```
+#include <compress/zx7.h>
+
+dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even though c is normally dst,src
