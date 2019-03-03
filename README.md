@@ -172,6 +172,28 @@ I'd like to move it move it, ... sure!
      sp1_MoveSprAbs(sp, &full_screen, (void*) 1, 10, 12, 0, 0);
   }
 ```
+### Moving a sprite
+Now we have the MoveSprAbs it's obvious that we'll need to set X, Y coordinates in vars and modify them from keyboard touches.
+Introduced in branch example1: https://github.com/jsmolina/z88dk-tutorial-sp1/tree/example1
+`input.h` contains different functions `in_stick_keyboard` or `in_stick_kempston`. So the best is creating a function pointer to them,
+allowing the user to choose one using a menu or detecting fire button is pressed in one of the devices.
+Then function pointer `joy` can be called directly in game loop:
+`in = (joy)(&joy_keys);`
+So you can verify which one was pressed using binary checks like `in & IN_STICK_UP`
+
+But it moves so fast, right? It's time for the tricks... 
+
+### Slowdown games
+Bad news, you don't have a RTC here. 
+IM2
+https://chuntey.wordpress.com/2013/10/02/how-to-write-zx-spectrum-games-chapter-17/
+Floating bus
+http://sky.relative-path.com/zx/floating_bus.html
+
+.... TODO
+
+### .AY music
+TODO
 
 ### How to do paging (128k)
 To be able to page, normal compiling won't be enough so you'll need to create a custom loader.
