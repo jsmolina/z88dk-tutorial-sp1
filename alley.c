@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <intrinsic.h>
+#include <input.h>
 
 #define RIGHTC1 1
 #define RIGHTC2 33
@@ -21,6 +22,22 @@ extern uint8_t sprite_protar2[];
 
 
 extern uint8_t cartoon0[];
+
+// globals are supposed to generate less code and with 128k of memory it's important
+struct sprite {
+    struct sp1_ss* sp;
+    uint8_t x;
+    uint8_t y;
+    uint8_t offset;
+};
+
+uint8_t eating = 0;
+struct sprite pacman;
+JOYFUNC joy;
+// redefine this array to allow define keys
+udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
+uint16_t in;
+
 
 
 void show_intro() {
@@ -65,15 +82,48 @@ struct sp1_ss * add_sprite() {
   return sp;
 }
 
+void all_lives_lost() {
+  uint16_t has_kempston = in_stick_kempston();
+
+   while(1) {
+      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
+          joy = (JOYFUNC)in_stick_keyboard;
+          break;
+      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
+          joy = (JOYFUNC)in_stick_kempston;
+          break;
+      }
+  }
+
+}
+
+void check_keys()
+{
+    // checks keys
+    // allow jump in directions
+    if ((in & IN_STICK_UP) && pacman.y > 0) {
+        --pacman.y;
+    } else if((in & IN_STICK_DOWN) && pacman.y < 23) {
+        ++pacman.y;
+    } else if((in & IN_STICK_LEFT) && pacman.x > 0) {
+        --pacman.x;
+    } else if((in & IN_STICK_RIGHT) && pacman.x < 31) {
+        ++pacman.x;
+    }
+}
 
 int main()
 {
   // show paging capabilities.
   show_intro();
-  in_wait_key();
+  all_lives_lost();
 
   // now sp1
-  struct sp1_ss * sp = add_sprite();
+  pacman.sp = add_sprite();
+  pacman.offset = 1;
+  pacman.y = 10;
+  pacman.x = 12;
+
   zx_border(INK_WHITE);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -84,8 +134,11 @@ int main()
   sp1_UpdateNow();
 
   while(1) {
+     in = (joy)(&joy_keys);
+     check_keys();
+     // todo FSM checks
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
-     sp1_MoveSprAbs(sp, &full_screen, (void*) 1, 10, 12, 0, 0);
+     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
      sp1_UpdateNow();
   }
 }
