@@ -185,10 +185,10 @@ But it moves so fast, right? It's time for the tricks...
 
 ### Slowdown games
 Bad news, you don't have a RTC here. 
-IM2
-https://chuntey.wordpress.com/2013/10/02/how-to-write-zx-spectrum-games-chapter-17/
-Floating bus
-http://sky.relative-path.com/zx/floating_bus.html
+
+But there are solutions:
+* IM2 https://chuntey.wordpress.com/2013/10/02/how-to-write-zx-spectrum-games-chapter-17/
+* Floating bus http://sky.relative-path.com/zx/floating_bus.html
 
 .... TODO
 
