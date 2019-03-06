@@ -1,7 +1,6 @@
 # SP1 TUTORIAL
 
 ## Considerations before start
-
 * Do you want to make a 48k game or a 128k game?
 * Do you know how ZX Spectrum paging works?
 * Do you have read about IM2 interruptions? (ISR z88dk)
@@ -194,6 +193,27 @@ But there are solutions:
 
 ### .AY music
 TODO
+
+## Memory ##
+Less lines are better as memory is short. e.g. if you are going to assign four struct properties, don't do it repeating the lines again and again, do it.
+
+```
+foo[0].x = 5;
+foo[0].y = 6;
+foo[1].x = 8;
+foo[1].y = 9;
+...
+```
+this one will be better:
+```
+void assign_foo(uint8_t i, uint8_t x, uint8_t y) {
+  foo[i].x = x;
+  foo[i].y = y;
+}
+
+assign_foo(0, 5, 6);
+assign_foo(1, 8, 9);
+```
 
 ### How to do paging (128k)
 To be able to page, normal compiling won't be enough so you'll need to create a custom loader.
