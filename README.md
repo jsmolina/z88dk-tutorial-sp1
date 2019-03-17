@@ -226,7 +226,7 @@ If an area is invalidated twice in one loop, it will only redraw it once.
 
 That's not so useful for scrolling, so if you think on scrolling, then it's maybe 
 better to do it yourself.
-
+Use this pull request to see what was needed to change to use tiles: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/3
 
 ### .AY music
 TODO
