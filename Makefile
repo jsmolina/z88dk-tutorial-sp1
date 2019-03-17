@@ -1,5 +1,6 @@
 compile:
 	./utils/bas2tap loader.bas -a
+	png2udg ./build/tile1.png -a > ./build/tile1.asm
 	png2sp1sprite ./build/prota_sprites.png -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
 	ls *.bin

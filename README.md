@@ -191,6 +191,43 @@ But there are solutions:
 
 .... TODO
 
+# Tiles
+As you know, spectrum has the User-Defined-Graphic (UDG).
+Generate any 8x8 tile, and just execute png2udg. 
+Then copy the var that the python script will generate somewhere in your code:
+```
+➭ png2udg ./build/tile1.png
+const uint8_t tile1[] = {0x10, 0x18, 0x18, 0x3c, 0x7c, 0x7e, 0xfe, 0xff};
+```
+
+Or if you prefer to use banking, maybe asm will be easier:
+```
+➭ png2udg ./build/tile1.png -a
+
+SECTION rodata_user
+PUBLIC _tile1
+._tile1
+defb @00010000, @00011000, @00011000, @00111100, @01111100, @01111110, @11111110, @11111111
+
+```
+
+and of course defining variable accessible in C code
+`extern uint8_t tile1[];`
+
+And then when painting level, just use:
+``` 
+sp1_TileEntry('b', tile1);
+sp1_PrintAt(17, 15, INK_BLACK | PAPER_CYAN, 'b');
+```
+SP1 will take care for you of redrawing. 
+Think on a game with pacman and 5 enemies. Everytime you draw the hero sprite, and the 5 enemies,
+sp1 invalidates the areas where you draw them. That allows SPLIB to only redraw that areas.
+If an area is invalidated twice in one loop, it will only redraw it once.
+
+That's not so useful for scrolling, so if you think on scrolling, then it's maybe 
+better to do it yourself.
+
+
 ### .AY music
 TODO
 
