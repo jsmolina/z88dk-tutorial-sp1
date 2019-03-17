@@ -19,7 +19,10 @@ struct sp1_Rect full_screen = {0, 0, 32, 24};
 // it comes from built binaries:
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
-
+// using UDG from ASM
+extern uint8_t tile1[];
+// or using UDG from just code
+const uint8_t tile2[] = {0x10, 0x18, 0x18, 0x3c, 0x7c, 0x7e, 0xfe, 0xff};
 
 extern uint8_t cartoon0[];
 
@@ -123,13 +126,21 @@ int main()
   pacman.offset = 1;
   pacman.y = 10;
   pacman.x = 12;
+  // painting an UDG is just assigning it to any char
+  // row, col, char
 
   zx_border(INK_WHITE);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_WHITE,
                   ' ' );
+
   sp1_Invalidate(&full_screen);
+
+  sp1_TileEntry('a', tile2);
+  sp1_TileEntry('b', tile1);
+  sp1_PrintAt(15, 15, INK_BLACK | PAPER_CYAN, 'a');
+  sp1_PrintAt(17, 15, INK_BLACK | PAPER_CYAN, 'b');
 
   sp1_UpdateNow();
 
