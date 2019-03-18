@@ -194,7 +194,7 @@ But there are solutions:
 # Tiles
 Use this pull request to see what was needed to change to use tiles: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/3
 
-As you know, spectrum has the User-Defined-Graphic (UDG).
+As you know, spectrum has the User-Defined-Graphic (UDG). Splib offers them for backgrounds, and the sky is the limit... 
 Generate any 8x8 tile, and just execute png2udg. 
 Then copy the var that the python script will generate somewhere in your code:
 ```
