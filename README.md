@@ -192,6 +192,8 @@ But there are solutions:
 .... TODO
 
 # Tiles
+Use this pull request to see what was needed to change to use tiles: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/3
+
 As you know, spectrum has the User-Defined-Graphic (UDG).
 Generate any 8x8 tile, and just execute png2udg. 
 Then copy the var that the python script will generate somewhere in your code:
@@ -226,7 +228,6 @@ If an area is invalidated twice in one loop, it will only redraw it once.
 
 That's not so useful for scrolling, so if you think on scrolling, then it's maybe 
 better to do it yourself.
-Use this pull request to see what was needed to change to use tiles: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/3
 
 ### .AY music
 TODO
