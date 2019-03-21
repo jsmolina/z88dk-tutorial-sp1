@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _corner_right
+._corner_right
+defb @00000000, @00000000, @11111000, @00000100, @00000100, @11000100, @00100100, @00100100

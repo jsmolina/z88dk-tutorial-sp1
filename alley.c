@@ -20,9 +20,13 @@ struct sp1_Rect full_screen = {0, 0, 32, 24};
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
 // using UDG from ASM
-extern uint8_t tile1[];
+extern uint8_t horizontal[];
+extern uint8_t vertical[];
+extern uint8_t corner_left[];
+extern uint8_t corner_right[];
+extern uint8_t corner_bottom_right[];
+extern uint8_t corner_bottom_left[];
 // or using UDG from just code
-const uint8_t tile2[] = {0x10, 0x18, 0x18, 0x3c, 0x7c, 0x7e, 0xfe, 0xff};
 
 extern uint8_t cartoon0[];
 
@@ -70,7 +74,7 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
   c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_BLACK;
+  c->attr      = INK_YELLOW;
 }
 
 struct sp1_ss * add_sprite() {
@@ -132,15 +136,22 @@ int main()
   zx_border(INK_WHITE);
 
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_WHITE,
+                  INK_BLACK | PAPER_BLACK,
                   ' ' );
+  zx_border(INK_BLACK);
 
   sp1_Invalidate(&full_screen);
 
-  sp1_TileEntry('a', tile2);
-  sp1_TileEntry('b', tile1);
-  sp1_PrintAt(15, 15, INK_BLACK | PAPER_CYAN, 'a');
-  sp1_PrintAt(17, 15, INK_BLACK | PAPER_CYAN, 'b');
+  sp1_TileEntry('a', horizontal);
+  sp1_TileEntry('b', vertical);
+  sp1_TileEntry('c', corner_left);
+  sp1_TileEntry('d', corner_right);
+  sp1_TileEntry('e', corner_bottom_left);
+  sp1_TileEntry('f', corner_bottom_right);
+
+  sp1_PrintAt(1, 1, INK_BLUE | PAPER_BLACK, 'c');
+  sp1_PrintAt(2, 1, INK_BLUE | PAPER_BLACK, 'b');
+  sp1_PrintAt(1, 2, INK_BLUE | PAPER_BLACK, 'a');
 
   sp1_UpdateNow();
 

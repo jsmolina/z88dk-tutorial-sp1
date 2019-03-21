@@ -1,6 +1,11 @@
 compile:
 	./utils/bas2tap loader.bas -a
-	png2udg ./build/tile1.png -a > ./build/tile1.asm
+	png2udg ./build/horizontal.png -a > ./build/horizontal.asm
+	png2udg ./build/vertical.png -a > ./build/vertical.asm
+	png2udg ./build/corner_bottom_left.png -a > ./build/corner_bottom_left.asm
+	png2udg ./build/corner_bottom_right.png -a > ./build/corner_bottom_right.asm
+	png2udg ./build/corner_left.png -a > ./build/corner_left.asm
+	png2udg ./build/corner_right.png -a > ./build/corner_right.asm
 	png2sp1sprite ./build/prota_sprites.png -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
 	ls *.bin

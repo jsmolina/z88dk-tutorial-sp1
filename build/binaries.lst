@@ -1,3 +1,8 @@
 bg
 prota
-tile1
+horizontal
+vertical
+corner_left
+corner_right
+corner_bottom_left
+corner_bottom_right
