@@ -28,6 +28,35 @@ extern uint8_t corner_bottom_right[];
 extern uint8_t corner_bottom_left[];
 // or using UDG from just code
 
+uint8_t map[25][16] = {
+{49,17,17,17,17,17,17,17,17,17,17,17,17,17,17,20},
+{32,0,0,0,0,0,0,8,128,0,0,0,0,0,0,2},
+{41,153,153,153,153,153,153,8,137,153,153,153,153,153,153,2},
+{41,3,20,144,49,17,73,8,137,19,273,285,144,49,73,2},
+{43,2,2,144,32,0,41,8,137,18,0,18,144,32,43,2},
+{41,5,22,144,81,17,105,8,137,14,272,271,144,81,105,2},
+{41,0,0,144,0,0,9,0,9,0,0,0,144,0,9,2},
+{41,153,153,153,153,153,153,153,153,153,153,153,153,153,153,2},
+{41,1,17,144,41,1,17,17,17,17,25,2,144,17,25,2},
+{41,0,0,144,41,0,0,7,160,0,9,2,144,0,9,2},
+{41,153,153,144,41,153,153,7,169,153,153,2,153,153,153,2},
+{33,17,17,144,33,17,25,94,1529,1,17,18,144,17,17,18},
+{32,0,0,144,32,0,9,0,9,0,0,2,144,0,0,2},
+{41,153,153,144,41,153,153,153,153,153,153,2,153,153,153,2},
+{33,17,17,144,41,3,17,31,241,17,73,2,144,17,17,18},
+{32,0,0,144,41,2,0,15,240,0,41,2,144,0,0,2},
+{41,153,153,144,41,2,0,15,240,0,41,2,153,153,153,2},
+{41,3,20,144,41,5,17,17,17,17,105,2,144,49,73,2},
+{41,2,2,144,9,0,0,0,0,0,9,0,144,32,41,2},
+{43,2,2,153,153,153,153,153,153,153,153,153,144,32,43,2},
+{41,5,22,144,17,17,144,17,17,144,17,17,144,81,105,2},
+{41,0,0,144,0,0,144,0,0,144,0,0,144,0,9,2},
+{41,153,153,153,153,153,153,153,153,153,153,153,153,153,153,2},
+{81,17,17,17,17,17,17,17,17,17,17,17,17,17,17,22},
+};
+
+uint8_t correspondence[12] = {' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+
 extern uint8_t cartoon0[];
 
 // globals are supposed to generate less code and with 128k of memory it's important
@@ -44,7 +73,11 @@ JOYFUNC joy;
 // redefine this array to allow define keys
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
 uint16_t in;
-
+// reusable vars
+uint8_t row;
+uint8_t col;
+uint8_t col2;
+uint8_t current;
 
 
 void show_intro() {
@@ -149,9 +182,16 @@ int main()
   sp1_TileEntry('e', corner_bottom_left);
   sp1_TileEntry('f', corner_bottom_right);
 
-  sp1_PrintAt(1, 1, INK_BLUE | PAPER_BLACK, 'c');
-  sp1_PrintAt(2, 1, INK_BLUE | PAPER_BLACK, 'b');
-  sp1_PrintAt(1, 2, INK_BLUE | PAPER_BLACK, 'a');
+  for(row = 0; row != 24; ++row) {
+      col2 = 0;
+      for(col = 0; col != 16; ++col) {
+        current = map[row][col];
+        sp1_PrintAt(row, col2, INK_BLUE | PAPER_BLACK, correspondence[(current & 0b11110000) >> 4 ]);
+        sp1_PrintAt(row, col2 + 1, INK_BLUE | PAPER_BLACK, correspondence[current & 0b00001111]);
+        col2 += 2;
+      }
+
+  }
 
   sp1_UpdateNow();
 
