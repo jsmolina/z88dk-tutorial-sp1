@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _vertileft
+._vertileft
+defb @00100000, @00100000, @00100000, @00100000, @00100000, @00100000, @00100000, @00100000
