@@ -29,38 +29,44 @@ extern uint8_t corner_bottom_left[];
 extern uint8_t pill[];
 extern uint8_t vertileft[];
 extern uint8_t vertiright[];
-// or using UDG from just code
+extern uint8_t topvertileft[];
+extern uint8_t topvertiright[];
+extern uint8_t ghostpill[];
 
-uint8_t map[25][16] = {
-{49,17,17,17,17,17,17,17,17,17,17,17,17,17,17,20},
-{32,0,0,0,0,0,0,8,192,0,0,0,0,0,0,2},
-{41,153,153,153,153,153,153,8,201,153,153,153,153,153,153,2},
-{41,3,20,144,49,17,73,8,201,3,17,20,144,49,73,2},
-{43,2,2,144,32,0,41,8,201,2,0,2,144,32,43,2},
-{41,5,22,144,81,17,105,8,201,5,17,22,144,81,105,2},
-{41,0,0,144,0,0,9,0,9,0,0,0,144,0,9,2},
-{41,153,153,153,153,153,153,153,153,153,153,153,153,153,153,2},
-{41,1,17,144,41,1,17,17,17,17,25,2,144,17,25,2},
-{41,0,0,144,41,0,0,8,192,0,9,2,144,0,9,2},
-{41,153,153,144,41,153,153,8,201,153,153,2,153,153,153,2},
-{81,17,17,144,33,17,25,8,201,1,17,18,144,17,17,22},
-{0,0,0,144,32,0,9,0,9,0,0,2,144,0,0,0},
-{9,153,153,144,41,153,153,153,153,153,153,2,153,153,153,0},
-{49,17,17,144,41,3,17,16,1,17,73,2,144,17,17,20},
-{32,0,0,144,41,2,0,0,0,0,41,2,144,0,0,2},
-{41,153,153,144,41,2,0,0,0,0,41,2,153,153,153,2},
-{41,3,20,144,41,5,17,17,17,17,105,2,144,49,73,2},
-{41,2,2,144,9,0,0,0,0,0,9,0,144,32,41,2},
-{43,2,2,153,153,153,153,153,153,153,153,153,144,32,43,2},
-{41,5,22,144,17,17,144,17,17,144,17,17,144,81,105,2},
-{41,0,0,144,0,0,144,0,0,144,0,0,144,0,9,2},
-{41,153,153,153,153,153,153,153,153,153,153,153,153,153,153,2},
-{81,17,17,17,17,17,17,17,17,17,17,17,17,17,17,22},
+int8_t dx = 0;
+int8_t dy = 0;
+// or using UDG from just code
+uint8_t map[25][32] = {
+{3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4},
+{2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+{2,9,9,9,9,9,9,9,9,9,9,9,9,9,0,8,12,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2},
+{2,9,0,3,1,4,9,0,3,1,1,1,4,9,0,8,12,9,0,3,1,1,1,4,9,0,3,1,4,9,0,2},
+{2,11,0,2,0,2,9,0,2,0,0,0,2,9,0,8,12,9,0,2,0,0,0,2,9,0,2,0,2,11,0,2},
+{2,9,0,5,1,6,9,0,5,1,1,1,6,9,0,8,12,9,0,5,1,1,1,6,9,0,5,1,6,9,0,2},
+{2,9,0,0,0,0,9,0,0,0,0,0,0,9,0,0,0,9,0,0,0,0,0,0,9,0,0,0,0,9,0,2},
+{2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2},
+{2,9,0,1,1,1,9,0,2,9,0,1,1,1,1,13,14,1,1,1,1,9,0,2,9,0,1,1,1,9,0,2},
+{2,9,0,0,0,0,9,0,2,9,0,0,0,0,0,8,12,0,0,0,0,9,0,2,9,0,0,0,0,9,0,2},
+{2,9,9,9,9,9,9,0,2,9,9,9,9,9,0,8,12,9,9,9,9,9,0,2,9,9,9,9,9,9,0,2},
+{5,1,1,1,1,1,9,0,2,1,1,1,1,9,0,8,12,9,0,1,1,1,1,2,9,0,1,1,1,1,1,6},
+{0,0,0,0,0,0,9,0,2,0,0,0,0,9,0,0,0,9,0,0,0,0,0,2,9,0,0,0,0,0,0,0},
+{0,9,9,9,9,9,9,0,2,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2,9,9,9,9,9,9,0,0},
+{3,1,1,1,1,1,9,0,2,9,0,3,1,1,1,0,0,1,1,1,4,9,0,2,9,0,1,1,1,1,1,4},
+{2,0,0,0,0,0,9,0,2,9,0,2,0,0,0,0,0,0,0,0,2,9,0,2,9,0,0,0,0,0,0,2},
+{2,9,9,9,9,9,9,0,2,9,0,2,0,0,0,0,0,0,0,0,2,9,0,2,9,9,9,9,9,9,0,2},
+{2,9,0,3,1,4,9,0,2,9,0,5,1,1,1,1,1,1,1,1,6,9,0,2,9,0,3,1,4,9,0,2},
+{2,9,0,2,0,2,9,0,0,9,0,0,0,0,0,0,0,0,0,0,0,9,0,0,9,0,2,0,2,9,0,2},
+{2,11,0,2,0,2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2,0,2,11,0,2},
+{2,9,0,5,1,6,9,0,1,1,1,1,9,0,1,1,1,1,9,0,1,1,1,1,9,0,5,1,6,9,0,2},
+{2,9,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,9,0,2},
+{2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2},
+{5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6},
 };
 
 
-uint8_t correspondence[] = {' ',       'a',     'b',        'c',     'd',     'e',      'f',      'g',      'h',      'i',       'j',     'k',      'l'};
-uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_WHITE, INK_BLUE, INK_BLUE, INK_BLUE};
+// 15
+uint8_t correspondence[] = {' ',       'a',     'b',        'c',     'd',     'e',      'f',      'g',      'h',      'i',       'j',     'k',      'l',         'm',           'n'};
+uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_WHITE, INK_BLUE, INK_MAGENTA, INK_BLUE,   INK_BLUE,     INK_BLUE};
 
 extern uint8_t cartoon0[];
 
@@ -81,7 +87,7 @@ uint16_t in;
 // reusable vars
 uint8_t row;
 uint8_t col;
-uint8_t col2;
+uint8_t next;
 uint8_t current;
 
 
@@ -146,15 +152,46 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if ((in & IN_STICK_UP) && pacman.y > 0) {
-        --pacman.y;
-    } else if((in & IN_STICK_DOWN) && pacman.y < 23) {
-        ++pacman.y;
-    } else if((in & IN_STICK_LEFT) && pacman.x > 0) {
-        --pacman.x;
-    } else if((in & IN_STICK_RIGHT) && pacman.x < 30) {
-        ++pacman.x;
+    if ((in & IN_STICK_UP)) {
+        dy = -1;
+    } if((in & IN_STICK_DOWN)) {
+        dy = +1;
     }
+
+    if((in & IN_STICK_LEFT)) {
+        dx = -1;
+    } else if((in & IN_STICK_RIGHT)) {
+        dx = +1;
+    }
+}
+
+uint8_t allow_next(uint8_t next) {
+    return next == 9 || next == 16 || next == 11;
+}
+
+void check_fsm() {
+    row = pacman.y + 1;
+    current = map[row][pacman.x];
+    if(current == 9) {
+        // eat
+
+    }
+
+    if(allow_next(map[row + dy][pacman.x])) {
+        pacman.y += dy;
+    } else if (dy != 0) {
+        dy = 0;
+    }
+
+    if(allow_next(map[row][pacman.x + dx])) {
+        pacman.x += dx;
+    } else if (dx != 0) {
+        dx = 0;
+    }
+
+    
+
+
 }
 
 int main()
@@ -166,8 +203,8 @@ int main()
   // now sp1
   pacman.sp = add_sprite();
   pacman.offset = 1;
-  pacman.y = 10;
-  pacman.x = 12;
+  pacman.y = 21;
+  pacman.x = 14;
   // painting an UDG is just assigning it to any char
   // row, col, char
 
@@ -188,15 +225,15 @@ int main()
   sp1_TileEntry('f', corner_bottom_right);
   sp1_TileEntry('i', pill);
   sp1_TileEntry('h', vertileft);
+  sp1_TileEntry('k', ghostpill);
   sp1_TileEntry('l', vertiright);
+  sp1_TileEntry('m', topvertileft);
+  sp1_TileEntry('n', topvertiright);
 
   for(row = 0; row != 24; ++row) {
-      col2 = 0;
-      for(col = 0; col != 16; ++col) {
+      for(col = 0; col != 32; ++col) {
         current = map[row][col];
-        sp1_PrintAt(row, col2, colors[(current & 0b11110000) >> 4 ] | PAPER_BLACK, correspondence[(current & 0b11110000) >> 4 ]);
-        sp1_PrintAt(row, col2 + 1, colors[current & 0b00001111] | PAPER_BLACK, correspondence[current & 0b00001111]);
-        col2 += 2;
+        sp1_PrintAt(row, col, colors[current] | PAPER_BLACK, correspondence[current]);
       }
 
   }
@@ -206,6 +243,7 @@ int main()
   while(1) {
      in = (joy)(&joy_keys);
      check_keys();
+     check_fsm();
      // todo FSM checks
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);

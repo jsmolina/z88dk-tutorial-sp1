@@ -1,5 +1,5 @@
 
-print("uint8_t map[25][16] = {")
+print("uint8_t map[25][32] = {")
 with open('pacmansce.csv', 'r') as f:
     for linenum, row in enumerate(f):
         if(linenum == 0):
@@ -9,8 +9,8 @@ with open('pacmansce.csv', 'r') as f:
 
         resultcols = []
         cols = row.split(',')
-        for i in range(1, len(cols) - 1, 2):
-            x = (int(cols[i]) << 4) | int(cols[i+1])
+        for i in range(1, len(cols)):
+            x = int(cols[i])
 
             resultcols.append(str(x))
 
