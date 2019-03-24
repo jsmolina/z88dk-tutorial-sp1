@@ -123,7 +123,7 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
 
 struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
+  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
 
   sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
@@ -169,6 +169,7 @@ uint8_t allow_next(uint8_t next) {
     return next == 9 || next == 16 || next == 11;
 }
 
+
 void check_fsm() {
     row = pacman.y + 1;
     current = map[row][pacman.x];
@@ -177,20 +178,13 @@ void check_fsm() {
 
     }
 
-    if(allow_next(map[row + dy][pacman.x])) {
+    if(allow_next(map[row+dy][pacman.x + dx])) {
         pacman.y += dy;
+        pacman.x += dx;
     } else if (dy != 0) {
         dy = 0;
-    }
-
-    if(allow_next(map[row][pacman.x + dx])) {
-        pacman.x += dx;
-    } else if (dx != 0) {
         dx = 0;
     }
-
-    
-
 
 }
 
