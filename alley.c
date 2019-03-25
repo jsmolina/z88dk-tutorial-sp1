@@ -8,11 +8,18 @@
 #include <stdlib.h>
 #include <intrinsic.h>
 #include <input.h>
+#include "int.h"
 
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define LEFTC1 65
 #define LEFTC2 87
+
+#define DIR_UP 1
+#define DIR_DOWN 2
+#define DIR_LEFT 3
+#define DIR_RIGHT 4
+#define NONE 250
 
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -76,6 +83,7 @@ struct sprite {
     uint8_t x;
     uint8_t y;
     uint8_t offset;
+    uint8_t direction;
 };
 
 uint8_t eating = 0;
@@ -87,8 +95,9 @@ uint16_t in;
 // reusable vars
 uint8_t row;
 uint8_t col;
-uint8_t next;
 uint8_t current;
+
+uint8_t frame = 0;
 
 
 void show_intro() {
@@ -123,10 +132,10 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
 
 struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_protar2, 1);
 
-  sp1_AddColSpr(sp, SP1_DRAW_MASK2RB,  SP1_TYPE_2BYTE, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
 
@@ -155,13 +164,13 @@ void check_keys()
     if ((in & IN_STICK_UP)) {
         dy = -1;
     } if((in & IN_STICK_DOWN)) {
-        dy = +1;
+        dy = 1;
     }
 
     if((in & IN_STICK_LEFT)) {
         dx = -1;
     } else if((in & IN_STICK_RIGHT)) {
-        dx = +1;
+        dx = 1;
     }
 }
 
@@ -172,13 +181,17 @@ uint8_t allow_next(uint8_t next) {
 
 void check_fsm() {
     row = pacman.y + 1;
-    current = map[row][pacman.x];
-    if(current == 9) {
-        // eat
-
+    if(row > 22) {
+        row = 22;
+    }
+    col = pacman.x;
+    if(col > 31) {
+        col = 31;
     }
 
-    if(allow_next(map[row+dy][pacman.x + dx])) {
+    current = map[row][col];
+
+    if(allow_next(map[row + dy][col + dx])) {
         pacman.y += dy;
         pacman.x += dx;
     } else if (dy != 0) {
@@ -186,12 +199,19 @@ void check_fsm() {
         dx = 0;
     }
 
+    if(frame >= 5) {
+        pacman.offset = RIGHTC2;
+    } else {
+        pacman.offset = RIGHTC1;
+    }
+
 }
 
 int main()
 {
+  setup_int();
   // show paging capabilities.
-  show_intro();
+  //show_intro();
   all_lives_lost();
 
   // now sp1
@@ -241,6 +261,14 @@ int main()
      // todo FSM checks
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
+     wait();
+
      sp1_UpdateNow();
+
+     frame += 1;
+
+     if(frame == 10) {
+        frame = 0;
+     }
   }
 }

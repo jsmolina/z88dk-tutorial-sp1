@@ -12,7 +12,7 @@ compile:
 	png2udg ./build/topvertileft.png -a > ./build/topvertileft.asm
 	png2udg ./build/topvertiright.png -a > ./build/topvertiright.asm
 	png2udg ./build/ghostpill.png -a > ./build/ghostpill.asm
-	png2sp1sprite ./build/prota_sprites.png -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
+	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
 	ls *.bin
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
