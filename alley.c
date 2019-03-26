@@ -13,7 +13,12 @@
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define LEFTC1 65
-#define LEFTC2 87
+#define LEFTC2 97
+#define UP1 129
+#define UP2 161
+#define DOWN1 193
+#define DOWN2 225
+
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -26,6 +31,9 @@ struct sp1_Rect full_screen = {0, 0, 32, 24};
 // it comes from built binaries:
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
+// red ghost
+extern uint8_t red_ghost1[];
+extern uint8_t red_ghost2[];
 // using UDG from ASM
 extern uint8_t horizontal[];
 extern uint8_t vertical[];
@@ -83,11 +91,13 @@ struct sprite {
     uint8_t x;
     uint8_t y;
     uint8_t offset;
-    uint8_t direction;
+    uint8_t currentoffset;
 };
 
 uint8_t eating = 0;
 struct sprite pacman;
+struct sprite ghost_red;
+struct sprite ghost_cyan;
 JOYFUNC joy;
 // redefine this array to allow define keys
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
@@ -130,6 +140,27 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_YELLOW;
 }
 
+static void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c)
+{
+  // count defines each 8x8 block in the sprite, and thus it is possible to have a
+  // multicolor sprite in 8x8 blocks
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+    c->attr_mask = SP1_AMASK_INK;
+
+    c->attr      = INK_RED;
+}
+
+static void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c)
+{
+  // count defines each 8x8 block in the sprite, and thus it is possible to have a
+  // multicolor sprite in 8x8 blocks
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+    c->attr_mask = SP1_AMASK_INK;
+    c->attr      = INK_CYAN;
+}
+
 struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
@@ -138,6 +169,30 @@ struct sp1_ss * add_sprite() {
   sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
 
   sp1_IterateSprChar(sp, initialiseColour);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourGhostRed);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_cyan_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourGhostCyan);
 
   return sp;
 }
@@ -163,14 +218,19 @@ void check_keys()
     // allow jump in directions
     if ((in & IN_STICK_UP)) {
         dy = -1;
+        pacman.currentoffset = UP1;
+
     } if((in & IN_STICK_DOWN)) {
         dy = 1;
+        pacman.currentoffset = DOWN1;
     }
 
     if((in & IN_STICK_LEFT)) {
         dx = -1;
+        pacman.currentoffset = LEFTC1;
     } else if((in & IN_STICK_RIGHT)) {
         dx = 1;
+        pacman.currentoffset = RIGHTC1;
     }
 }
 
@@ -199,13 +259,14 @@ void check_fsm() {
         dx = 0;
     }
 
-    if(frame >= 5) {
-        pacman.offset = RIGHTC2;
-    } else {
-        pacman.offset = RIGHTC1;
+    if(frame == 5) {
+        pacman.offset = pacman.currentoffset + 32;
+    } else if (frame == 0) {
+        pacman.offset = pacman.currentoffset;
     }
 
 }
+
 
 int main()
 {
@@ -217,8 +278,21 @@ int main()
   // now sp1
   pacman.sp = add_sprite();
   pacman.offset = 1;
+  pacman.currentoffset = 1;
+
   pacman.y = 21;
   pacman.x = 14;
+
+  ghost_red.sp = add_ghost_sprite();
+  ghost_red.offset = 1;
+  ghost_red.y = 21;
+  ghost_red.x = 21;
+
+  ghost_cyan.sp = add_ghost_cyan_sprite();
+  ghost_cyan.offset = 1;
+  ghost_cyan.y = 21;
+  ghost_cyan.x = 25;
+
   // painting an UDG is just assigning it to any char
   // row, col, char
 
@@ -261,6 +335,8 @@ int main()
      // todo FSM checks
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
+     sp1_MoveSprAbs(ghost_red.sp, &full_screen, (void*) ghost_red.offset, ghost_red.y, ghost_red.x, 0, 0);
+     sp1_MoveSprAbs(ghost_cyan.sp, &full_screen, (void*) ghost_cyan.offset, ghost_cyan.y, ghost_cyan.x, 0, 0);
      wait();
 
      sp1_UpdateNow();
