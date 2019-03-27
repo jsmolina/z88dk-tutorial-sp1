@@ -98,6 +98,8 @@ uint8_t eating = 0;
 struct sprite pacman;
 struct sprite ghost_red;
 struct sprite ghost_cyan;
+struct sprite ghost_magenta;
+struct sprite ghost_yellow;
 JOYFUNC joy;
 // redefine this array to allow define keys
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
@@ -132,7 +134,7 @@ void show_intro() {
 
 }
 
-static void initialiseColour(unsigned int count, struct sp1_cs *c)
+static void initialiseColourYellow(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
 
@@ -161,6 +163,16 @@ static void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c)
     c->attr      = INK_CYAN;
 }
 
+static void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c)
+{
+  // count defines each 8x8 block in the sprite, and thus it is possible to have a
+  // multicolor sprite in 8x8 blocks
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+    c->attr_mask = SP1_AMASK_INK;
+    c->attr      = INK_MAGENTA;
+}
+
 struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
@@ -168,17 +180,23 @@ struct sp1_ss * add_sprite() {
 
   sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseColour);
+  sp1_IterateSprChar(sp, initialiseColourYellow);
 
   return sp;
 }
 
 struct sp1_ss * add_ghost_sprite() {
   struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
+  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
 
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_red_sprite() {
+  struct sp1_ss * sp = add_ghost_sprite();
 
   sp1_IterateSprChar(sp, initialiseColourGhostRed);
 
@@ -186,13 +204,25 @@ struct sp1_ss * add_ghost_sprite() {
 }
 
 struct sp1_ss * add_ghost_cyan_sprite() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+  struct sp1_ss * sp = add_ghost_sprite();
 
   sp1_IterateSprChar(sp, initialiseColourGhostCyan);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_magenta_sprite() {
+  struct sp1_ss * sp = add_ghost_sprite();
+
+  sp1_IterateSprChar(sp, initialiseColourGhostMagenta);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_yellow_sprite() {
+  struct sp1_ss * sp = add_ghost_sprite();
+
+  sp1_IterateSprChar(sp, initialiseColourYellow);
 
   return sp;
 }
@@ -259,7 +289,7 @@ void check_fsm() {
         dx = 0;
     }
 
-    if(frame == 5) {
+    if(frame == 4) {
         pacman.offset = pacman.currentoffset + 32;
     } else if (frame == 0) {
         pacman.offset = pacman.currentoffset;
@@ -283,15 +313,25 @@ int main()
   pacman.y = 21;
   pacman.x = 14;
 
-  ghost_red.sp = add_ghost_sprite();
+  ghost_red.sp = add_ghost_red_sprite();
   ghost_red.offset = 1;
   ghost_red.y = 21;
   ghost_red.x = 21;
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
-  ghost_cyan.offset = 1;
+  ghost_cyan.offset = 33;
   ghost_cyan.y = 21;
   ghost_cyan.x = 25;
+
+  ghost_magenta.sp = add_ghost_magenta_sprite();
+  ghost_magenta.offset = 161;
+  ghost_magenta.y = 21;
+  ghost_magenta.x = 2;
+
+  ghost_yellow.sp = add_ghost_yellow_sprite();
+  ghost_yellow.offset = 129;
+  ghost_yellow.y = 21;
+  ghost_yellow.x = 6;
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -321,7 +361,7 @@ int main()
   for(row = 0; row != 24; ++row) {
       for(col = 0; col != 32; ++col) {
         current = map[row][col];
-        sp1_PrintAt(row, col, colors[current] | PAPER_BLACK, correspondence[current]);
+        sp1_PrintAt(row, col, colors[current] | INK_BLACK, correspondence[current]);
       }
 
   }
@@ -337,13 +377,15 @@ int main()
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
      sp1_MoveSprAbs(ghost_red.sp, &full_screen, (void*) ghost_red.offset, ghost_red.y, ghost_red.x, 0, 0);
      sp1_MoveSprAbs(ghost_cyan.sp, &full_screen, (void*) ghost_cyan.offset, ghost_cyan.y, ghost_cyan.x, 0, 0);
+     sp1_MoveSprAbs(ghost_magenta.sp, &full_screen, (void*) ghost_magenta.offset, ghost_magenta.y, ghost_magenta.x, 0, 0);
+     sp1_MoveSprAbs(ghost_yellow.sp, &full_screen, (void*) ghost_yellow.offset, ghost_yellow.y, ghost_yellow.x, 0, 0);
      wait();
 
      sp1_UpdateNow();
 
      frame += 1;
 
-     if(frame == 10) {
+     if(frame == 5) {
         frame = 0;
      }
   }
