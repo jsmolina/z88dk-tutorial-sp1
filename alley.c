@@ -94,7 +94,7 @@ struct sprite {
     uint8_t currentoffset;
 };
 
-uint8_t eating = 0;
+uint8_t pill_eaten = NONE;
 struct sprite pacman;
 struct sprite ghost_red;
 struct sprite ghost_cyan;
@@ -132,6 +132,22 @@ void show_intro() {
     ei
     __endasm;
 
+}
+
+static void initialiseColourBlue(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_BLUE;
+}
+
+static void initialiseColourWhite(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_WHITE;
 }
 
 static void initialiseColourYellow(unsigned int count, struct sp1_cs *c)
@@ -268,6 +284,12 @@ uint8_t allow_next(uint8_t next) {
     return next == 9 || next == 16 || next == 11;
 }
 
+void iteratecolours(void * func) {
+    sp1_IterateSprChar(ghost_red.sp, func);
+    sp1_IterateSprChar(ghost_cyan.sp, func);
+    sp1_IterateSprChar(ghost_magenta.sp, func);
+    sp1_IterateSprChar(ghost_yellow.sp, func);
+}
 
 void check_fsm() {
     row = pacman.y + 1;
@@ -280,6 +302,14 @@ void check_fsm() {
     }
 
     current = map[row][col];
+    if(current != 16) {
+        map[row][col] = 16;
+        sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
+    }
+
+    if(current == 11) {
+        pill_eaten = 125;
+    }
 
     if(allow_next(map[row + dy][col + dx])) {
         pacman.y += dy;
@@ -289,12 +319,29 @@ void check_fsm() {
         dx = 0;
     }
 
-    if(frame == 4) {
+    if((frame & 1) == 0) {
         pacman.offset = pacman.currentoffset + 32;
-    } else if (frame == 0) {
+    } else {
         pacman.offset = pacman.currentoffset;
     }
 
+    if(pill_eaten != NONE) {
+        --pill_eaten;
+        // initialiseColourWhite, initialiseColourBlue
+        if((frame & 1) == 0) {
+            iteratecolours(initialiseColourBlue);
+        } else {
+            iteratecolours(initialiseColourWhite);
+        }
+    }
+
+    if(pill_eaten == 0) {
+        pill_eaten = NONE;
+        sp1_IterateSprChar(ghost_red.sp, initialiseColourGhostRed);
+        sp1_IterateSprChar(ghost_cyan.sp, initialiseColourGhostCyan);
+        sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
+        sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
+    }
 }
 
 
