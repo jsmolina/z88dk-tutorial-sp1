@@ -258,30 +258,31 @@ void all_lives_lost() {
 
 }
 
+uint8_t allow_next(uint8_t next) {
+    return next == 9 || next == 16 || next == 11;
+}
+
+
 void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if ((in & IN_STICK_UP)) {
+    if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
         dy = -1;
         pacman.currentoffset = UP1;
 
-    } if((in & IN_STICK_DOWN)) {
+    } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
         dy = 1;
         pacman.currentoffset = DOWN1;
     }
 
-    if((in & IN_STICK_LEFT)) {
+    if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
         dx = -1;
         pacman.currentoffset = LEFTC1;
-    } else if((in & IN_STICK_RIGHT)) {
+    } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
         dx = 1;
         pacman.currentoffset = RIGHTC1;
     }
-}
-
-uint8_t allow_next(uint8_t next) {
-    return next == 9 || next == 16 || next == 11;
 }
 
 void iteratecolours(void * func) {
@@ -300,6 +301,8 @@ void check_fsm() {
     if(col > 31) {
         col = 31;
     }
+    // row and col must be set at this point
+    check_keys();
 
     current = map[row][col];
     if(current != 16) {
@@ -309,6 +312,7 @@ void check_fsm() {
 
     if(current == 11) {
         pill_eaten = 125;
+        iteratecolours(initialiseColourBlue);
     }
 
     if(allow_next(map[row + dy][col + dx])) {
@@ -328,10 +332,12 @@ void check_fsm() {
     if(pill_eaten != NONE) {
         --pill_eaten;
         // initialiseColourWhite, initialiseColourBlue
-        if((frame & 1) == 0) {
-            iteratecolours(initialiseColourBlue);
-        } else {
-            iteratecolours(initialiseColourWhite);
+        if(pill_eaten < 40) {
+            if((frame & 1) == 0) {
+                iteratecolours(initialiseColourBlue);
+            } else {
+                iteratecolours(initialiseColourWhite);
+            }
         }
     }
 
@@ -362,23 +368,23 @@ int main()
 
   ghost_red.sp = add_ghost_red_sprite();
   ghost_red.offset = 1;
-  ghost_red.y = 21;
-  ghost_red.x = 21;
+  ghost_red.y = 15;
+  ghost_red.x = 14;
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
   ghost_cyan.offset = 33;
-  ghost_cyan.y = 21;
-  ghost_cyan.x = 25;
+  ghost_cyan.y = 15;
+  ghost_cyan.x = 12;
 
   ghost_magenta.sp = add_ghost_magenta_sprite();
   ghost_magenta.offset = 161;
-  ghost_magenta.y = 21;
-  ghost_magenta.x = 2;
+  ghost_magenta.y = 15;
+  ghost_magenta.x = 16;
 
   ghost_yellow.sp = add_ghost_yellow_sprite();
   ghost_yellow.offset = 129;
-  ghost_yellow.y = 21;
-  ghost_yellow.x = 6;
+  ghost_yellow.y = 15;
+  ghost_yellow.x = 18;
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -417,9 +423,7 @@ int main()
 
   while(1) {
      in = (joy)(&joy_keys);
-     check_keys();
      check_fsm();
-     // todo FSM checks
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
      sp1_MoveSprAbs(ghost_red.sp, &full_screen, (void*) ghost_red.offset, ghost_red.y, ghost_red.x, 0, 0);
