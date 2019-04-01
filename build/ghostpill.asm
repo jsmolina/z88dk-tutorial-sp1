@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _ghostpill
+._ghostpill
+defb @00000000, @00000000, @00000111, @00000111, @00000111, @00000000, @00000000, @00000000

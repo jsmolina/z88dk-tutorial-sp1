@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _vertiright
+._vertiright
+defb @00000100, @00000100, @00000100, @00000100, @00000100, @00000100, @00000100, @00000100
