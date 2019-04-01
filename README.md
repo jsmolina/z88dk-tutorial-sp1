@@ -189,7 +189,31 @@ But there are solutions:
 * IM2 https://chuntey.wordpress.com/2013/10/02/how-to-write-zx-spectrum-games-chapter-17/
 * Floating bus http://sky.relative-path.com/zx/floating_bus.html
 
-.... TODO
+IM2 is an interruption that will run 50 times per second. It is useful for controlling a bit the speed of the game.
+
+Setting it is tricky:
+```
+   im2_init((void *)0xd000); // CRT_ORG = 25124
+   memset((void *)0xd000, 0xd1, 257);
+
+   z80_bpoke(0xd1d1, 0xc3);
+   z80_wpoke(0xd1d2, (unsigned int)isr);
+
+   intrinsic_ei();
+```
+Then you define the function this way in z88dk:
+```
+IM2_DEFINE_ISR(isr)
+{
+   // update the clock
+   ++tick;
+
+}
+```
+Now you have a tick that is incremented 50 times per second... so slowing it down is just controlling that number
+as any other timer.
+See this change and a lot of other things in this pull request: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/4
+But basically take a look on int.c and the call to wait(); in main loop.
 
 # Tiles
 Use this pull request to see what was needed to change to use tiles: https://github.com/jsmolina/z88dk-tutorial-sp1/pull/3
