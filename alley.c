@@ -92,6 +92,7 @@ struct sprite {
     uint8_t y;
     uint8_t offset;
     uint8_t currentoffset;
+    uint8_t active;
 };
 
 uint8_t pill_eaten = NONE;
@@ -100,6 +101,9 @@ struct sprite ghost_red;
 struct sprite ghost_cyan;
 struct sprite ghost_magenta;
 struct sprite ghost_yellow;
+
+struct sprite * ghosts[5] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow, &ghost_magenta};
+
 JOYFUNC joy;
 // redefine this array to allow define keys
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
@@ -292,6 +296,49 @@ void iteratecolours(void * func) {
     sp1_IterateSprChar(ghost_yellow.sp, func);
 }
 
+
+void cyan_eaten() {
+    ghost_cyan.y = 15;
+    ghost_cyan.x = 12;
+    ghost_cyan.active = 0;
+}
+
+void red_eaten() {
+    ghost_red.y = 15;
+    ghost_red.x = 14;
+    ghost_red.active = 0;
+}
+
+void magenta_eaten() {
+    ghost_magenta.y = 15;
+    ghost_magenta.x = 16;
+    ghost_magenta.active = 0;
+}
+
+void yellow_eaten() {
+    ghost_yellow.y = 15;
+    ghost_yellow.x = 18;
+    ghost_yellow.active = 0;
+}
+
+void goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
+    if(for_who->x != x) {
+        if(for_who->x > x) {
+            --for_who->x;
+        } else if(for_who->x < x) {
+            ++for_who->x;
+        }
+    } else {
+        if(for_who->y > y) {
+            --for_who->y;
+        } else if(for_who->y < y) {
+            ++for_who->y;
+        } else {
+            for_who->active = 1;
+        }
+    }
+}
+
 void check_fsm() {
     row = pacman.y + 1;
     if(row > 22) {
@@ -350,7 +397,6 @@ void check_fsm() {
     }
 }
 
-
 int main()
 {
   setup_int();
@@ -368,23 +414,19 @@ int main()
 
   ghost_red.sp = add_ghost_red_sprite();
   ghost_red.offset = 1;
-  ghost_red.y = 15;
-  ghost_red.x = 14;
+  red_eaten();
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
   ghost_cyan.offset = 33;
-  ghost_cyan.y = 15;
-  ghost_cyan.x = 12;
+  cyan_eaten();
 
   ghost_magenta.sp = add_ghost_magenta_sprite();
   ghost_magenta.offset = 161;
-  ghost_magenta.y = 15;
-  ghost_magenta.x = 16;
+  magenta_eaten();
 
   ghost_yellow.sp = add_ghost_yellow_sprite();
   ghost_yellow.offset = 129;
-  ghost_yellow.y = 15;
-  ghost_yellow.x = 18;
+  yellow_eaten();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -430,6 +472,10 @@ int main()
      sp1_MoveSprAbs(ghost_cyan.sp, &full_screen, (void*) ghost_cyan.offset, ghost_cyan.y, ghost_cyan.x, 0, 0);
      sp1_MoveSprAbs(ghost_magenta.sp, &full_screen, (void*) ghost_magenta.offset, ghost_magenta.y, ghost_magenta.x, 0, 0);
      sp1_MoveSprAbs(ghost_yellow.sp, &full_screen, (void*) ghost_yellow.offset, ghost_yellow.y, ghost_yellow.x, 0, 0);
+
+
+     goto_xy(ghosts[frame], 15, 12);
+
      wait();
 
      sp1_UpdateNow();
