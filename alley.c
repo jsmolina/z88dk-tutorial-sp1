@@ -18,7 +18,17 @@
 #define UP2 161
 #define DOWN1 193
 #define DOWN2 225
+#define DECIDED_DIRECTION 1
+#define UNDECIDED 0
 
+#define GHOST_RED 1
+#define GHOST_RED2 33
+#define GHOST_CYAN 65
+#define GHOST_CYAN2 97
+#define GHOST_YELLOW 129
+#define GHOST_YELLOW2 161
+#define GHOST_MAGENTA 193
+#define GHOST_MAGENTA2 225
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -48,8 +58,8 @@ extern uint8_t topvertileft[];
 extern uint8_t topvertiright[];
 extern uint8_t ghostpill[];
 
-int8_t dx = 0;
-int8_t dy = 0;
+uint8_t random_value;
+
 // or using UDG from just code
 uint8_t map[25][32] = {
 {3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,14,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4},
@@ -92,6 +102,9 @@ struct sprite {
     uint8_t y;
     uint8_t offset;
     uint8_t currentoffset;
+    uint8_t active;
+    int8_t dx;
+    int8_t dy;
 };
 
 uint8_t pill_eaten = NONE;
@@ -100,6 +113,9 @@ struct sprite ghost_red;
 struct sprite ghost_cyan;
 struct sprite ghost_magenta;
 struct sprite ghost_yellow;
+
+struct sprite * ghosts[5] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow, &ghost_magenta};
+
 JOYFUNC joy;
 // redefine this array to allow define keys
 udk_t joy_keys = { IN_KEY_SCANCODE_SPACE, IN_KEY_SCANCODE_p, IN_KEY_SCANCODE_o, IN_KEY_SCANCODE_a, IN_KEY_SCANCODE_q };
@@ -255,6 +271,7 @@ void all_lives_lost() {
           break;
       }
   }
+  srand(tick);
 
 }
 
@@ -268,19 +285,19 @@ void check_keys()
     // checks keys
     // allow jump in directions
     if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
-        dy = -1;
+        pacman.dy = -1;
         pacman.currentoffset = UP1;
 
     } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
-        dy = 1;
+        pacman.dy = 1;
         pacman.currentoffset = DOWN1;
     }
 
     if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
-        dx = -1;
+        pacman.dx = -1;
         pacman.currentoffset = LEFTC1;
     } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
-        dx = 1;
+        pacman.dx = 1;
         pacman.currentoffset = RIGHTC1;
     }
 }
@@ -291,6 +308,50 @@ void iteratecolours(void * func) {
     sp1_IterateSprChar(ghost_magenta.sp, func);
     sp1_IterateSprChar(ghost_yellow.sp, func);
 }
+
+void set_eaten(struct sprite * for_who, uint8_t y, uint8_t x) {
+    for_who->x = x;
+    for_who->y = y;
+    for_who->active = 0;
+    for_who->dx = 0;
+    for_who->dy = 0;
+}
+
+void cyan_eaten() {
+    set_eaten(&ghost_cyan, 15, 12);
+}
+
+void red_eaten() {
+    set_eaten(&ghost_red, 15, 14);
+}
+
+void magenta_eaten() {
+    set_eaten(&ghost_magenta, 15, 16);
+}
+
+void yellow_eaten() {
+    set_eaten(&ghost_yellow, 15, 18);
+}
+
+uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
+    if(for_who->x != x) {
+        if(for_who->x > x) {
+            --for_who->x;
+        } else if(for_who->x < x) {
+            ++for_who->x;
+        }
+    } else {
+        if(for_who->y > y) {
+            --for_who->y;
+        } else if(for_who->y < y) {
+            ++for_who->y;
+        } else {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 
 void check_fsm() {
     row = pacman.y + 1;
@@ -315,18 +376,20 @@ void check_fsm() {
         iteratecolours(initialiseColourBlue);
     }
 
-    if(allow_next(map[row + dy][col + dx])) {
-        pacman.y += dy;
-        pacman.x += dx;
-    } else if (dy != 0) {
-        dy = 0;
-        dx = 0;
+    if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
+        pacman.y += pacman.dy;
+        pacman.x += pacman.dx;
+    } else if (pacman.dy != 0) {
+        pacman.dy = 0;
+        pacman.dx = 0;
     }
 
-    if((frame & 1) == 0) {
+    if((tick & 1) == 0) {
         pacman.offset = pacman.currentoffset + 32;
+        ghosts[frame]->offset = ghosts[frame]->currentoffset + 32;
     } else {
         pacman.offset = pacman.currentoffset;
+        ghosts[frame]->offset = ghosts[frame]->currentoffset;
     }
 
     if(pill_eaten != NONE) {
@@ -348,8 +411,54 @@ void check_fsm() {
         sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
     }
-}
 
+    if(ghosts[frame]->active == 0) {
+        ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
+    } else {
+        if(ghosts[frame]->dx == 0) {
+            if(random_value < 40) {
+                ghosts[frame]->dx = 1;
+            } else if(random_value < 80) {
+                ghosts[frame]->dx = -1;
+            } else {
+                 if(pacman.x > ghosts[frame]->x && pill_eaten == NONE) {
+                    ghosts[frame]->dx = +1;
+                 } else {
+                    ghosts[frame]->dx = -1;
+                 }
+            }
+        }
+
+        if(ghosts[frame]->dy == 0) {
+            if(random_value < 30) {
+                ghosts[frame]->dy = -1;
+            } else if(random_value < 70) {
+                ghosts[frame]->dy = 1;
+            } else {
+               if(pacman.y > ghosts[frame]->y && pill_eaten == NONE) {
+                    ghosts[frame]->dy = +1;
+               } else {
+                    ghosts[frame]->dy = -1;
+               }
+            }
+        }
+
+        row = ghosts[frame]->y + 1;
+        if(allow_next(map[row][ghosts[frame]->x + ghosts[frame]->dx]) ) {
+            ghosts[frame]->x += ghosts[frame]->dx;
+        } else {
+            ghosts[frame]->dx = 0;
+        }
+        if(allow_next(map[row + ghosts[frame]->dy][ghosts[frame]->x])) {
+            ghosts[frame]->y += ghosts[frame]->dy;
+        } else {
+            ghosts[frame]->dy = 0;
+        }
+
+    }
+
+
+}
 
 int main()
 {
@@ -367,24 +476,24 @@ int main()
   pacman.x = 14;
 
   ghost_red.sp = add_ghost_red_sprite();
-  ghost_red.offset = 1;
-  ghost_red.y = 15;
-  ghost_red.x = 14;
+  ghost_red.offset = GHOST_RED;
+  ghost_red.currentoffset = GHOST_RED;
+  red_eaten();
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
-  ghost_cyan.offset = 33;
-  ghost_cyan.y = 15;
-  ghost_cyan.x = 12;
+  ghost_cyan.offset = GHOST_CYAN;
+  ghost_cyan.currentoffset = GHOST_CYAN;
+  cyan_eaten();
 
   ghost_magenta.sp = add_ghost_magenta_sprite();
-  ghost_magenta.offset = 161;
-  ghost_magenta.y = 15;
-  ghost_magenta.x = 16;
+  ghost_magenta.offset = GHOST_MAGENTA;
+  ghost_magenta.currentoffset = GHOST_CYAN;
+  magenta_eaten();
 
   ghost_yellow.sp = add_ghost_yellow_sprite();
-  ghost_yellow.offset = 129;
-  ghost_yellow.y = 15;
-  ghost_yellow.x = 18;
+  ghost_yellow.offset = GHOST_YELLOW;
+  ghost_yellow.currentoffset = GHOST_CYAN;
+  yellow_eaten();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -423,6 +532,7 @@ int main()
 
   while(1) {
      in = (joy)(&joy_keys);
+     random_value = rand();
      check_fsm();
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
@@ -430,6 +540,7 @@ int main()
      sp1_MoveSprAbs(ghost_cyan.sp, &full_screen, (void*) ghost_cyan.offset, ghost_cyan.y, ghost_cyan.x, 0, 0);
      sp1_MoveSprAbs(ghost_magenta.sp, &full_screen, (void*) ghost_magenta.offset, ghost_magenta.y, ghost_magenta.x, 0, 0);
      sp1_MoveSprAbs(ghost_yellow.sp, &full_screen, (void*) ghost_yellow.offset, ghost_yellow.y, ghost_yellow.x, 0, 0);
+
      wait();
 
      sp1_UpdateNow();
