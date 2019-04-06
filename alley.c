@@ -457,6 +457,15 @@ void check_fsm() {
 
     }
 
+    // side change
+    if(pacman.y == 12) {
+        if(pacman.x < 2) {
+            pacman.x = 29;
+        } else if(pacman.x > 28) {
+            pacman.x = 1;
+        }
+    }
+
 
 }
 
