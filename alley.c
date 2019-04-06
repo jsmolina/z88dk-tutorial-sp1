@@ -58,11 +58,7 @@ extern uint8_t topvertileft[];
 extern uint8_t topvertiright[];
 extern uint8_t ghostpill[];
 
-int8_t dx = 0;
-int8_t dy = 0;
-
-int8_t dx2 = 0;
-int8_t dy2 = 0;
+uint8_t random_value;
 
 // or using UDG from just code
 uint8_t map[25][32] = {
@@ -107,7 +103,8 @@ struct sprite {
     uint8_t offset;
     uint8_t currentoffset;
     uint8_t active;
-    uint8_t target;
+    int8_t dx;
+    int8_t dy;
 };
 
 uint8_t pill_eaten = NONE;
@@ -287,19 +284,19 @@ void check_keys()
     // checks keys
     // allow jump in directions
     if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
-        dy = -1;
+        pacman.dy = -1;
         pacman.currentoffset = UP1;
 
     } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
-        dy = 1;
+        pacman.dy = 1;
         pacman.currentoffset = DOWN1;
     }
 
     if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
-        dx = -1;
+        pacman.dx = -1;
         pacman.currentoffset = LEFTC1;
     } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
-        dx = 1;
+        pacman.dx = 1;
         pacman.currentoffset = RIGHTC1;
     }
 }
@@ -311,33 +308,28 @@ void iteratecolours(void * func) {
     sp1_IterateSprChar(ghost_yellow.sp, func);
 }
 
+void set_eaten(struct sprite * for_who, uint8_t y, uint8_t x) {
+    for_who->x = x;
+    for_who->y = y;
+    for_who->active = 0;
+    for_who->dx = 0;
+    for_who->dy = 0;
+}
 
 void cyan_eaten() {
-    ghost_cyan.y = 15;
-    ghost_cyan.x = 12;
-    ghost_cyan.active = 0;
-    ghost_cyan.target = UNDECIDED;
+    set_eaten(&ghost_cyan, 15, 12);
 }
 
 void red_eaten() {
-    ghost_red.y = 15;
-    ghost_red.x = 14;
-    ghost_red.active = 0;
-    ghost_red.target = UNDECIDED;
+    set_eaten(&ghost_red, 15, 14);
 }
 
 void magenta_eaten() {
-    ghost_magenta.y = 15;
-    ghost_magenta.x = 16;
-    ghost_magenta.active = 0;
-    ghost_magenta.target = UNDECIDED;
+    set_eaten(&ghost_magenta, 15, 16);
 }
 
 void yellow_eaten() {
-    ghost_yellow.y = 15;
-    ghost_yellow.x = 18;
-    ghost_yellow.active = 0;
-    ghost_yellow.target = UNDECIDED;
+    set_eaten(&ghost_yellow, 15, 18);
 }
 
 uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
@@ -383,12 +375,12 @@ void check_fsm() {
         iteratecolours(initialiseColourBlue);
     }
 
-    if(allow_next(map[row + dy][col + dx])) {
-        pacman.y += dy;
-        pacman.x += dx;
-    } else if (dy != 0) {
-        dy = 0;
-        dx = 0;
+    if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
+        pacman.y += pacman.dy;
+        pacman.x += pacman.dx;
+    } else if (pacman.dy != 0) {
+        pacman.dy = 0;
+        pacman.dx = 0;
     }
 
     if((tick & 1) == 0) {
@@ -420,8 +412,35 @@ void check_fsm() {
     }
 
     if(ghosts[frame]->active == 0) {
-        //ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
+        ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
     } else {
+        if(ghosts[frame]->dx == 0) {
+            if(random_value > 125) {
+                ghosts[frame]->dx = 1;
+            } else {
+                ghosts[frame]->dx = -1;
+            }
+        }
+
+        if(ghosts[frame]->dy == 0) {
+            if(random_value > 90) {
+                ghosts[frame]->dy = -1;
+            } else {
+                ghosts[frame]->dy = 1;
+            }
+        }
+
+        row = ghosts[frame]->y + 1;
+        if(allow_next(map[row][ghosts[frame]->x + ghosts[frame]->dx]) ) {
+            ghosts[frame]->x += ghosts[frame]->dx;
+        } else {
+            ghosts[frame]->dx = 0;
+        }
+        if(allow_next(map[row + ghosts[frame]->dy][ghosts[frame]->x])) {
+            ghosts[frame]->y += ghosts[frame]->dy;
+        } else {
+            ghosts[frame]->dy = 0;
+        }
 
     }
 
@@ -500,6 +519,7 @@ int main()
 
   while(1) {
      in = (joy)(&joy_keys);
+     random_value = rand();
      check_fsm();
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
