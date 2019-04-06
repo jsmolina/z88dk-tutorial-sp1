@@ -271,6 +271,7 @@ void all_lives_lost() {
           break;
       }
   }
+  srand(tick);
 
 }
 
@@ -415,18 +416,30 @@ void check_fsm() {
         ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
     } else {
         if(ghosts[frame]->dx == 0) {
-            if(random_value > 125) {
+            if(random_value < 40) {
                 ghosts[frame]->dx = 1;
-            } else {
+            } else if(random_value < 80) {
                 ghosts[frame]->dx = -1;
+            } else {
+                 if(pacman.x > ghosts[frame]->x && pill_eaten == NONE) {
+                    ghosts[frame]->dx = +1;
+                 } else {
+                    ghosts[frame]->dx = -1;
+                 }
             }
         }
 
         if(ghosts[frame]->dy == 0) {
-            if(random_value > 90) {
+            if(random_value < 30) {
                 ghosts[frame]->dy = -1;
-            } else {
+            } else if(random_value < 70) {
                 ghosts[frame]->dy = 1;
+            } else {
+               if(pacman.y > ghosts[frame]->y && pill_eaten == NONE) {
+                    ghosts[frame]->dy = +1;
+               } else {
+                    ghosts[frame]->dy = -1;
+               }
             }
         }
 
