@@ -365,10 +365,21 @@ void check_fsm() {
     // row and col must be set at this point
     check_keys();
 
+    // pill eat
     current = map[row][col];
     if(current != 16) {
         map[row][col] = 16;
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
+    }
+
+
+    // side change
+    if(pacman.y == 12) {
+        if(pacman.x < 2 && pacman.dx == -1) {
+            pacman.x = 29;
+        } else if(pacman.x > 28 && pacman.dx == 1) {
+            pacman.x = 1;
+        }
     }
 
     if(current == 11) {
@@ -457,14 +468,6 @@ void check_fsm() {
 
     }
 
-    // side change
-    if(pacman.y == 12) {
-        if(pacman.x < 2) {
-            pacman.x = 29;
-        } else if(pacman.x > 28) {
-            pacman.x = 1;
-        }
-    }
 
 
 }
