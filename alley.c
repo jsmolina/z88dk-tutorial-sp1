@@ -35,6 +35,9 @@
 #define DIR_LEFT 3
 #define DIR_RIGHT 4
 #define NONE 250
+#define JAILED 20
+#define JAILED_EXITING 1
+#define ACTIVE 0
 
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
@@ -105,6 +108,8 @@ struct sprite {
     uint8_t active;
     int8_t dx;
     int8_t dy;
+    uint8_t default_x;
+    uint8_t default_y;
     void *default_color;
 };
 
@@ -130,7 +135,8 @@ uint8_t frame = 0;
 
 uint8_t lives;
 uint8_t repaint_lives = 1;
-
+uint8_t idx;
+struct sprite * collided_sprite;
 
 void show_intro() {
     /**
@@ -314,30 +320,15 @@ void iteratecolours(void * func) {
     sp1_IterateSprChar(ghost_yellow.sp, func);
 }
 
-void set_eaten(struct sprite * for_who, uint8_t y, uint8_t x) {
-    for_who->x = x;
-    for_who->y = y;
-    for_who->active = 0;
+void set_eaten(struct sprite * for_who) {
+    for_who->x = for_who->default_x;
+    for_who->y = for_who->default_y;
+    for_who->active = JAILED;
     for_who->dx = 0;
     for_who->dy = 0;
     sp1_IterateSprChar(for_who->sp, for_who->default_color);
 }
 
-void cyan_eaten() {
-    set_eaten(&ghost_cyan, 15, 12);
-}
-
-void red_eaten() {
-    set_eaten(&ghost_red, 15, 14);
-}
-
-void magenta_eaten() {
-    set_eaten(&ghost_magenta, 15, 16);
-}
-
-void yellow_eaten() {
-    set_eaten(&ghost_yellow, 15, 18);
-}
 
 uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
     if(for_who->x != x) {
@@ -352,12 +343,21 @@ uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
         } else if(for_who->y < y) {
             ++for_who->y;
         } else {
-            return 1;
+            return ACTIVE;
         }
     }
-    return 0;
+    return JAILED_EXITING;
 }
 
+struct sprite * has_collision() {
+    for(idx = 0; idx != 5; ++idx) {
+        if(pacman.x == ghosts[idx]->x && pacman.y == ghosts[idx]->y) {
+            // eat
+            return ghosts[idx];
+        }
+    }
+    return NULL;
+}
 
 void check_fsm() {
     row = pacman.y + 1;
@@ -428,9 +428,10 @@ void check_fsm() {
             }
         }
 
-        if(pacman.x == ghosts[frame]->x && pacman.y == ghosts[frame]->y) {
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
             // eat
-            set_eaten(ghosts[frame], 15, 12);
+            set_eaten(collided_sprite);
         }
     }
 
@@ -442,10 +443,10 @@ void check_fsm() {
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
     }
 
-    if(ghosts[frame]->active == 0) {
+    if(ghosts[frame]->active == JAILED_EXITING) {
         ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
-    } else {
-        if(ghosts[frame]->dx == 0) {
+    } else if(ghosts[frame]->active == ACTIVE) {
+        if(ghosts[frame]->dx == ACTIVE) {
             if(random_value < 40) {
                 ghosts[frame]->dx = 1;
             } else if(random_value < 80) {
@@ -485,6 +486,8 @@ void check_fsm() {
             ghosts[frame]->dy = 0;
         }
 
+    } else {
+        --ghosts[frame]->active;
     }
 
 }
@@ -508,25 +511,33 @@ int main()
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
   ghost_red.default_color =  initialiseColourGhostRed;
-  red_eaten();
+  ghost_red.default_y = 15;
+  ghost_red.default_x = 14;
+  set_eaten(&ghost_red);
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
   ghost_cyan.offset = GHOST_CYAN;
   ghost_cyan.currentoffset = GHOST_CYAN;
   ghost_cyan.default_color =  initialiseColourGhostCyan;
-  cyan_eaten();
+  ghost_cyan.default_y = 15;
+  ghost_cyan.default_x = 12;
+  set_eaten(&ghost_cyan);
 
   ghost_magenta.sp = add_ghost_magenta_sprite();
   ghost_magenta.offset = GHOST_MAGENTA;
   ghost_magenta.currentoffset = GHOST_CYAN;
   ghost_magenta.default_color =  initialiseColourGhostMagenta;
-  magenta_eaten();
+  ghost_magenta.default_y = 15;
+  ghost_magenta.default_x = 16;
+  set_eaten(&ghost_magenta);
 
   ghost_yellow.sp = add_ghost_yellow_sprite();
   ghost_yellow.offset = GHOST_YELLOW;
   ghost_yellow.currentoffset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
-  yellow_eaten();
+  ghost_yellow.default_y = 15;
+  ghost_yellow.default_x = 18;
+  set_eaten(&ghost_yellow);
 
   // painting an UDG is just assigning it to any char
   // row, col, char
