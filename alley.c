@@ -138,28 +138,6 @@ uint8_t repaint_lives = 1;
 uint8_t idx;
 struct sprite * collided_sprite;
 
-void show_intro() {
-    /**
-    Switches to BANK 6 and then copies a SCREEN$ file directly to memory
-    */
-    __asm
-    extern enable_bank_n
-   di
-   ld a,0x80
-   ld i,a                      ; point I at uncontended bank
-
-   ld a,6
-   call enable_bank_n          ; bank 6 in top 16k, stack moved
-    __endasm;
-    memcpy(16384, cartoon0, 6900);
-    __asm
-    extern restore_bank_0
-    call restore_bank_0
-    ei
-    __endasm;
-
-}
-
 static void initialiseColourBlue(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
@@ -265,26 +243,7 @@ struct sp1_ss * add_ghost_yellow_sprite() {
   return sp;
 }
 
-void all_lives_lost() {
-  uint16_t has_kempston = in_stick_kempston();
 
-   while(1) {
-      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
-          joy = (JOYFUNC)in_stick_keyboard;
-          break;
-      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
-          joy = (JOYFUNC)in_stick_kempston;
-          break;
-      }
-  }
-  srand(tick);
-  lives = 5;
-}
-
-void loose_a_live() {
-    --repaint_lives;
-    --lives;
-}
 
 uint8_t allow_next(uint8_t next) {
     return next == 9 || next == 16 || next == 11;
@@ -443,6 +402,13 @@ void check_fsm() {
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
     }
 
+    if(pill_eaten == NONE) {
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
+            loose_a_live();
+        }
+    }
+
     if(ghosts[frame]->active == JAILED_EXITING) {
         ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
     } else if(ghosts[frame]->active == ACTIVE) {
@@ -492,22 +458,10 @@ void check_fsm() {
 
 }
 
-int main()
-{
-  setup_int();
-  // show paging capabilities.
-  //show_intro();
-  all_lives_lost();
-
-  // now sp1
-  pacman.sp = add_sprite();
-  pacman.offset = 1;
-  pacman.currentoffset = 1;
-
+void all_lives_lost() {
   pacman.y = 21;
   pacman.x = 14;
 
-  ghost_red.sp = add_ghost_red_sprite();
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
   ghost_red.default_color =  initialiseColourGhostRed;
@@ -515,7 +469,6 @@ int main()
   ghost_red.default_x = 14;
   set_eaten(&ghost_red);
 
-  ghost_cyan.sp = add_ghost_cyan_sprite();
   ghost_cyan.offset = GHOST_CYAN;
   ghost_cyan.currentoffset = GHOST_CYAN;
   ghost_cyan.default_color =  initialiseColourGhostCyan;
@@ -523,7 +476,6 @@ int main()
   ghost_cyan.default_x = 12;
   set_eaten(&ghost_cyan);
 
-  ghost_magenta.sp = add_ghost_magenta_sprite();
   ghost_magenta.offset = GHOST_MAGENTA;
   ghost_magenta.currentoffset = GHOST_CYAN;
   ghost_magenta.default_color =  initialiseColourGhostMagenta;
@@ -531,13 +483,59 @@ int main()
   ghost_magenta.default_x = 16;
   set_eaten(&ghost_magenta);
 
-  ghost_yellow.sp = add_ghost_yellow_sprite();
   ghost_yellow.offset = GHOST_YELLOW;
   ghost_yellow.currentoffset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
   ghost_yellow.default_y = 15;
   ghost_yellow.default_x = 18;
   set_eaten(&ghost_yellow);
+
+  uint16_t has_kempston = in_stick_kempston();
+
+   while(1) {
+      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
+          joy = (JOYFUNC)in_stick_keyboard;
+          break;
+      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
+          joy = (JOYFUNC)in_stick_kempston;
+          break;
+      }
+  }
+  srand(tick);
+  lives = 5;
+}
+
+
+
+void loose_a_live() {
+    repaint_lives = 1;
+    --lives;
+    set_eaten(&ghost_magenta);
+    set_eaten(&ghost_red);
+    set_eaten(&ghost_cyan);
+    set_eaten(&ghost_yellow);
+    if(lives == 0) {
+        all_lives_lost();
+    }
+
+    pacman.y = 21;
+    pacman.x = 14;
+}
+
+int main()
+{
+  setup_int();
+  // show paging capabilities.
+
+  // now sp1
+  pacman.sp = add_sprite();
+  pacman.offset = 1;
+  pacman.currentoffset = 1;
+
+  ghost_red.sp = add_ghost_red_sprite();
+  ghost_cyan.sp = add_ghost_cyan_sprite();
+  ghost_magenta.sp = add_ghost_magenta_sprite();
+  ghost_yellow.sp = add_ghost_yellow_sprite();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -578,7 +576,10 @@ int main()
   sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
   sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
 
+  all_lives_lost();
+
   sp1_UpdateNow();
+
 
   while(1) {
      in = (joy)(&joy_keys);
@@ -595,6 +596,7 @@ int main()
 
      if(repaint_lives) {
         sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
+        repaint_lives = 0;
      }
 
      sp1_UpdateNow();
