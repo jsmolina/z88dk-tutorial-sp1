@@ -14,7 +14,7 @@ compile:
 	png2udg ./build/ghostpill.png -a > ./build/ghostpill.asm
 	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	png2sp1sprite ./build/red_ghost.png -b -i red_ghost -f 16 -s rodata_user > ./build/red_ghost.asm
-	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
+	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o alley
 	ls *.bin
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	appmake +zx -b alley_CODE.bin --org 24500 --noloader --blockname code -o code.tap
