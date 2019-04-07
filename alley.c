@@ -105,6 +105,7 @@ struct sprite {
     uint8_t active;
     int8_t dx;
     int8_t dy;
+    void *default_color;
 };
 
 uint8_t pill_eaten = NONE;
@@ -233,7 +234,6 @@ struct sp1_ss * add_ghost_sprite() {
 struct sp1_ss * add_ghost_red_sprite() {
   struct sp1_ss * sp = add_ghost_sprite();
 
-  sp1_IterateSprChar(sp, initialiseColourGhostRed);
 
   return sp;
 }
@@ -241,7 +241,6 @@ struct sp1_ss * add_ghost_red_sprite() {
 struct sp1_ss * add_ghost_cyan_sprite() {
   struct sp1_ss * sp = add_ghost_sprite();
 
-  sp1_IterateSprChar(sp, initialiseColourGhostCyan);
 
   return sp;
 }
@@ -249,7 +248,6 @@ struct sp1_ss * add_ghost_cyan_sprite() {
 struct sp1_ss * add_ghost_magenta_sprite() {
   struct sp1_ss * sp = add_ghost_sprite();
 
-  sp1_IterateSprChar(sp, initialiseColourGhostMagenta);
 
   return sp;
 }
@@ -257,7 +255,6 @@ struct sp1_ss * add_ghost_magenta_sprite() {
 struct sp1_ss * add_ghost_yellow_sprite() {
   struct sp1_ss * sp = add_ghost_sprite();
 
-  sp1_IterateSprChar(sp, initialiseColourYellow);
 
   return sp;
 }
@@ -323,6 +320,7 @@ void set_eaten(struct sprite * for_who, uint8_t y, uint8_t x) {
     for_who->active = 0;
     for_who->dx = 0;
     for_who->dy = 0;
+    sp1_IterateSprChar(for_who->sp, for_who->default_color);
 }
 
 void cyan_eaten() {
@@ -429,6 +427,11 @@ void check_fsm() {
                 iteratecolours(initialiseColourWhite);
             }
         }
+
+        if(pacman.x == ghosts[frame]->x && pacman.y == ghosts[frame]->y) {
+            // eat
+            set_eaten(ghosts[frame], 15, 12);
+        }
     }
 
     if(pill_eaten == 0) {
@@ -504,21 +507,25 @@ int main()
   ghost_red.sp = add_ghost_red_sprite();
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
+  ghost_red.default_color =  initialiseColourGhostRed;
   red_eaten();
 
   ghost_cyan.sp = add_ghost_cyan_sprite();
   ghost_cyan.offset = GHOST_CYAN;
   ghost_cyan.currentoffset = GHOST_CYAN;
+  ghost_cyan.default_color =  initialiseColourGhostCyan;
   cyan_eaten();
 
   ghost_magenta.sp = add_ghost_magenta_sprite();
   ghost_magenta.offset = GHOST_MAGENTA;
   ghost_magenta.currentoffset = GHOST_CYAN;
+  ghost_magenta.default_color =  initialiseColourGhostMagenta;
   magenta_eaten();
 
   ghost_yellow.sp = add_ghost_yellow_sprite();
   ghost_yellow.offset = GHOST_YELLOW;
-  ghost_yellow.currentoffset = GHOST_CYAN;
+  ghost_yellow.currentoffset = GHOST_YELLOW;
+  ghost_yellow.default_color =  initialiseColourYellow;
   yellow_eaten();
 
   // painting an UDG is just assigning it to any char
