@@ -127,6 +127,9 @@ uint8_t current;
 
 uint8_t frame = 0;
 
+uint8_t lives;
+uint8_t repaint_lives = 1;
+
 
 void show_intro() {
     /**
@@ -272,7 +275,12 @@ void all_lives_lost() {
       }
   }
   srand(tick);
+  lives = 5;
+}
 
+void loose_a_live() {
+    --repaint_lives;
+    --lives;
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -382,6 +390,14 @@ void check_fsm() {
         }
     }
 
+    if(ghosts[frame]->y == 12) {
+        if(ghosts[frame]->x < 2 && ghosts[frame]->dx == -1) {
+            ghosts[frame]->x = 29;
+        } else if(ghosts[frame]->x > 28 && ghosts[frame]->dx == 1) {
+            ghosts[frame]->x = 1;
+        }
+    }
+
     if(current == 11) {
         pill_eaten = 125;
         iteratecolours(initialiseColourBlue);
@@ -468,8 +484,6 @@ void check_fsm() {
 
     }
 
-
-
 }
 
 int main()
@@ -540,6 +554,12 @@ int main()
 
   }
 
+  sp1_PrintAt(0, 1, INK_RED | PAPER_BLACK, 'L');
+  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'I');
+  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'V');
+  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'E');
+  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'S');
+
   sp1_UpdateNow();
 
   while(1) {
@@ -554,6 +574,10 @@ int main()
      sp1_MoveSprAbs(ghost_yellow.sp, &full_screen, (void*) ghost_yellow.offset, ghost_yellow.y, ghost_yellow.x, 0, 0);
 
      wait();
+
+     if(repaint_lives) {
+        sp1_PrintAtInv(0, 7, INK_CYAN | PAPER_BLACK, 48 + lives);
+     }
 
      sp1_UpdateNow();
 
