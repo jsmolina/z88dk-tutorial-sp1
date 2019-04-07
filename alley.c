@@ -554,11 +554,11 @@ int main()
 
   }
 
-  sp1_PrintAt(0, 1, INK_RED | PAPER_BLACK, 'L');
-  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'I');
-  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'V');
-  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'E');
-  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'S');
+  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'L');
+  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'I');
+  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
+  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
+  sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
 
   sp1_UpdateNow();
 
@@ -576,7 +576,7 @@ int main()
      wait();
 
      if(repaint_lives) {
-        sp1_PrintAtInv(0, 7, INK_CYAN | PAPER_BLACK, 48 + lives);
+        sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
      }
 
      sp1_UpdateNow();
