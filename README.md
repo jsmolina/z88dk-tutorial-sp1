@@ -385,3 +385,7 @@ Instead of storing your screens full size you can compress them.  zx7 is include
 #include <compress/zx7.h>
 
 dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even though c is normally dst,src
+
+## Text Printing
+`Zx_print_int _chr _char _str`
+`Zx_print_ink _border for colours
