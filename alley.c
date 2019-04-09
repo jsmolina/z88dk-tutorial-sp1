@@ -39,6 +39,9 @@
 #define JAILED_EXITING 1
 #define ACTIVE 0
 
+#define AYCTRL 65533
+#define AYDATA 49149
+
 // screen rectangle
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 // it comes from built binaries:
@@ -97,6 +100,21 @@ uint8_t correspondence[] = {' ',       'a',     'b',        'c',     'd',     'e
 uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_WHITE, INK_BLUE, INK_MAGENTA, INK_BLUE,   INK_BLUE,     INK_BLUE};
 
 extern uint8_t cartoon0[];
+
+void port_out(int port, int value)
+{
+	__asm
+	ld hl,2
+	add hl,sp
+	ld a, (hl)
+	inc hl
+	inc hl
+	ld c, (hl)
+	inc hl
+	ld b, (hl)
+	out (c),a
+	__endasm;
+}
 
 // globals are supposed to generate less code and with 128k of memory it's important
 struct sprite {
@@ -318,6 +336,78 @@ struct sprite * has_collision() {
     return NULL;
 }
 
+void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    // it moves a bit too much, what happens?
+    if(ghosts[idx]->dx == 0) {
+        if(random_value < t1) {
+            ghosts[idx]->dx = 1;
+            zx_border(INK_CYAN);
+        } else if(random_value < t2) {
+            ghosts[idx]->dx = -1;
+            zx_border(INK_MAGENTA);
+        } else {
+             if(pacman.x > ghosts[idx]->x && pill_eaten == NONE) {
+                ghosts[idx]->dx = +1;
+                zx_border(INK_GREEN);
+             } else {
+               ghosts[idx]->dx = -1;
+               zx_border(INK_BLUE);
+             }
+        }
+    }
+
+    if(ghosts[idx]->dy == 0) {
+        if(random_value < t3) {
+            ghosts[idx]->dy = -1;
+        } else if(random_value < t4) {
+            ghosts[idx]->dy = 1;
+        } else {
+           if(pacman.y > ghosts[idx]->y && pill_eaten == NONE) {
+                ghosts[idx]->dy = +1;
+           } else {
+                ghosts[idx]->dy = -1;
+           }
+        }
+    }
+
+    row = ghosts[idx]->y + 1;
+    if(allow_next(map[row][ghosts[idx]->x + ghosts[idx]->dx]) ) {
+        ghosts[idx]->x += ghosts[idx]->dx;
+    } else {
+        ghosts[idx]->dx = 0;
+    }
+    if(allow_next(map[row + ghosts[idx]->dy][ghosts[idx]->x])) {
+        ghosts[idx]->y += ghosts[idx]->dy;
+    } else {
+        ghosts[idx]->dy = 0;
+    }
+}
+
+void move_ghosts() {
+    // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
+    // Rojo: Intenta estár detrás de Pac-Man en modo "Acoso"
+    idx = 0;
+    random_value = rand();
+    move_one_ghost(40, 80, 30, 70);
+/*
+    // se queda un poco de tiempo en la "Casa de los Fantasmas" en el primer nivel
+    // hasta que Pac-Man captura al menos 30 pildoras
+    idx = 1;
+    random_value = rand();
+    move_one_ghost(90, 120, 80, 100);
+
+    // Pink: su comportamiento  siempre es llegar hacia el punto donde Pac-Man se está moviendo.
+    idx = 2;
+    random_value = rand();
+    move_one_ghost(3, 5, 3, 6);
+
+    //  podemos explicar mejor como "a su bola"
+    idx = 3;
+    random_value = rand();
+    move_one_ghost(125, 250, 130, 250);*/
+
+}
+
 void check_fsm() {
     row = pacman.y + 1;
     if(row > 22) {
@@ -412,46 +502,7 @@ void check_fsm() {
     if(ghosts[frame]->active == JAILED_EXITING) {
         ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
     } else if(ghosts[frame]->active == ACTIVE) {
-        if(ghosts[frame]->dx == ACTIVE) {
-            if(random_value < 40) {
-                ghosts[frame]->dx = 1;
-            } else if(random_value < 80) {
-                ghosts[frame]->dx = -1;
-            } else {
-                 if(pacman.x > ghosts[frame]->x && pill_eaten == NONE) {
-                    ghosts[frame]->dx = +1;
-                 } else {
-                    ghosts[frame]->dx = -1;
-                 }
-            }
-        }
-
-        if(ghosts[frame]->dy == 0) {
-            if(random_value < 30) {
-                ghosts[frame]->dy = -1;
-            } else if(random_value < 70) {
-                ghosts[frame]->dy = 1;
-            } else {
-               if(pacman.y > ghosts[frame]->y && pill_eaten == NONE) {
-                    ghosts[frame]->dy = +1;
-               } else {
-                    ghosts[frame]->dy = -1;
-               }
-            }
-        }
-
-        row = ghosts[frame]->y + 1;
-        if(allow_next(map[row][ghosts[frame]->x + ghosts[frame]->dx]) ) {
-            ghosts[frame]->x += ghosts[frame]->dx;
-        } else {
-            ghosts[frame]->dx = 0;
-        }
-        if(allow_next(map[row + ghosts[frame]->dy][ghosts[frame]->x])) {
-            ghosts[frame]->y += ghosts[frame]->dy;
-        } else {
-            ghosts[frame]->dy = 0;
-        }
-
+        move_ghosts();
     } else {
         --ghosts[frame]->active;
     }
@@ -583,14 +634,12 @@ int main()
 
   while(1) {
      in = (joy)(&joy_keys);
-     random_value = rand();
      check_fsm();
      // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
      sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
-     sp1_MoveSprAbs(ghost_red.sp, &full_screen, (void*) ghost_red.offset, ghost_red.y, ghost_red.x, 0, 0);
-     sp1_MoveSprAbs(ghost_cyan.sp, &full_screen, (void*) ghost_cyan.offset, ghost_cyan.y, ghost_cyan.x, 0, 0);
-     sp1_MoveSprAbs(ghost_magenta.sp, &full_screen, (void*) ghost_magenta.offset, ghost_magenta.y, ghost_magenta.x, 0, 0);
-     sp1_MoveSprAbs(ghost_yellow.sp, &full_screen, (void*) ghost_yellow.offset, ghost_yellow.y, ghost_yellow.x, 0, 0);
+     for(idx = 0; idx != 4; ++idx) {
+          sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
+     }
 
      wait();
 
