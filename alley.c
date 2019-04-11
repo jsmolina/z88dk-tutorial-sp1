@@ -101,21 +101,6 @@ uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, IN
 
 extern uint8_t cartoon0[];
 
-void port_out(int port, int value)
-{
-	__asm
-	ld hl,2
-	add hl,sp
-	ld a, (hl)
-	inc hl
-	inc hl
-	ld c, (hl)
-	inc hl
-	ld b, (hl)
-	out (c),a
-	__endasm;
-}
-
 // globals are supposed to generate less code and with 128k of memory it's important
 struct sprite {
     struct sp1_ss* sp;
@@ -148,6 +133,7 @@ uint16_t in;
 uint8_t row;
 uint8_t col;
 uint8_t current;
+uint16_t points = 0;
 
 uint8_t frame = 0;
 
@@ -336,59 +322,37 @@ struct sprite * has_collision() {
     return NULL;
 }
 
-void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
-    // it moves a bit too much, what happens?
-    if(ghosts[idx]->dx == 0) {
-        if(random_value < t1) {
-            ghosts[idx]->dx = 1;
-            zx_border(INK_CYAN);
-        } else if(random_value < t2) {
-            ghosts[idx]->dx = -1;
-            zx_border(INK_MAGENTA);
-        } else {
-             if(pacman.x > ghosts[idx]->x && pill_eaten == NONE) {
-                ghosts[idx]->dx = +1;
-                zx_border(INK_GREEN);
-             } else {
-               ghosts[idx]->dx = -1;
-               zx_border(INK_BLUE);
-             }
-        }
-    }
-
-    if(ghosts[idx]->dy == 0) {
-        if(random_value < t3) {
-            ghosts[idx]->dy = -1;
-        } else if(random_value < t4) {
-            ghosts[idx]->dy = 1;
-        } else {
-           if(pacman.y > ghosts[idx]->y && pill_eaten == NONE) {
-                ghosts[idx]->dy = +1;
-           } else {
-                ghosts[idx]->dy = -1;
-           }
-        }
-    }
-
+uint8_t allow_next_ghost_pos(int8_t dy, int8_t dx) {
     row = ghosts[idx]->y + 1;
-    if(allow_next(map[row][ghosts[idx]->x + ghosts[idx]->dx]) ) {
-        ghosts[idx]->x += ghosts[idx]->dx;
-    } else {
-        ghosts[idx]->dx = 0;
+    return allow_next(map[row + dy][ghosts[idx]->x + dx]);
+}
+
+void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    // todo take decision and pill eaten
+    random_value = rand();
+    row = ghosts[idx]->y + 1;
+    if((ghosts[idx]->dx == 0 && ghosts[idx]->dy == 0) ||
+        !allow_next(map[row + ghosts[idx]->dy][ghosts[idx]->x + ghosts[idx]->dx])) {
+
+        if(random_value < t1 && ghosts[idx]->dx == 1) {
+            ghosts[idx]->dx = -1;
+        } else if(random_value < t2 && ghosts[idx]->dx == -1) {
+            ghosts[idx]->dx = 1;
+        }
     }
-    if(allow_next(map[row + ghosts[idx]->dy][ghosts[idx]->x])) {
-        ghosts[idx]->y += ghosts[idx]->dy;
-    } else {
-        ghosts[idx]->dy = 0;
-    }
+    ghosts[idx]->x += ghosts[idx]->dx;
+    ghosts[idx]->y += ghosts[idx]->dy;
+
 }
 
 void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
-    // Rojo: Intenta estár detrás de Pac-Man en modo "Acoso"
-    idx = 0;
-    random_value = rand();
-    move_one_ghost(40, 80, 30, 70);
+    switch(idx) {
+        case 0: // Rojo: Intenta estár detrás de Pac-Man en modo "Acoso"
+            move_one_ghost(40, 80, 30, 70);
+            break;
+    }
+
 /*
     // se queda un poco de tiempo en la "Casa de los Fantasmas" en el primer nivel
     // hasta que Pac-Man captura al menos 30 pildoras
@@ -425,6 +389,9 @@ void check_fsm() {
     if(current != 16) {
         map[row][col] = 16;
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
+        if(pacman.x != 21 && pacman.y != 14) {
+            points += 10; // ten points each
+        }
     }
 
 
@@ -446,6 +413,7 @@ void check_fsm() {
     }
 
     if(current == 11) {
+        points += 50;  // energizers - are worth 50 points each
         pill_eaten = 125;
         iteratecolours(initialiseColourBlue);
     }
@@ -498,18 +466,22 @@ void check_fsm() {
             loose_a_live();
         }
     }
-
-    if(ghosts[frame]->active == JAILED_EXITING) {
-        ghosts[frame]->active = goto_xy(ghosts[frame], 15, 12);
-    } else if(ghosts[frame]->active == ACTIVE) {
-        move_ghosts();
-    } else {
-        --ghosts[frame]->active;
+    if (points > 0) {
+        for(idx = 0; idx != 4; ++idx) {
+            if(ghosts[idx]->active == JAILED_EXITING) {
+                ghosts[idx]->active = goto_xy(ghosts[idx], 15, 12);
+            } else if(ghosts[idx]->active == ACTIVE) {
+                move_ghosts();
+            } else {
+                --ghosts[idx]->active;
+            }
+        }
     }
 
 }
 
 void all_lives_lost() {
+  points = 0;
   pacman.y = 21;
   pacman.x = 14;
 
