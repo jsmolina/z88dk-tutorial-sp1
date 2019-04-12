@@ -250,7 +250,7 @@ struct sp1_ss * add_ghost_yellow_sprite() {
 
 
 uint8_t allow_next(uint8_t next) {
-    return next == 9 || next == 16 || next == 11;
+    return next == 9 || next == 16 || next == 11 || next == 18;
 }
 
 
