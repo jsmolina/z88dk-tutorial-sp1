@@ -574,6 +574,7 @@ void all_lives_lost() {
   points = 0;
   pacman.y = 21;
   pacman.x = 14;
+  repaint_lives = 1;
 
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
