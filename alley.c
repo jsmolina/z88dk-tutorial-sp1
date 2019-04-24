@@ -9,6 +9,7 @@
 #include <intrinsic.h>
 #include <input.h>
 #include "int.h"
+#include "game_zx.h"
 
 #define RIGHTC1 1
 #define RIGHTC2 33
@@ -141,6 +142,12 @@ uint8_t lives = 0;
 uint8_t repaint_lives = 1;
 uint8_t idx;
 struct sprite * collided_sprite;
+
+// for printing
+unsigned char screen_paper;
+unsigned char screen_ink;
+unsigned char tbuffer[7];
+
 
 static void initialiseColourBlue(unsigned int count, struct sp1_cs *c)
 {
@@ -569,6 +576,7 @@ void check_fsm() {
 
 void all_lives_lost() {
   zx_border(INK_BLACK);
+  zx_print_ink(INK_WHITE);
   sp1_Invalidate(&full_screen);
   lives = 5;
   points = 0;
@@ -712,7 +720,8 @@ int main()
 
 
      if(repaint_lives) {
-        sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
+        zx_print_int(0, 8, lives);
+        //sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
         repaint_lives = 0;
      }
 

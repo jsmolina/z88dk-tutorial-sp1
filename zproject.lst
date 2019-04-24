@@ -1,3 +1,5 @@
 @build/binaries.lst
+font
+game_zx
 alley.c
 int.c
