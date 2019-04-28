@@ -1,3 +1,9 @@
 @build/binaries.lst
-alley.c
+font
+game_zx.c
+logic.c
+sprites.c
+globals.c
 int.c
+msnampac.c
+asm_strlen
