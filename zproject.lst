@@ -1,5 +1,8 @@
 @build/binaries.lst
 font
-game_zx
+game_zx.c
+logic.c
+sprites.c
+globals.c
 alley.c
 int.c
