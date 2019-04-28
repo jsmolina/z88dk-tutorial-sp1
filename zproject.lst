@@ -4,5 +4,6 @@ game_zx.c
 logic.c
 sprites.c
 globals.c
-alley.c
 int.c
+msnampac.c
+asm_strlen

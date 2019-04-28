@@ -68,6 +68,13 @@ void all_lives_lost() {
 
   }
 
+  sp1_PrintAtInv(0, 19, INK_RED | PAPER_BLACK, 'P');
+  sp1_PrintAtInv(0, 20, INK_RED | PAPER_BLACK, 'O');
+  sp1_PrintAtInv(0, 21, INK_RED | PAPER_BLACK, 'I');
+  sp1_PrintAtInv(0, 22, INK_RED | PAPER_BLACK, 'N');
+  sp1_PrintAtInv(0, 23, INK_RED | PAPER_BLACK, 'T');
+  sp1_PrintAtInv(0, 24, INK_RED | PAPER_BLACK, 'S');
+
   sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'L');
   sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'I');
   sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
@@ -157,6 +164,7 @@ int main()
 
      if(frame == 5) {
         frame = 0;
+        print_points();
      }
 
      wait();

@@ -4,6 +4,6 @@
 #include <z80.h>
 #include <arch/zx.h>
 
-extern void print_points(uint16_t number);
+extern void print_points();
 
 #endif
