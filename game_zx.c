@@ -9,6 +9,47 @@ extern uint8_t strlen(char * chars);
 // temporary buffer to print points (e.g. 65535)
 char * chars = "0000000\0";
 
+void make_sound() {
+    __asm
+      .ayctrl  EQU     65533
+        .aydata  EQU     49149
+
+                ld      d,0             ; select the mixer register
+                ld      e,10            ; enable channel A only
+                call    outer           ; send it to PSG
+                ld      d,1             ; select the mixer register
+                ld      e,10            ; enable channel A only
+                call    outer           ; send it to PSG
+                ld      d,6             ; select the mixer register
+                ld      e,29            ; enable channel A only
+                call    outer           ; send it to PSG
+
+                ld      d,7             ; select the mixer register
+                ld      e,216            ; enable channel A only
+                call    outer           ; send it to PSG
+
+                ld      d,8             ; select the mixer register
+                ld      e,31            ; enable channel A only
+                call    outer           ; send it to PSG
+
+                ld      d,11             ; select the mixer register
+                ld      e,4            ; enable channel A only
+                call    outer           ; send it to PSG
+
+                ld      d,12             ; select the mixer register
+                ld      e,4            ; enable channel A only
+                call    outer           ; send it to PSG
+
+                ret
+
+        .outer   ld      bc,ayctrl       ; select control port
+                out     (c),d           ; send specified value
+                ld      bc,aydata       ; select data port
+                out     (c),e           ; send specified value
+                ret
+
+    __endasm;
+}
 
 // reversed order digit extract
 void print_points() {
@@ -25,4 +66,6 @@ void print_points() {
         sp1_PrintAtInv(0, 26 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
         ++idx;
     }
+    make_sound();
+
 }

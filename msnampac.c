@@ -140,6 +140,7 @@ int main()
   zx_border(INK_WHITE);
 
   while(1) {
+
      if(lives == 0) {
         all_lives_lost();
      }

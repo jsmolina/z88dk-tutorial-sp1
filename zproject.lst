@@ -1,5 +1,4 @@
 @build/binaries.lst
-font
 game_zx.c
 logic.c
 sprites.c
