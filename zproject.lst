@@ -1,4 +1,5 @@
 @build/binaries.lst
+afxplay
 game_zx.c
 logic.c
 sprites.c

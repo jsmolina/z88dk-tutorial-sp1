@@ -33,6 +33,24 @@ void loose_a_live() {
     set_eaten(&ghost_cyan);
     set_eaten(&ghost_yellow);
 
+    for(idx = 0; idx != 4; ++idx) {
+          sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
+    }
+
+    // prota dead animation, first hide the sprite from the screen
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
+    // 1, 33, 65, 97
+    for(col = 1; col != 129; col += 32) {
+        sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, pacman.x, 0, 0);
+        sp1_UpdateNow();
+        for(idx = 0; idx != 5; ++idx) {
+            wait();
+        }
+    }
+
+    sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, 32, 0, 0);
+    sp1_UpdateNow();
+
     pacman.y = 21;
     pacman.x = 14;
     pacman.dx = 0;
@@ -82,7 +100,7 @@ uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
 
 struct sprite * has_collision() {
     for(idx = 0; idx != 4; ++idx) {
-        if(pacman.x == ghosts[idx]->x && pacman.y == ghosts[idx]->y) {
+        if(abs(pacman.x - ghosts[idx]->x) < 1 && abs(pacman.y - ghosts[idx]->y) < 1) {
             // eat
             return ghosts[idx];
         }

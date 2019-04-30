@@ -5,40 +5,40 @@
 #include "globals.h"
 
 extern uint8_t strlen(char * chars);
-
+// https://arda.kisafilm.org/fish/ay8910-2.htm
 // temporary buffer to print points (e.g. 65535)
 char * chars = "0000000\0";
 
 void make_sound() {
     __asm
       .ayctrl  EQU     65533
-        .aydata  EQU     49149
+      .aydata  EQU     49149
 
-                ld      d,0             ; select the mixer register
-                ld      e,10            ; enable channel A only
+                ld      d,0             ; select the register
+                ld      e,10            ; set value
                 call    outer           ; send it to PSG
-                ld      d,1             ; select the mixer register
-                ld      e,10            ; enable channel A only
-                call    outer           ; send it to PSG
-                ld      d,6             ; select the mixer register
-                ld      e,29            ; enable channel A only
-                call    outer           ; send it to PSG
+                ld      d,1             ;
+                ld      e,10            ;
+                call    outer           ;
+                ld      d,6             ;
+                ld      e,29            ;
+                call    outer           ;
 
-                ld      d,7             ; select the mixer register
-                ld      e,216            ; enable channel A only
-                call    outer           ; send it to PSG
+                ld      d,7             ;
+                ld      e,216            ;
+                call    outer           ;
 
-                ld      d,8             ; select the mixer register
-                ld      e,31            ; enable channel A only
-                call    outer           ; send it to PSG
+                ld      d,8             ;
+                ld      e,31            ;
+                call    outer           ;
 
-                ld      d,11             ; select the mixer register
-                ld      e,4            ; enable channel A only
-                call    outer           ; send it to PSG
+                ld      d,11             ;
+                ld      e,4            ;
+                call    outer           ;
 
-                ld      d,12             ; select the mixer register
-                ld      e,4            ; enable channel A only
-                call    outer           ; send it to PSG
+                ld      d,12             ;
+                ld      e,4            ;
+                call    outer           ;
 
                 ret
 
