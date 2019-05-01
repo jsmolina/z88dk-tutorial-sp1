@@ -1,0 +1,296 @@
+SECTION rodata_user
+
+; Original: 64, 24 (=8 x 3 chars)
+; Blocks: 2
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+PUBLIC _sprite_protar_dead1
+._sprite_protar_dead1
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000110
+ defb @00111111
+ defb @01111111
+ defb @01111111
+ defb @11111111
+ defb @11110000
+ defb @11110000
+ defb @11100000
+ defb @11000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead1_f2
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00000011
+ defb @00001111
+ defb @00000010
+ defb @00000010
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead1_f3
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000001
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead1_f4
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001000
+ defb @00000101
+ defb @00000101
+ defb @01100000
+ defb @00010000
+ defb @00000000
+ defb @11100000
+ defb @00000000
+ defb @00010000
+ defb @00100101
+ defb @01000101
+ defb @00001000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+PUBLIC _sprite_protar_dead2
+._sprite_protar_dead2
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @11100000
+ defb @11100000
+ defb @11110000
+ defb @11110000
+ defb @11110000
+ defb @01110000
+ defb @00111000
+ defb @00001000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead2_f2
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @11000000
+ defb @11000000
+ defb @11000000
+ defb @11100000
+ defb @11100000
+ defb @11100000
+ defb @11100000
+ defb @11100000
+ defb @11111000
+ defb @00100000
+ defb @00100000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead2_f3
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @10000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar_dead2_f4
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @00010000
+ defb @00010000
+ defb @00100000
+ defb @00000000
+ defb @00011000
+ defb @00000000
+ defb @00100000
+ defb @00010000
+ defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+

@@ -9,6 +9,7 @@
 
 
 extern struct sp1_ss * add_sprite();
+extern struct sp1_ss * add_dead_prota_sprite();
 extern struct sp1_ss * add_ghost_sprite();
 extern struct sp1_ss * add_ghost_red_sprite();
 extern struct sp1_ss * add_ghost_cyan_sprite();
