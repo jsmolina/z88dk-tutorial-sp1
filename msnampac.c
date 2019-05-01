@@ -126,6 +126,7 @@ int main()
   sp1_TileEntry('n', topvertiright);
 
   pacman.sp = add_sprite();
+  pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
 

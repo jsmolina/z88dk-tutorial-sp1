@@ -33,6 +33,7 @@
 #define DIR_LEFT 3
 #define DIR_RIGHT 4
 #define NONE 250
+#define ELUDE 25
 #define JAILED 20
 #define JAILED_EXITING 1
 #define ACTIVE 0
@@ -46,6 +47,7 @@ extern struct sp1_Rect full_screen;
 // globals are supposed to generate less code and with 128k of memory it's important
 struct sprite {
     struct sp1_ss* sp;
+    struct sp1_ss* alt;
     uint8_t x;
     uint8_t y;
     uint8_t offset;
@@ -61,6 +63,10 @@ struct sprite {
 // it comes from built binaries:
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
+
+extern uint8_t sprite_protar_dead1[];
+extern uint8_t sprite_protar_dead2[];
+
 // red ghost
 extern uint8_t red_ghost1[];
 extern uint8_t red_ghost2[];

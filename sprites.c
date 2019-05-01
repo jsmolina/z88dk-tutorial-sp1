@@ -67,6 +67,18 @@ struct sp1_ss * add_sprite() {
   return sp;
 }
 
+struct sp1_ss * add_dead_prota_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar_dead1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_protar_dead2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourYellow);
+
+  return sp;
+}
+
 struct sp1_ss * add_ghost_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);

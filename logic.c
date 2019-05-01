@@ -26,12 +26,31 @@ void check_keys()
 
 
 void loose_a_live() {
+    uint8_t i, j;
     repaint_lives = 1;
     --lives;
     set_eaten(&ghost_magenta);
     set_eaten(&ghost_red);
     set_eaten(&ghost_cyan);
     set_eaten(&ghost_yellow);
+
+    for(i = 0; i != 4; ++i) {
+        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
+    }
+
+    // prota dead animation, first hide the sprite from the screen
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
+    // 1, 33, 65, 97
+    for(j = 1; j < 129; j += 32) {
+        sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) j, pacman.y, pacman.x, 0, 0);
+        sp1_UpdateNow();
+        for(i = 0; i != 5; ++i) {
+            wait();
+        }
+    }
+
+    sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, 32, 0, 0);
+    sp1_UpdateNow();
 
     pacman.y = 21;
     pacman.x = 14;
@@ -41,14 +60,6 @@ void loose_a_live() {
 
 uint8_t allow_next(uint8_t next) {
     return next == 9 || next == 16 || next == 11 || next == 18;
-}
-
-
-void iteratecolours(void * func) {
-    sp1_IterateSprChar(ghost_red.sp, func);
-    sp1_IterateSprChar(ghost_cyan.sp, func);
-    sp1_IterateSprChar(ghost_magenta.sp, func);
-    sp1_IterateSprChar(ghost_yellow.sp, func);
 }
 
 void set_eaten(struct sprite * for_who) {
@@ -81,11 +92,9 @@ uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
 }
 
 struct sprite * has_collision() {
-    for(idx = 0; idx != 4; ++idx) {
-        if(pacman.x == ghosts[idx]->x && pacman.y == ghosts[idx]->y) {
-            // eat
-            return ghosts[idx];
-        }
+    if(abs(pacman.x - ghosts[idx]->x) < 2 && abs(pacman.y - ghosts[idx]->y) < 2) {
+        // eat
+        return ghosts[idx];
     }
     return NULL;
 }
@@ -155,7 +164,14 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         then_go(DIR_UP);
         return;
     }
-    if(pill_eaten != NONE) {
+    if(ghosts[idx]->active == ELUDE) {
+        // check collission before move
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
+            // eat
+            set_eaten(collided_sprite);
+        }
+
         if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
         } else if(pacman.x > ghosts[idx]->x && could_go(DIR_LEFT)) {
@@ -168,7 +184,23 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             ghosts[idx]->x += ghosts[idx]->dx;
             ghosts[idx]->y += ghosts[idx]->dy;
         }
-    } else {
+
+        // make ghost flicker if elude mode and almost finishing pill eaten
+        if(pill_eaten < 40 && ghosts[idx]->active == ACTIVE) {
+            if((frame & 1) == 0) {
+                sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
+            } else {
+                sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourWhite);
+            }
+        }
+
+    } else { // ACTIVE
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
+            loose_a_live();
+            return;
+        }
+
         if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
         } else if(pacman.x < ghosts[idx]->x && could_go(DIR_LEFT)) {
@@ -182,6 +214,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             ghosts[idx]->y += ghosts[idx]->dy;
         }
     }
+
 }
 
 void move_ghosts() {
@@ -232,11 +265,14 @@ void check_fsm() {
         } else if(current == 11) {
             points += 50;  // energizers - are worth 50 points each
             pill_eaten = 125;
-            iteratecolours(initialiseColourBlue);
+            for(idx = 0; idx != 4; ++idx) {
+                if(ghosts[idx]->active == ACTIVE) {
+                    ghosts[idx]->active = ELUDE;
+                    sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
+                }
+            }
         }
     }
-
-
 
     // side change
     if(pacman.y == 12) {
@@ -278,43 +314,28 @@ void check_fsm() {
             if(points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, 12);
             }
-        } else if(ghosts[idx]->active == ACTIVE) {
+        } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
             move_ghosts();
-        } else {
+        } else if(ghosts[idx]->active <= JAILED) {
             --ghosts[idx]->active;
         }
     }
     // while has eaten pill
     if(pill_eaten != NONE) {
         --pill_eaten;
-        // initialiseColourWhite, initialiseColourBlue
-        if(pill_eaten < 40) {
-            if((frame & 1) == 0) {
-                iteratecolours(initialiseColourBlue);
-            } else {
-                iteratecolours(initialiseColourWhite);
-            }
-        }
 
-        collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
-            // eat
-            set_eaten(collided_sprite);
-        }
     }
 
     if(pill_eaten == 0) {
         pill_eaten = NONE;
+        for(idx = 0; idx != 4; ++idx) {
+            if(ghosts[idx]->active == ELUDE) {
+                ghosts[idx]->active = ACTIVE;
+            }
+        }
         sp1_IterateSprChar(ghost_red.sp, initialiseColourGhostRed);
         sp1_IterateSprChar(ghost_cyan.sp, initialiseColourGhostCyan);
         sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
-    }
-
-    if(pill_eaten == NONE) {
-        collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
-            loose_a_live();
-        }
     }
 }
