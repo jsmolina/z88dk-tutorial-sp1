@@ -33,6 +33,7 @@
 #define DIR_LEFT 3
 #define DIR_RIGHT 4
 #define NONE 250
+#define ELUDE 25
 #define JAILED 20
 #define JAILED_EXITING 1
 #define ACTIVE 0
