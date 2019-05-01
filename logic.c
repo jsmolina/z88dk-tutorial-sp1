@@ -100,7 +100,7 @@ uint8_t goto_xy(struct sprite * for_who, uint8_t x, uint8_t y) {
 
 struct sprite * has_collision() {
     for(idx = 0; idx != 4; ++idx) {
-        if(abs(pacman.x - ghosts[idx]->x) < 1 && abs(pacman.y - ghosts[idx]->y) < 1) {
+        if(abs(pacman.x - ghosts[idx]->x) < 2 && abs(pacman.y - ghosts[idx]->y) < 2) {
             // eat
             return ghosts[idx];
         }

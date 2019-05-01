@@ -14,6 +14,7 @@
 #include "int.h"
 #include "game_zx.h"
 
+#include "ay/ayfx.h"
 
 
 
@@ -104,6 +105,7 @@ void all_lives_lost() {
 
 int main()
 {
+  FXINIT();
   setup_int();
   // show paging capabilities.
 

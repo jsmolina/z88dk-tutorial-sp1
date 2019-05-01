@@ -4,7 +4,7 @@
 #include <string.h>
 #include <z80.h>
 #include "int.h"
-
+#include "ay/ayfx.h"
 // timer
 
 unsigned char tick;
@@ -14,7 +14,7 @@ IM2_DEFINE_ISR(isr)
 {
    // update the clock
    ++tick;
-
+   mfx_playe();
 }
 
 void
