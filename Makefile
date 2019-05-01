@@ -17,8 +17,7 @@ compile:
 	png2sp1sprite ./build/red_ghost.png -b -i red_ghost -f 16 -s rodata_user > ./build/red_ghost.asm
 	ls *.bin
 
-	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=intro.scr -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o msnampac -create-app
-	#zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o alley
+	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=intro.scr -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o msnampac -create-app	#zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o alley
 	#appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
 	#appmake +zx -b alley_CODE.bin --org 24500 --noloader --blockname code -o code.tap
 	#appmake +zx -b alley_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
