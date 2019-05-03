@@ -1,10 +1,10 @@
 @build/binaries.lst
-@ay/ay.lst
 afxplay
 game_zx.c
 logic.c
 sprites.c
 globals.c
+int.asm
 int.c
 msnampac.c
 asm_strlen

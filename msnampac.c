@@ -14,9 +14,6 @@
 #include "int.h"
 #include "game_zx.h"
 
-#include "ay/ayfx.h"
-
-
 
 void all_lives_lost() {
   zx_border(INK_BLACK);
@@ -105,7 +102,7 @@ void all_lives_lost() {
 
 int main()
 {
-  FXINIT();
+  enable_wowow();
   setup_int();
   // show paging capabilities.
 

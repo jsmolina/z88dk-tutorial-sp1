@@ -36,7 +36,7 @@
 ; Values are 0 for channel A, 1 for channel B, 2 for channel C
 ; Default: 1
 
-defc mfxAyChannel = 2
+defc mfxAyChannel = 1
 
 
 

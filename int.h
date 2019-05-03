@@ -23,5 +23,6 @@ extern unsigned char tick;
 
 extern void wait(void);
 extern void setup_int(void);
+extern void enable_wowow(void);
 
 #endif
