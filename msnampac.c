@@ -102,9 +102,11 @@ void all_lives_lost() {
 
 int main()
 {
-  enable_wowow();
   setup_int();
-  // show paging capabilities.
+
+  intrinsic_di();
+  enable_wowow();
+  intrinsic_ei();
 
   // now sp1
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,

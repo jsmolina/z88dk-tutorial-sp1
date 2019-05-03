@@ -1,5 +1,3 @@
-INCLUDE "ay/mfx.asm"
-
 EXTERN _tick
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -7,6 +5,8 @@ EXTERN _tick
 ;;;;;;;;;;;;;;;;;;;;;;
 
 SECTION code_user
+
+INCLUDE "ay/mfx.asm"
 
 _ay_fx_wowow:
   BINARY "ay/fx/wowow.afx"
