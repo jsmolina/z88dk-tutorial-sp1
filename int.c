@@ -5,6 +5,9 @@
 
 unsigned char tick;
 unsigned char timer;
+unsigned char pick;
+
+
 
 void
 wait(void)

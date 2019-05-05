@@ -97,16 +97,14 @@ void all_lives_lost() {
       }
   }
   srand(tick);
+  pick = 1;
+
 }
 
 
 int main()
 {
   setup_int();
-
-  intrinsic_di();
-  enable_wowow();
-  intrinsic_ei();
 
   // now sp1
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,

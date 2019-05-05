@@ -20,9 +20,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 #define clock(x) (tick)
 
 extern unsigned char tick;
+extern unsigned char pick;
 
 extern void wait(void);
 extern void setup_int(void);
-extern void enable_wowow(void);
 
 #endif
