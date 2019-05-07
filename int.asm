@@ -1,5 +1,6 @@
 EXTERN _tick
 EXTERN _pick
+EXTERN _playBasic
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
@@ -90,7 +91,8 @@ isr_skip:
 
    dec a              ; else decrement
    ld (_pick),a
-   call  zap
+   ;call  zap
+    call _playBasic
 
 it_was_zero:
    ld a,0xd0
@@ -111,20 +113,3 @@ it_was_zero:
 
    ei
    reti
-
-zap:
-	ld d,16		;speaker = bit 4
-	ld e,0		;distance between speaker move counter
-	ld b, 2   	;overall length counter
-blp0:	ld a,d
-	and 248		;keep border colour the same
-	out (254),a	;move the speaker in or out depending on bit 4
-	cpl		;toggle, so we alternative between speaker in and out to make sound
-	ld d,a		;store it
-	ld c,e		;now a pause
-blp1:	dec c
-	jr nz,blp1
-	inc e		;change to inc e to reverse the sound, or remove to make it a note
-	djnz blp0	;repeat B=255 times
-	ret
-	;
