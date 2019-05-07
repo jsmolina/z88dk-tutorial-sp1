@@ -91,7 +91,7 @@ isr_skip:
 
    dec a              ; else decrement
    ld (_pick),a
-   ;call  zap
+   ; https://www.sounds-resource.com/nes/mspacmannamco/sound/5206/
     call _playBasic
 
 it_was_zero:
