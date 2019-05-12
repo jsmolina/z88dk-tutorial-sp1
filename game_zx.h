@@ -5,5 +5,6 @@
 #include <arch/zx.h>
 
 extern void print_points();
+extern void make_sound();
 
 #endif

@@ -15,8 +15,6 @@
 #include "game_zx.h"
 
 
-
-
 void all_lives_lost() {
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
@@ -99,13 +97,14 @@ void all_lives_lost() {
       }
   }
   srand(tick);
+  pick = 1;
+
 }
 
 
 int main()
 {
   setup_int();
-  // show paging capabilities.
 
   // now sp1
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -141,6 +140,7 @@ int main()
   zx_border(INK_WHITE);
 
   while(1) {
+
      if(lives == 0) {
         all_lives_lost();
      }

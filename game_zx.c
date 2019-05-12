@@ -5,10 +5,9 @@
 #include "globals.h"
 
 extern uint8_t strlen(char * chars);
-
+// https://arda.kisafilm.org/fish/ay8910-2.htm
 // temporary buffer to print points (e.g. 65535)
 char * chars = "0000000\0";
-
 
 // reversed order digit extract
 void print_points() {
@@ -25,4 +24,5 @@ void print_points() {
         sp1_PrintAtInv(0, 26 + idx + col, INK_CYAN | PAPER_BLACK, chars[idx]);
         ++idx;
     }
+
 }

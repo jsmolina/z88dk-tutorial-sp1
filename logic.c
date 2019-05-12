@@ -1,5 +1,5 @@
 #include "logic.h"
-
+#include "int.h"
 
 
 void check_keys()
@@ -261,6 +261,7 @@ void check_fsm() {
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
 
         if(current == 9) {
+            pick += 1;
             points += 10; // ten points each
         } else if(current == 11) {
             points += 50;  // energizers - are worth 50 points each
