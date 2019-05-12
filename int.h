@@ -14,7 +14,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 
 #ifndef WFRAMES
 // WFRAMES 3, are 50/3 -> 25 FPS.
-#define WFRAMES  3
+#define WFRAMES  2
 #endif
 
 #define clock(x) (tick)

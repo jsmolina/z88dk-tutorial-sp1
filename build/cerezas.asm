@@ -1,0 +1,86 @@
+SECTION rodata_user
+
+; Original: 16, 24 (=2 x 3 chars)
+; Blocks: 2
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+PUBLIC _cerezas1
+._cerezas1
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000001
+ defb @00000010
+ defb @00000100
+ defb @00001000
+ defb @00111100
+ defb @00111100
+ defb @11111111
+ defb @11111111
+ defb @11111101
+ defb @11111101
+ defb @00111100
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+PUBLIC _cerezas2
+._cerezas2
+
+ defb @00000000
+ defb @00000000
+ defb @00001110
+ defb @00111110
+ defb @00111110
+ defb @11010000
+ defb @00010000
+ defb @00100000
+ defb @00100000
+ defb @00100000
+ defb @11110000
+ defb @11111100
+ defb @11111100
+ defb @11111100
+ defb @11111100
+ defb @11110000
+ defb @11110000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+

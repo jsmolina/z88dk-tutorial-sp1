@@ -2,6 +2,19 @@
 #include "int.h"
 
 
+void show_cherry() {
+    cherry.y = 21;
+    cherry.x = 14;
+    cherry.showing = 100;
+}
+
+void hide_cherry() {
+    cherry.y = 21;
+    cherry.x = 32;
+    cherry.showing = 0;
+}
+
+
 void check_keys()
 {
     // checks keys
@@ -262,9 +275,10 @@ void check_fsm() {
 
         if(current == 9) {
             pick += 1;
-            points += 10; // ten points each
+            points += 5; // 5 points each dot
+            --remaining_points;
         } else if(current == 11) {
-            points += 50;  // energizers - are worth 50 points each
+            points += 20;  // energizers - are worth 20 points each
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
                 if(ghosts[idx]->active == ACTIVE) {
@@ -338,5 +352,23 @@ void check_fsm() {
         sp1_IterateSprChar(ghost_cyan.sp, initialiseColourGhostCyan);
         sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
+    }
+
+    if(cherry.showing > 0) {
+        if(pacman.x == cherry.x && pacman.y == cherry.y) {
+            hide_cherry();
+            points += 10;
+        }
+        --cherry.showing;
+        if(cherry.showing == 0) {
+            hide_cherry();
+        }
+    } else if(random_value == 100) {
+        show_cherry();
+    }
+
+    if(remaining_points == 0) {
+        // level finished!
+        zx_border(INK_CYAN);
     }
 }

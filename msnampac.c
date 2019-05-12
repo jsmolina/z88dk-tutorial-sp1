@@ -23,6 +23,7 @@ void all_lives_lost() {
   pacman.y = 21;
   pacman.x = 14;
   repaint_lives = 1;
+  remaining_points = 242;
 
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
@@ -129,10 +130,12 @@ int main()
   pacman.offset = 1;
   pacman.currentoffset = 1;
 
-  ghost_red.sp = add_ghost_red_sprite();
-  ghost_cyan.sp = add_ghost_cyan_sprite();
-  ghost_magenta.sp = add_ghost_magenta_sprite();
-  ghost_yellow.sp = add_ghost_yellow_sprite();
+  ghost_red.sp = add_ghost_sprite();
+  ghost_cyan.sp = add_ghost_sprite();
+  ghost_magenta.sp = add_ghost_sprite();
+  ghost_yellow.sp = add_ghost_sprite();
+  cherry.sp = add_cherry_sprite();
+  hide_cherry();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -152,7 +155,9 @@ int main()
      for(idx = 0; idx != 4; ++idx) {
           sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
      }
-
+     if(cherry.showing != 0) {
+         sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
+     }
 
      if(repaint_lives) {
         sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);

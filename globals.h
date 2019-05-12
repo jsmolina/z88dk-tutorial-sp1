@@ -60,12 +60,24 @@ struct sprite {
     void *default_color;
 };
 
+struct bonus {
+    struct sp1_ss* sp;
+    uint8_t x;
+    uint8_t y;
+    uint8_t offset;
+    uint8_t showing;
+};
+
 // it comes from built binaries:
 extern uint8_t sprite_protar1[];
 extern uint8_t sprite_protar2[];
 
 extern uint8_t sprite_protar_dead1[];
 extern uint8_t sprite_protar_dead2[];
+
+// extra
+extern uint8_t cerezas1[];
+extern uint8_t cerezas2[];
 
 // red ghost
 extern uint8_t red_ghost1[];
@@ -97,6 +109,7 @@ extern struct sprite ghost_cyan;
 extern struct sprite ghost_magenta;
 extern struct sprite ghost_yellow;
 extern struct sprite * ghosts[4];
+extern struct bonus cherry;
 
 extern JOYFUNC joy;
 extern udk_t joy_keys;
@@ -106,6 +119,7 @@ extern uint8_t row;
 extern uint8_t col;
 extern uint8_t current;
 extern uint16_t points;
+extern uint8_t remaining_points;
 
 extern uint8_t frame;
 

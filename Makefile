@@ -15,6 +15,7 @@ compile:
 	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	png2sp1sprite ./build/prota_dead.png -b -i sprite_protar_dead -f 16 -s rodata_user > ./build/prota_dead.asm
 	png2sp1sprite ./build/red_ghost.png -b -i red_ghost -f 16 -s rodata_user > ./build/red_ghost.asm
+	png2sp1sprite ./build/cerezas.png -b -i cerezas -f 16 -s rodata_user > ./build/cerezas.asm
 	ls *.bin
 
 	zcc +zx -v -startup=31 -DWFRAMES=3 -clib=sdcc_iy -Cz--screen=intro.scr -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o msnampac -create-app	#zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node10000 @zproject.lst -pragma-include:zpragma.inc -o alley

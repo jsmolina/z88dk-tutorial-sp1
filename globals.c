@@ -46,6 +46,7 @@ struct sprite ghost_red;
 struct sprite ghost_cyan;
 struct sprite ghost_magenta;
 struct sprite ghost_yellow;
+struct bonus cherry;
 
 struct sprite * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
 
@@ -58,6 +59,7 @@ uint8_t row;
 uint8_t col;
 uint8_t current;
 uint16_t points = 0;
+uint8_t remaining_points;
 
 uint8_t frame = 0;
 
