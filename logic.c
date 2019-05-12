@@ -365,6 +365,8 @@ void check_fsm() {
         }
     } else if(random_value == 100) {
         show_cherry();
+        zx_border(INK_RED);
+        zx_border(INK_BLACK);
     }
 
     if(remaining_points == 0) {
