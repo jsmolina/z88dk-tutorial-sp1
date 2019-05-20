@@ -65,5 +65,6 @@ uint8_t frame = 0;
 
 uint8_t lives = 0;
 uint8_t repaint_lives = 1;
+uint8_t speed = 5;
 uint8_t idx;
 struct sprite * collided_sprite;

@@ -120,7 +120,7 @@ extern uint8_t col;
 extern uint8_t current;
 extern uint16_t points;
 extern uint8_t remaining_points;
-
+extern uint8_t speed;
 extern uint8_t frame;
 
 extern uint8_t lives;

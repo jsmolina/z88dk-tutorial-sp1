@@ -1,5 +1,6 @@
 #include "logic.h"
 #include "int.h"
+#include <sound.h>
 
 
 void show_cherry() {
@@ -12,6 +13,7 @@ void hide_cherry() {
     cherry.y = 21;
     cherry.x = 32;
     cherry.showing = 0;
+    sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
 }
 
 
@@ -37,19 +39,28 @@ void check_keys()
     }
 }
 
+void all_ghosts_go_home() {
+    uint8_t i;
+    for(i = 0; i != 4; ++i) {
+        set_eaten(ghosts[i]);
+        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
+    }
+}
+
+void nampac_go_home() {
+    pacman.y = 21;
+    pacman.x = 14;
+    pacman.dx = 0;
+    pacman.dy = 0;
+}
+
 
 void loose_a_live() {
     uint8_t i, j;
+    hide_cherry();
     repaint_lives = 1;
     --lives;
-    set_eaten(&ghost_magenta);
-    set_eaten(&ghost_red);
-    set_eaten(&ghost_cyan);
-    set_eaten(&ghost_yellow);
-
-    for(i = 0; i != 4; ++i) {
-        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
-    }
+    all_ghosts_go_home();
 
     // prota dead animation, first hide the sprite from the screen
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
@@ -65,10 +76,7 @@ void loose_a_live() {
     sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, 32, 0, 0);
     sp1_UpdateNow();
 
-    pacman.y = 21;
-    pacman.x = 14;
-    pacman.dx = 0;
-    pacman.dy = 0;
+    nampac_go_home();
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -250,9 +258,18 @@ void move_ghosts() {
             // "a su bola"
             move_one_ghost(125, 255, 125, 255);
     }
-
-
 }
+
+
+void next_level() {
+    zx_border(INK_BLUE);
+    bit_beepfx_di_fastcall(BEEPFX_SCORE);
+    zx_border(INK_BLACK);
+    remaining_points = 238;
+    nampac_go_home();
+    all_ghosts_go_home();
+}
+
 
 void check_fsm() {
     random_value = rand();
@@ -363,7 +380,7 @@ void check_fsm() {
         if(cherry.showing == 0) {
             hide_cherry();
         }
-    } else if(random_value == 100) {
+    } else if(random_value == 200) {
         show_cherry();
         zx_border(INK_RED);
         zx_border(INK_BLACK);
@@ -371,6 +388,7 @@ void check_fsm() {
 
     if(remaining_points == 0) {
         // level finished!
-        zx_border(INK_CYAN);
+        next_level();
     }
 }
+
