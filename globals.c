@@ -41,7 +41,7 @@ uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, IN
 
 
 uint8_t pill_eaten = NONE;
-struct sprite pacman;
+struct spritep pacman;
 struct sprite ghost_red;
 struct sprite ghost_cyan;
 struct sprite ghost_magenta;

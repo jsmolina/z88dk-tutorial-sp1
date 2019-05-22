@@ -161,7 +161,7 @@ int main()
 
      frame += 1;
 
-     if(frame == 5) {
+     if(frame == 3) { // frame will go 0, 1, 2
         frame = 0;
         print_points();
      }

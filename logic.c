@@ -315,15 +315,6 @@ void check_fsm() {
         }
     }
 
-    if(ghosts[frame]->y == 12) {
-        if(ghosts[frame]->x < 2 && ghosts[frame]->dx == -1) {
-            ghosts[frame]->x = 29;
-        } else if(ghosts[frame]->x > 28 && ghosts[frame]->dx == 1) {
-            ghosts[frame]->x = 1;
-        }
-    }
-
-
     if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
         pacman.y += pacman.dy;
         pacman.x += pacman.dx;
@@ -331,11 +322,14 @@ void check_fsm() {
         pacman.dy = 0;
         pacman.dx = 0;
     }
-
-    if((tick & 1) == 0) {
+    // todo fix offset
+    if(frame == 0) {
+        pacman.offset = pacman.currentoffset;
+        ghosts[frame]->offset = ghosts[frame]->currentoffset;
+    } else if(frame == 1) {
         pacman.offset = pacman.currentoffset + 32;
         ghosts[frame]->offset = ghosts[frame]->currentoffset + 32;
-    } else {
+    } else if(frame == 2) {
         pacman.offset = pacman.currentoffset;
         ghosts[frame]->offset = ghosts[frame]->currentoffset;
     }
@@ -350,6 +344,14 @@ void check_fsm() {
             move_ghosts();
         } else if(ghosts[idx]->active <= JAILED) {
             --ghosts[idx]->active;
+        }
+        // side change
+        if(ghosts[idx]->y == 12) {
+            if(ghosts[idx]->x < 2 && ghosts[idx]->dx == -1) {
+                ghosts[idx]->x = 29;
+            } else if(ghosts[idx]->x > 28 && ghosts[idx]->dx == 1) {
+                ghosts[idx]->x = 1;
+            }
         }
     }
     // while has eaten pill

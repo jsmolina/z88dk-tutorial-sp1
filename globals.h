@@ -10,12 +10,17 @@
 
 #define RIGHTC1 1
 #define RIGHTC2 33
-#define LEFTC1 65
-#define LEFTC2 97
-#define UP1 129
-#define UP2 161
-#define DOWN1 193
-#define DOWN2 225
+#define RIGHTC3 65
+#define LEFTC1 97
+#define LEFTC2 129
+#define LEFTC3 161
+#define UP1 193
+#define UP2 225
+#define UP3 257
+#define DOWN1 289
+#define DOWN2 321
+#define DOWN3 353
+
 #define DECIDED_DIRECTION 1
 #define UNDECIDED 0
 
@@ -52,6 +57,21 @@ struct sprite {
     uint8_t y;
     uint8_t offset;
     uint8_t currentoffset;
+    uint8_t active;
+    int8_t dx;
+    int8_t dy;
+    uint8_t default_x;
+    uint8_t default_y;
+    void *default_color;
+};
+
+struct spritep {
+    struct sp1_ss* sp;
+    struct sp1_ss* alt;
+    uint8_t x;
+    uint8_t y;
+    uint16_t offset;
+    uint16_t currentoffset;
     uint8_t active;
     int8_t dx;
     int8_t dy;
@@ -103,7 +123,7 @@ extern uint8_t correspondence[];
 extern uint8_t colors[];
 
 extern uint8_t pill_eaten;
-extern struct sprite pacman;
+extern struct spritep pacman;
 extern struct sprite ghost_red;
 extern struct sprite ghost_cyan;
 extern struct sprite ghost_magenta;

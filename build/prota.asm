@@ -1,6 +1,6 @@
 SECTION rodata_user
 
-; Original: 128, 24 (=16 x 3 chars)
+; Original: 192, 24 (=24 x 3 chars)
 ; Blocks: 2
  defb @00000000
  defb @00000000
@@ -16,20 +16,20 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00001111
+ defb @00011100
+ defb @00011100
+ defb @01110011
+ defb @01101111
+ defb @00011110
+ defb @00011101
  defb @00111111
- defb @01111111
- defb @01111111
- defb @11111111
- defb @11111100
- defb @11111100
- defb @11111111
- defb @01111111
- defb @01111111
  defb @00111111
+ defb @00111111
+ defb @00110111
+ defb @00011111
+ defb @00011111
  defb @00001111
+ defb @00000011
  defb @00000000
  defb @00000000
  defb @00000000
@@ -51,20 +51,20 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
+ defb @00001110
+ defb @00001110
+ defb @00111001
+ defb @00110111
+ defb @00001110
+ defb @00001101
+ defb @00011111
+ defb @00011111
+ defb @00011111
+ defb @00011011
  defb @00001111
- defb @00111111
- defb @01111111
- defb @01111110
- defb @01111000
- defb @11111000
- defb @11111000
- defb @01111000
- defb @01111110
- defb @01111111
- defb @00111111
  defb @00001111
+ defb @00000111
+ defb @00000001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -86,20 +86,20 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @11111000
- defb @11111110
- defb @01111111
- defb @00111111
+ defb @00001100
+ defb @00001100
+ defb @00111001
+ defb @00110111
+ defb @00001111
+ defb @00001110
+ defb @00011101
+ defb @00011111
+ defb @00011111
+ defb @00011011
  defb @00001111
  defb @00001111
- defb @00001111
- defb @00001111
- defb @00111111
- defb @01111111
- defb @11111110
- defb @11111000
+ defb @00000111
+ defb @00000001
  defb @00000000
  defb @00000000
  defb @00000000
@@ -123,18 +123,18 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00011110
- defb @01111111
- defb @11111111
- defb @11111111
- defb @00011111
- defb @00000111
  defb @00000111
  defb @00011111
- defb @11111111
- defb @11111111
+ defb @00111110
+ defb @00111111
  defb @01111111
- defb @00011110
+ defb @01111111
+ defb @01111111
+ defb @01111111
+ defb @00111111
+ defb @00111111
+ defb @00011111
+ defb @00000111
  defb @00000000
  defb @00000000
  defb @00000000
@@ -158,18 +158,18 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @11000000
- defb @11100000
- defb @11110000
- defb @11110000
- defb @11111111
- defb @01111111
- defb @01111111
- defb @00111111
- defb @00000110
+ defb @00000111
+ defb @00001110
+ defb @00000111
+ defb @00000011
+ defb @00000001
  defb @00000000
  defb @00000000
- defb @00000000
+ defb @00000001
+ defb @00000011
+ defb @00000111
+ defb @00001111
+ defb @00000111
  defb @00000000
  defb @00000000
  defb @00000000
@@ -193,18 +193,18 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @01110000
- defb @01110000
- defb @11111001
- defb @11111001
- defb @11111111
- defb @11111111
- defb @01111111
- defb @01111111
- defb @00111111
+ defb @00000011
+ defb @00001110
+ defb @00011111
+ defb @00011111
+ defb @00000011
+ defb @00000000
+ defb @00000000
+ defb @00000011
+ defb @00011111
+ defb @00011111
  defb @00001111
- defb @00000000
- defb @00000000
+ defb @00000011
  defb @00000000
  defb @00000000
  defb @00000000
@@ -229,18 +229,18 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000110
- defb @00111111
- defb @01111111
- defb @01111111
- defb @11111111
- defb @11110000
- defb @11110000
- defb @11100000
- defb @11000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00001100
+ defb @00011100
+ defb @00011100
+ defb @00111110
+ defb @00101110
+ defb @00110111
+ defb @00111011
+ defb @11011111
+ defb @11011111
+ defb @11101111
+ defb @00110011
+ defb @00110000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -263,19 +263,159 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00001111
- defb @00111111
- defb @01111111
- defb @01111111
- defb @11111111
- defb @11111111
- defb @11111001
- defb @11111001
- defb @01110000
- defb @01110000
+ defb @00000000
+ defb @00000000
+ defb @00010000
+ defb @00111000
+ defb @00111100
+ defb @00101110
+ defb @00110111
+ defb @11011011
+ defb @11011111
+ defb @11101111
+ defb @00110011
  defb @00110000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar1_f9
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000011
+ defb @00001111
+ defb @00011111
+ defb @00011111
+ defb @00111111
+ defb @00111111
+ defb @00110111
+ defb @00111011
+ defb @00011101
+ defb @11011111
+ defb @11101111
+ defb @00110011
+ defb @00110000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar1_f10
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000011
+ defb @00001111
+ defb @00011101
+ defb @00011111
+ defb @00111111
+ defb @00111111
+ defb @00111110
+ defb @00111110
+ defb @00011100
+ defb @00011100
+ defb @00001100
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar1_f11
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000011
+ defb @00001111
+ defb @00011101
+ defb @00011111
+ defb @00111111
+ defb @00111110
+ defb @00111100
+ defb @00111000
+ defb @00010000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar1_f12
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000011
+ defb @00001111
+ defb @00011101
+ defb @00011111
+ defb @00111111
+ defb @00111111
+ defb @00111111
+ defb @00111111
+ defb @00011111
+ defb @00011111
+ defb @00001111
+ defb @00000011
  defb @00000000
  defb @00000000
  defb @00000000
@@ -300,18 +440,18 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
  defb @11000000
- defb @11100000
- defb @11100000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @11100000
- defb @11100000
+ defb @01110000
+ defb @11111000
+ defb @11111000
  defb @11000000
  defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @11111000
+ defb @11111000
+ defb @11110000
+ defb @11000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -335,18 +475,18 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @11100000
+ defb @01110000
+ defb @11100000
+ defb @11000000
  defb @10000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
  defb @00000000
  defb @00000000
  defb @10000000
- defb @10000000
+ defb @11000000
+ defb @11100000
+ defb @11110000
+ defb @11100000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -370,18 +510,18 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @10000000
- defb @10000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @11100000
+ defb @11111000
+ defb @01111100
+ defb @11111100
+ defb @11111110
+ defb @11111110
+ defb @11111110
+ defb @11111110
+ defb @11111100
+ defb @11111100
+ defb @11111000
+ defb @11100000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -403,20 +543,20 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @00110000
+ defb @00110000
+ defb @10011100
+ defb @11101100
+ defb @11110000
+ defb @01110000
+ defb @10111000
+ defb @11111000
+ defb @11111000
+ defb @11011000
+ defb @11110000
+ defb @11110000
+ defb @11100000
  defb @10000000
- defb @11000000
- defb @11000000
- defb @11100000
- defb @11100000
- defb @11100000
- defb @11100000
- defb @11000000
- defb @11000000
- defb @10000000
- defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -438,20 +578,20 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @00110000
  defb @01110000
- defb @11110000
+ defb @01110000
+ defb @10011100
+ defb @11101100
+ defb @01110000
+ defb @10110000
+ defb @11111000
+ defb @11111000
+ defb @11111000
+ defb @11011000
  defb @11110000
  defb @11110000
  defb @11100000
- defb @11100000
- defb @11000000
- defb @00000000
- defb @00000000
- defb @00000000
- defb @00000000
+ defb @10000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -473,20 +613,20 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @00000000
- defb @11100000
- defb @11100000
+ defb @00111000
+ defb @00111000
+ defb @11001110
+ defb @11110110
+ defb @01111000
+ defb @10111000
+ defb @11111100
+ defb @11111100
+ defb @11111100
+ defb @11101100
+ defb @11111000
+ defb @11111000
  defb @11110000
- defb @11110000
- defb @11110000
- defb @11110000
- defb @11100000
- defb @11100000
  defb @11000000
- defb @00000000
- defb @00000000
- defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -511,17 +651,17 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
- defb @11000000
- defb @11100000
- defb @11100000
- defb @11110000
- defb @11110000
- defb @11110000
- defb @01110000
  defb @00110000
- defb @00000000
- defb @00000000
+ defb @00111000
+ defb @00111000
+ defb @01111100
+ defb @01111100
+ defb @11111100
+ defb @11111100
+ defb @11111000
+ defb @10111000
+ defb @11110000
+ defb @11000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -546,18 +686,158 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @11000000
- defb @11100000
- defb @11100000
+ defb @00000000
+ defb @00001000
+ defb @00011100
+ defb @00111100
+ defb @01111100
+ defb @11111100
+ defb @11111000
+ defb @10111000
  defb @11110000
- defb @11110000
- defb @11110000
- defb @11110000
- defb @11100000
- defb @11100000
  defb @11000000
  defb @00000000
  defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar2_f9
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @11000000
+ defb @11110000
+ defb @11111000
+ defb @11111000
+ defb @11111100
+ defb @11111100
+ defb @11111100
+ defb @11111100
+ defb @11111000
+ defb @10111000
+ defb @11110000
+ defb @11000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar2_f10
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001100
+ defb @11001100
+ defb @11110111
+ defb @11111011
+ defb @11111011
+ defb @11011100
+ defb @11101100
+ defb @01110100
+ defb @01111100
+ defb @00111000
+ defb @00111000
+ defb @00110000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar2_f11
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001100
+ defb @11001100
+ defb @11110111
+ defb @11111011
+ defb @11011011
+ defb @11101100
+ defb @01110100
+ defb @00111100
+ defb @00011100
+ defb @00001000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._sprite_protar2_f12
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001100
+ defb @11001100
+ defb @11110111
+ defb @11111011
+ defb @10111000
+ defb @11011100
+ defb @11101100
+ defb @11111100
+ defb @11111100
+ defb @11111000
+ defb @11111000
+ defb @11110000
+ defb @11000000
  defb @00000000
  defb @00000000
  defb @00000000
