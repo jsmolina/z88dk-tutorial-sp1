@@ -330,7 +330,7 @@ void check_fsm() {
         pacman.offset = pacman.currentoffset + 32;
         ghosts[frame]->offset = ghosts[frame]->currentoffset + 32;
     } else if(frame == 2) {
-        pacman.offset = pacman.currentoffset;
+        pacman.offset = pacman.currentoffset + 64;
         ghosts[frame]->offset = ghosts[frame]->currentoffset;
     }
 
