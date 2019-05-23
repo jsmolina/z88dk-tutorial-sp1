@@ -75,6 +75,7 @@ struct spritep {
     uint8_t active;
     int8_t dx;
     int8_t dy;
+    uint8_t direction;
     uint8_t default_x;
     uint8_t default_y;
     void *default_color;

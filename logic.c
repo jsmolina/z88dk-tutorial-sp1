@@ -24,18 +24,22 @@ void check_keys()
     if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
         pacman.dy = -1;
         pacman.currentoffset = UP1;
+        pacman.direction = DIR_UP;
 
     } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
         pacman.dy = 1;
         pacman.currentoffset = DOWN1;
+        pacman.direction = DIR_DOWN;
     }
 
     if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
         pacman.dx = -1;
         pacman.currentoffset = LEFTC1;
+        pacman.direction = DIR_LEFT;
     } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
         pacman.dx = 1;
         pacman.currentoffset = RIGHTC1;
+        pacman.direction = DIR_RIGHT;
     }
 }
 
@@ -52,6 +56,7 @@ void nampac_go_home() {
     pacman.x = 14;
     pacman.dx = 0;
     pacman.dy = 0;
+    pacman.offset = RIGHTC1;
 }
 
 
@@ -243,7 +248,7 @@ void move_ghosts() {
     row = ghosts[idx]->y + 1;
 
     switch(idx) {
-        case 0: // Rojo: Intenta estár detrás de Pac-Man en modo "Acoso"
+        case 0: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
             move_one_ghost(40, 80, 40, 100);
             break;
         case 1:
@@ -315,23 +320,30 @@ void check_fsm() {
         }
     }
 
-    if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
+    if(pacman.direction == DIR_UP && allow_next(map[row - 1][col])) {
+        --pacman.y;
+    } else if(pacman.direction == DIR_DOWN && allow_next(map[row + 1][col])) {
+        ++pacman.y;
+    } else if(pacman.direction == DIR_LEFT && allow_next(map[row][col - 1])) {
+        --pacman.x;
+    } else if(pacman.direction == DIR_RIGHT && allow_next(map[row][col + 1])) {
+        ++pacman.x;
+    }
+
+    /*if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
         pacman.y += pacman.dy;
         pacman.x += pacman.dx;
     } else if (pacman.dy != 0) {
         pacman.dy = 0;
         pacman.dx = 0;
-    }
-    // todo fix offset
+    }*/
+
     if(frame == 0) {
         pacman.offset = pacman.currentoffset;
-        ghosts[frame]->offset = ghosts[frame]->currentoffset;
     } else if(frame == 1) {
         pacman.offset = pacman.currentoffset + 32;
-        ghosts[frame]->offset = ghosts[frame]->currentoffset + 32;
     } else if(frame == 2) {
         pacman.offset = pacman.currentoffset + 64;
-        ghosts[frame]->offset = ghosts[frame]->currentoffset;
     }
 
     // IA FOR GHOSTS
@@ -352,6 +364,14 @@ void check_fsm() {
             } else if(ghosts[idx]->x > 28 && ghosts[idx]->dx == 1) {
                 ghosts[idx]->x = 1;
             }
+        }
+
+        if(frame == 0) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset;
+        } else if(frame == 1) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset + 32;
+        } else if(frame == 2) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset;
         }
     }
     // while has eaten pill
