@@ -20,38 +20,33 @@ void all_lives_lost() {
   sp1_Invalidate(&full_screen);
   lives = 5;
   points = 0;
-  pacman.y = 21;
-  pacman.x = 14;
+  nampac_go_home();
   repaint_lives = 1;
+  remaining_points = 238;
 
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
   ghost_red.default_color =  initialiseColourGhostRed;
   ghost_red.default_y = 15;
   ghost_red.default_x = 14;
-  set_eaten(&ghost_red);
 
   ghost_cyan.offset = GHOST_CYAN;
   ghost_cyan.currentoffset = GHOST_CYAN;
   ghost_cyan.default_color =  initialiseColourGhostCyan;
   ghost_cyan.default_y = 15;
   ghost_cyan.default_x = 12;
-  set_eaten(&ghost_cyan);
 
   ghost_magenta.offset = GHOST_MAGENTA;
   ghost_magenta.currentoffset = GHOST_CYAN;
   ghost_magenta.default_color =  initialiseColourGhostMagenta;
   ghost_magenta.default_y = 15;
   ghost_magenta.default_x = 16;
-  set_eaten(&ghost_magenta);
 
   ghost_yellow.offset = GHOST_YELLOW;
   ghost_yellow.currentoffset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
   ghost_yellow.default_y = 15;
   ghost_yellow.default_x = 18;
-  set_eaten(&ghost_yellow);
-
 
   for(row = 0; row != 24; ++row) {
       for(col = 0; col != 32; ++col) {
@@ -79,9 +74,8 @@ void all_lives_lost() {
   sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
   sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
 
-  for(idx = 0; idx != 4; ++idx) {
-      sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
-  }
+  all_ghosts_go_home();
+
 
   sp1_UpdateNow();
 
@@ -129,10 +123,12 @@ int main()
   pacman.offset = 1;
   pacman.currentoffset = 1;
 
-  ghost_red.sp = add_ghost_red_sprite();
-  ghost_cyan.sp = add_ghost_cyan_sprite();
-  ghost_magenta.sp = add_ghost_magenta_sprite();
-  ghost_yellow.sp = add_ghost_yellow_sprite();
+  ghost_red.sp = add_ghost_sprite();
+  ghost_cyan.sp = add_ghost_sprite();
+  ghost_magenta.sp = add_ghost_sprite();
+  ghost_yellow.sp = add_ghost_sprite();
+  cherry.sp = add_cherry_sprite();
+  hide_cherry();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
@@ -152,7 +148,9 @@ int main()
      for(idx = 0; idx != 4; ++idx) {
           sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
      }
-
+     if(cherry.showing != 0) {
+         sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
+     }
 
      if(repaint_lives) {
         sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
@@ -163,7 +161,7 @@ int main()
 
      frame += 1;
 
-     if(frame == 5) {
+     if(frame == 3) { // frame will go 0, 1, 2
         frame = 0;
         print_points();
      }

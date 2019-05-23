@@ -41,11 +41,12 @@ uint8_t colors[] =         {INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, INK_BLUE, IN
 
 
 uint8_t pill_eaten = NONE;
-struct sprite pacman;
+struct spritep pacman;
 struct sprite ghost_red;
 struct sprite ghost_cyan;
 struct sprite ghost_magenta;
 struct sprite ghost_yellow;
+struct bonus cherry;
 
 struct sprite * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
 
@@ -58,10 +59,12 @@ uint8_t row;
 uint8_t col;
 uint8_t current;
 uint16_t points = 0;
+uint8_t remaining_points;
 
 uint8_t frame = 0;
 
 uint8_t lives = 0;
 uint8_t repaint_lives = 1;
+uint8_t speed = 5;
 uint8_t idx;
 struct sprite * collided_sprite;

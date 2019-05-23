@@ -1,5 +1,20 @@
 #include "logic.h"
 #include "int.h"
+#include <sound.h>
+
+
+void show_cherry() {
+    cherry.y = 21;
+    cherry.x = 14;
+    cherry.showing = 100;
+}
+
+void hide_cherry() {
+    cherry.y = 21;
+    cherry.x = 32;
+    cherry.showing = 0;
+    sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
+}
 
 
 void check_keys()
@@ -9,34 +24,48 @@ void check_keys()
     if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
         pacman.dy = -1;
         pacman.currentoffset = UP1;
+        pacman.direction = DIR_UP;
 
     } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
         pacman.dy = 1;
         pacman.currentoffset = DOWN1;
+        pacman.direction = DIR_DOWN;
     }
 
     if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
         pacman.dx = -1;
         pacman.currentoffset = LEFTC1;
+        pacman.direction = DIR_LEFT;
     } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
         pacman.dx = 1;
         pacman.currentoffset = RIGHTC1;
+        pacman.direction = DIR_RIGHT;
     }
+}
+
+void all_ghosts_go_home() {
+    uint8_t i;
+    for(i = 0; i != 4; ++i) {
+        set_eaten(ghosts[i]);
+        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
+    }
+}
+
+void nampac_go_home() {
+    pacman.y = 21;
+    pacman.x = 14;
+    pacman.dx = 0;
+    pacman.dy = 0;
+    pacman.offset = RIGHTC1;
 }
 
 
 void loose_a_live() {
     uint8_t i, j;
+    hide_cherry();
     repaint_lives = 1;
     --lives;
-    set_eaten(&ghost_magenta);
-    set_eaten(&ghost_red);
-    set_eaten(&ghost_cyan);
-    set_eaten(&ghost_yellow);
-
-    for(i = 0; i != 4; ++i) {
-        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
-    }
+    all_ghosts_go_home();
 
     // prota dead animation, first hide the sprite from the screen
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
@@ -52,10 +81,7 @@ void loose_a_live() {
     sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, 32, 0, 0);
     sp1_UpdateNow();
 
-    pacman.y = 21;
-    pacman.x = 14;
-    pacman.dx = 0;
-    pacman.dy = 0;
+    nampac_go_home();
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -222,7 +248,7 @@ void move_ghosts() {
     row = ghosts[idx]->y + 1;
 
     switch(idx) {
-        case 0: // Rojo: Intenta estár detrás de Pac-Man en modo "Acoso"
+        case 0: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
             move_one_ghost(40, 80, 40, 100);
             break;
         case 1:
@@ -237,9 +263,18 @@ void move_ghosts() {
             // "a su bola"
             move_one_ghost(125, 255, 125, 255);
     }
-
-
 }
+
+
+void next_level() {
+    zx_border(INK_BLUE);
+    bit_beepfx_di_fastcall(BEEPFX_SCORE);
+    zx_border(INK_BLACK);
+    remaining_points = 238;
+    nampac_go_home();
+    all_ghosts_go_home();
+}
+
 
 void check_fsm() {
     random_value = rand();
@@ -262,9 +297,10 @@ void check_fsm() {
 
         if(current == 9) {
             pick += 1;
-            points += 10; // ten points each
+            points += 5; // 5 points each dot
+            --remaining_points;
         } else if(current == 11) {
-            points += 50;  // energizers - are worth 50 points each
+            points += 20;  // energizers - are worth 20 points each
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
                 if(ghosts[idx]->active == ACTIVE) {
@@ -284,29 +320,30 @@ void check_fsm() {
         }
     }
 
-    if(ghosts[frame]->y == 12) {
-        if(ghosts[frame]->x < 2 && ghosts[frame]->dx == -1) {
-            ghosts[frame]->x = 29;
-        } else if(ghosts[frame]->x > 28 && ghosts[frame]->dx == 1) {
-            ghosts[frame]->x = 1;
-        }
+    if(pacman.direction == DIR_UP && allow_next(map[row - 1][col])) {
+        --pacman.y;
+    } else if(pacman.direction == DIR_DOWN && allow_next(map[row + 1][col])) {
+        ++pacman.y;
+    } else if(pacman.direction == DIR_LEFT && allow_next(map[row][col - 1])) {
+        --pacman.x;
+    } else if(pacman.direction == DIR_RIGHT && allow_next(map[row][col + 1])) {
+        ++pacman.x;
     }
 
-
-    if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
+    /*if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
         pacman.y += pacman.dy;
         pacman.x += pacman.dx;
     } else if (pacman.dy != 0) {
         pacman.dy = 0;
         pacman.dx = 0;
-    }
+    }*/
 
-    if((tick & 1) == 0) {
-        pacman.offset = pacman.currentoffset + 32;
-        ghosts[frame]->offset = ghosts[frame]->currentoffset + 32;
-    } else {
+    if(frame == 0) {
         pacman.offset = pacman.currentoffset;
-        ghosts[frame]->offset = ghosts[frame]->currentoffset;
+    } else if(frame == 1) {
+        pacman.offset = pacman.currentoffset + 32;
+    } else if(frame == 2) {
+        pacman.offset = pacman.currentoffset + 64;
     }
 
     // IA FOR GHOSTS
@@ -319,6 +356,22 @@ void check_fsm() {
             move_ghosts();
         } else if(ghosts[idx]->active <= JAILED) {
             --ghosts[idx]->active;
+        }
+        // side change
+        if(ghosts[idx]->y == 12) {
+            if(ghosts[idx]->x < 2 && ghosts[idx]->dx == -1) {
+                ghosts[idx]->x = 29;
+            } else if(ghosts[idx]->x > 28 && ghosts[idx]->dx == 1) {
+                ghosts[idx]->x = 1;
+            }
+        }
+
+        if(frame == 0) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset;
+        } else if(frame == 1) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset + 32;
+        } else if(frame == 2) {
+            ghosts[idx]->offset = ghosts[idx]->currentoffset;
         }
     }
     // while has eaten pill
@@ -339,4 +392,25 @@ void check_fsm() {
         sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
         sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
     }
+
+    if(cherry.showing > 0) {
+        if(pacman.x == cherry.x && pacman.y == cherry.y) {
+            hide_cherry();
+            points += 10;
+        }
+        --cherry.showing;
+        if(cherry.showing == 0) {
+            hide_cherry();
+        }
+    } else if(random_value == 200) {
+        show_cherry();
+        zx_border(INK_RED);
+        zx_border(INK_BLACK);
+    }
+
+    if(remaining_points == 0) {
+        // level finished!
+        next_level();
+    }
 }
+
