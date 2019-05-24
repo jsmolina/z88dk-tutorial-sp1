@@ -2,6 +2,36 @@
 #include "int.h"
 #include <sound.h>
 
+void reset_map() {
+    for(row = 0; row != 24; ++row) {
+      for(col = 0; col != 32; ++col) {
+        if(map[row][col] == 18) {
+             map[row][col] = 11;
+        } else if(map[row][col] == 16) {
+            map[row][col] = 9;
+        }
+        current = map[row][col];
+        sp1_PrintAtInv(row, col, colors[current] | INK_BLACK, correspondence[current]);
+      }
+
+  }
+
+  sp1_PrintAtInv(0, 19, INK_RED | PAPER_BLACK, 'P');
+  sp1_PrintAtInv(0, 20, INK_RED | PAPER_BLACK, 'O');
+  sp1_PrintAtInv(0, 21, INK_RED | PAPER_BLACK, 'I');
+  sp1_PrintAtInv(0, 22, INK_RED | PAPER_BLACK, 'N');
+  sp1_PrintAtInv(0, 23, INK_RED | PAPER_BLACK, 'T');
+  sp1_PrintAtInv(0, 24, INK_RED | PAPER_BLACK, 'S');
+
+  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'L');
+  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'I');
+  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
+  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
+  sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
+  // as points are restored...
+  remaining_points = 238;
+
+}
 
 void show_cherry() {
     cherry.y = 21;
@@ -47,7 +77,6 @@ void all_ghosts_go_home() {
     uint8_t i;
     for(i = 0; i != 4; ++i) {
         set_eaten(ghosts[i]);
-        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
     }
 }
 
@@ -95,6 +124,7 @@ void set_eaten(struct sprite * for_who) {
     for_who->dx = 0;
     for_who->dy = 0;
     sp1_IterateSprChar(for_who->sp, for_who->default_color);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
 }
 
 
@@ -194,8 +224,9 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         // check collission before move
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
-            // eat
+            // eat but skip to be moved
             set_eaten(collided_sprite);
+            return;
         }
 
         if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
@@ -212,7 +243,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         }
 
         // make ghost flicker if elude mode and almost finishing pill eaten
-        if(pill_eaten < 40 && ghosts[idx]->active == ACTIVE) {
+        if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
             if((frame & 1) == 0) {
                 sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
             } else {
@@ -270,9 +301,12 @@ void next_level() {
     zx_border(INK_BLUE);
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
-    remaining_points = 238;
+    reset_map();
     nampac_go_home();
     all_ghosts_go_home();
+    if (speed > 1) {
+        --speed;
+    }
 }
 
 
