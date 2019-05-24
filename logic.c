@@ -15,7 +15,7 @@ void reset_map() {
       }
 
   }
-  
+
   sp1_PrintAtInv(0, 19, INK_RED | PAPER_BLACK, 'P');
   sp1_PrintAtInv(0, 20, INK_RED | PAPER_BLACK, 'O');
   sp1_PrintAtInv(0, 21, INK_RED | PAPER_BLACK, 'I');
@@ -28,6 +28,9 @@ void reset_map() {
   sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
   sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
   sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
+  // as points are restored...
+  remaining_points = 238;
+
 }
 
 void show_cherry() {
@@ -297,7 +300,6 @@ void next_level() {
     zx_border(INK_BLUE);
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
-    remaining_points = 238;
     reset_map();
     nampac_go_home();
     all_ghosts_go_home();

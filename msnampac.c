@@ -23,7 +23,6 @@ void all_lives_lost() {
   speed = 5;
   nampac_go_home();
   repaint_lives = 1;
-  remaining_points = 238;
 
   ghost_red.offset = GHOST_RED;
   ghost_red.currentoffset = GHOST_RED;
