@@ -77,7 +77,6 @@ void all_ghosts_go_home() {
     uint8_t i;
     for(i = 0; i != 4; ++i) {
         set_eaten(ghosts[i]);
-        sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->default_y, ghosts[i]->default_x, 0, 0);
     }
 }
 
@@ -125,6 +124,7 @@ void set_eaten(struct sprite * for_who) {
     for_who->dx = 0;
     for_who->dy = 0;
     sp1_IterateSprChar(for_who->sp, for_who->default_color);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
 }
 
 
@@ -224,8 +224,9 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         // check collission before move
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
-            // eat
+            // eat but skip to be moved
             set_eaten(collided_sprite);
+            return;
         }
 
         if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
@@ -242,7 +243,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         }
 
         // make ghost flicker if elude mode and almost finishing pill eaten
-        if(pill_eaten < 40 && ghosts[idx]->active == ACTIVE) {
+        if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
             if((frame & 1) == 0) {
                 sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
             } else {
