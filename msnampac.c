@@ -20,6 +20,7 @@ void all_lives_lost() {
   sp1_Invalidate(&full_screen);
   lives = 5;
   points = 0;
+  speed = 5;
   nampac_go_home();
   repaint_lives = 1;
   remaining_points = 238;
@@ -48,31 +49,7 @@ void all_lives_lost() {
   ghost_yellow.default_y = 15;
   ghost_yellow.default_x = 18;
 
-  for(row = 0; row != 24; ++row) {
-      for(col = 0; col != 32; ++col) {
-        if(map[row][col] == 18) {
-             map[row][col] = 11;
-        } else if(map[row][col] == 16) {
-            map[row][col] = 9;
-        }
-        current = map[row][col];
-        sp1_PrintAtInv(row, col, colors[current] | INK_BLACK, correspondence[current]);
-      }
-
-  }
-
-  sp1_PrintAtInv(0, 19, INK_RED | PAPER_BLACK, 'P');
-  sp1_PrintAtInv(0, 20, INK_RED | PAPER_BLACK, 'O');
-  sp1_PrintAtInv(0, 21, INK_RED | PAPER_BLACK, 'I');
-  sp1_PrintAtInv(0, 22, INK_RED | PAPER_BLACK, 'N');
-  sp1_PrintAtInv(0, 23, INK_RED | PAPER_BLACK, 'T');
-  sp1_PrintAtInv(0, 24, INK_RED | PAPER_BLACK, 'S');
-
-  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'L');
-  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'I');
-  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
-  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
-  sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
+  reset_map();
 
   all_ghosts_go_home();
 

@@ -18,4 +18,5 @@ extern void hide_cherry();
 extern void show_cherry();
 extern void nampac_go_home();
 extern void all_ghosts_go_home();
+extern void reset_map();
 #endif
