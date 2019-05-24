@@ -302,6 +302,7 @@ void next_level() {
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
     reset_map();
+    repaint_lives = 1;
     nampac_go_home();
     all_ghosts_go_home();
     if (speed > 1) {
