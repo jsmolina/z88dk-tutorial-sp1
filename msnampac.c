@@ -25,28 +25,25 @@ void all_lives_lost() {
   repaint_lives = 1;
 
   ghost_red.offset = GHOST_RED;
-  ghost_red.currentoffset = GHOST_RED;
   ghost_red.default_color =  initialiseColourGhostRed;
   ghost_red.default_y = 15;
   ghost_red.default_x = 14;
 
   ghost_cyan.offset = GHOST_CYAN;
-  ghost_cyan.currentoffset = GHOST_CYAN;
   ghost_cyan.default_color =  initialiseColourGhostCyan;
   ghost_cyan.default_y = 15;
   ghost_cyan.default_x = 12;
 
   ghost_magenta.offset = GHOST_MAGENTA;
-  ghost_magenta.currentoffset = GHOST_CYAN;
   ghost_magenta.default_color =  initialiseColourGhostMagenta;
   ghost_magenta.default_y = 15;
   ghost_magenta.default_x = 16;
 
   ghost_yellow.offset = GHOST_YELLOW;
-  ghost_yellow.currentoffset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
   ghost_yellow.default_y = 15;
   ghost_yellow.default_x = 18;
+
 
   reset_map();
 

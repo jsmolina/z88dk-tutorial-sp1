@@ -32,6 +32,8 @@
 #define GHOST_YELLOW2 161
 #define GHOST_MAGENTA 193
 #define GHOST_MAGENTA2 225
+#define GHOST_FRIGHTENED 257
+#define GHOST_FRIGHTENED2 289
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -55,8 +57,8 @@ struct sprite {
     struct sp1_ss* alt;
     uint8_t x;
     uint8_t y;
-    uint8_t offset;
-    uint8_t currentoffset;
+    uint16_t offset;
+    uint16_t currentoffset;
     uint8_t active;
     int8_t dx;
     int8_t dy;
@@ -73,8 +75,6 @@ struct spritep {
     uint16_t offset;
     uint16_t currentoffset;
     uint8_t active;
-    int8_t dx;
-    int8_t dy;
     uint8_t direction;
     uint8_t default_x;
     uint8_t default_y;

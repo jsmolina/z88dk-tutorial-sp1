@@ -52,22 +52,18 @@ void check_keys()
     // checks keys
     // allow jump in directions
     if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
-        pacman.dy = -1;
         pacman.currentoffset = UP1;
         pacman.direction = DIR_UP;
 
     } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
-        pacman.dy = 1;
         pacman.currentoffset = DOWN1;
         pacman.direction = DIR_DOWN;
     }
 
     if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
-        pacman.dx = -1;
         pacman.currentoffset = LEFTC1;
         pacman.direction = DIR_LEFT;
     } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
-        pacman.dx = 1;
         pacman.currentoffset = RIGHTC1;
         pacman.direction = DIR_RIGHT;
     }
@@ -83,9 +79,8 @@ void all_ghosts_go_home() {
 void nampac_go_home() {
     pacman.y = 21;
     pacman.x = 14;
-    pacman.dx = 0;
-    pacman.dy = 0;
     pacman.offset = RIGHTC1;
+    pacman.direction = NONE;
 }
 
 
@@ -117,14 +112,29 @@ uint8_t allow_next(uint8_t next) {
     return next == 9 || next == 16 || next == 11 || next == 18;
 }
 
+// resets ghosts colours to default ones (when eaten, when finished ellude mode)
+void reset_colors(struct sprite * for_who) {
+
+    if(for_who->default_color == initialiseColourGhostRed) {
+        for_who->currentoffset = GHOST_RED;
+    } else if(for_who->default_color == initialiseColourGhostCyan) {
+        for_who->currentoffset = GHOST_CYAN;
+    } else if(for_who->default_color == initialiseColourGhostMagenta) {
+        for_who->currentoffset = GHOST_MAGENTA;
+    } else if(for_who->default_color == initialiseColourYellow) {
+        for_who->currentoffset = GHOST_YELLOW;
+    }
+    sp1_IterateSprChar(for_who->sp, for_who->default_color);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
+}
+
 void set_eaten(struct sprite * for_who) {
     for_who->x = for_who->default_x;
     for_who->y = for_who->default_y;
     for_who->active = JAILED;
     for_who->dx = 0;
     for_who->dy = 0;
-    sp1_IterateSprChar(for_who->sp, for_who->default_color);
-    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
+    reset_colors(for_who);
 }
 
 
@@ -340,6 +350,7 @@ void check_fsm() {
             for(idx = 0; idx != 4; ++idx) {
                 if(ghosts[idx]->active == ACTIVE) {
                     ghosts[idx]->active = ELUDE;
+                    ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
                     sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
                 }
             }
@@ -348,9 +359,9 @@ void check_fsm() {
 
     // side change
     if(pacman.y == 12) {
-        if(pacman.x < 2 && pacman.dx == -1) {
+        if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
             pacman.x = 29;
-        } else if(pacman.x > 28 && pacman.dx == 1) {
+        } else if(pacman.x > 28 && pacman.direction == DIR_RIGHT) {
             pacman.x = 1;
         }
     }
@@ -364,14 +375,6 @@ void check_fsm() {
     } else if(pacman.direction == DIR_RIGHT && allow_next(map[row][col + 1])) {
         ++pacman.x;
     }
-
-    /*if(allow_next(map[row + pacman.dy][col + pacman.dx])) {
-        pacman.y += pacman.dy;
-        pacman.x += pacman.dx;
-    } else if (pacman.dy != 0) {
-        pacman.dy = 0;
-        pacman.dx = 0;
-    }*/
 
     if(frame == 0) {
         pacman.offset = pacman.currentoffset;
@@ -420,6 +423,7 @@ void check_fsm() {
         for(idx = 0; idx != 4; ++idx) {
             if(ghosts[idx]->active == ELUDE) {
                 ghosts[idx]->active = ACTIVE;
+                reset_colors(ghosts[idx]);
             }
         }
         sp1_IterateSprChar(ghost_red.sp, initialiseColourGhostRed);
@@ -448,4 +452,3 @@ void check_fsm() {
         next_level();
     }
 }
-
