@@ -88,14 +88,14 @@ PUBLIC _red_ghost1
  defb @00000000
  defb @00000011
  defb @00001111
- defb @00011111
- defb @00110011
- defb @00101101
- defb @00101101
+ defb @00011011
+ defb @00110101
+ defb @00101001
+ defb @00101001
+ defb @01110011
  defb @01111111
- defb @01111111
- defb @01111011
  defb @01111100
+ defb @01111011
  defb @01111111
  defb @01111111
  defb @01111011
@@ -123,14 +123,14 @@ PUBLIC _red_ghost1
  defb @00000000
  defb @00000011
  defb @00001111
- defb @00011111
- defb @00110011
- defb @00101101
- defb @00101101
+ defb @00011011
+ defb @00110101
+ defb @00101001
+ defb @00101001
+ defb @01110011
  defb @01111111
- defb @01111111
- defb @01111011
  defb @01111100
+ defb @01111011
  defb @01111111
  defb @01111111
  defb @01101110
@@ -158,14 +158,14 @@ PUBLIC _red_ghost1
  defb @00000000
  defb @00000011
  defb @00001111
- defb @00011011
- defb @00110101
- defb @00101001
- defb @00101001
+ defb @00011111
+ defb @00111111
+ defb @00100001
+ defb @00101101
  defb @01110011
  defb @01111111
- defb @01111100
- defb @01111011
+ defb @01111110
+ defb @01111110
  defb @01111111
  defb @01111111
  defb @01111011
@@ -193,14 +193,14 @@ PUBLIC _red_ghost1
  defb @00000000
  defb @00000011
  defb @00001111
- defb @00011011
- defb @00110101
- defb @00101001
- defb @00101001
+ defb @00011111
+ defb @00111111
+ defb @00100001
+ defb @00101101
  defb @01110011
  defb @01111111
- defb @01111100
- defb @01111011
+ defb @01111110
+ defb @01111110
  defb @01111111
  defb @01111111
  defb @01101110
@@ -229,13 +229,13 @@ PUBLIC _red_ghost1
  defb @00000011
  defb @00001111
  defb @00011111
- defb @00111111
- defb @00100001
+ defb @00110011
  defb @00101101
- defb @01110011
+ defb @00101101
  defb @01111111
- defb @01111110
- defb @01111110
+ defb @01111111
+ defb @01111011
+ defb @01111100
  defb @01111111
  defb @01111111
  defb @01111011
@@ -264,13 +264,13 @@ PUBLIC _red_ghost1
  defb @00000011
  defb @00001111
  defb @00011111
- defb @00111111
- defb @00100001
+ defb @00110011
  defb @00101101
- defb @01110011
+ defb @00101101
  defb @01111111
- defb @01111110
- defb @01111110
+ defb @01111111
+ defb @01111011
+ defb @01111100
  defb @01111111
  defb @01111111
  defb @01101110
@@ -440,14 +440,14 @@ PUBLIC _red_ghost2
  defb @00000000
  defb @11000000
  defb @11110000
- defb @11111000
- defb @11001100
- defb @10110100
- defb @10110100
+ defb @11011000
+ defb @10101100
+ defb @10010100
+ defb @10010100
+ defb @11001110
  defb @11111110
- defb @11111110
- defb @11011110
  defb @00111110
+ defb @11011110
  defb @11111110
  defb @11111110
  defb @11011110
@@ -475,14 +475,14 @@ PUBLIC _red_ghost2
  defb @00000000
  defb @11000000
  defb @11110000
- defb @11111000
- defb @11001100
- defb @10110100
- defb @10110100
+ defb @11011000
+ defb @10101100
+ defb @10010100
+ defb @10010100
+ defb @11001110
  defb @11111110
- defb @11111110
- defb @11011110
  defb @00111110
+ defb @11011110
  defb @11111110
  defb @11111110
  defb @01110110
@@ -510,14 +510,14 @@ PUBLIC _red_ghost2
  defb @00000000
  defb @11000000
  defb @11110000
- defb @11011000
- defb @10101100
- defb @10010100
- defb @10010100
+ defb @11111000
+ defb @11111100
+ defb @10000100
+ defb @10110100
  defb @11001110
  defb @11111110
- defb @00111110
- defb @11011110
+ defb @01111110
+ defb @01111110
  defb @11111110
  defb @11111110
  defb @11011110
@@ -545,14 +545,14 @@ PUBLIC _red_ghost2
  defb @00000000
  defb @11000000
  defb @11110000
- defb @11011000
- defb @10101100
- defb @10010100
- defb @10010100
+ defb @11111000
+ defb @11111100
+ defb @10000100
+ defb @10110100
  defb @11001110
  defb @11111110
- defb @00111110
- defb @11011110
+ defb @01111110
+ defb @01111110
  defb @11111110
  defb @11111110
  defb @01110110
@@ -581,13 +581,13 @@ PUBLIC _red_ghost2
  defb @11000000
  defb @11110000
  defb @11111000
- defb @11111100
- defb @10000100
+ defb @11001100
  defb @10110100
- defb @11001110
+ defb @10110100
  defb @11111110
- defb @01111110
- defb @01111110
+ defb @11111110
+ defb @11011110
+ defb @00111110
  defb @11111110
  defb @11111110
  defb @11011110
@@ -616,13 +616,13 @@ PUBLIC _red_ghost2
  defb @11000000
  defb @11110000
  defb @11111000
- defb @11111100
- defb @10000100
+ defb @11001100
  defb @10110100
- defb @11001110
+ defb @10110100
  defb @11111110
- defb @01111110
- defb @01111110
+ defb @11111110
+ defb @11011110
+ defb @00111110
  defb @11111110
  defb @11111110
  defb @01110110

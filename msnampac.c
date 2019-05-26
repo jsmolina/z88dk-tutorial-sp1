@@ -20,7 +20,7 @@ void all_lives_lost() {
   sp1_Invalidate(&full_screen);
   lives = 5;
   points = 0;
-  speed = 5;
+  speed = 6;
   nampac_go_home();
   repaint_lives = 1;
 
