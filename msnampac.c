@@ -89,7 +89,11 @@ int main()
   sp1_TileEntry('k', ghostpill);
   sp1_TileEntry('l', vertiright);
   sp1_TileEntry('m', topvertileft);
-  sp1_TileEntry('n', topvertiright);
+
+  sp1_TileEntry('s', terminal_left);
+  sp1_TileEntry('t', terminal_right);
+  sp1_TileEntry('u', terminal_up);
+  sp1_TileEntry('v', terminal_down);
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();

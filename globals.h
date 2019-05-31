@@ -48,6 +48,23 @@
 #define AYCTRL 65533
 #define AYDATA 49149
 
+// map integer correspondence
+#define A 1
+#define B 2
+#define C 3
+#define D 4
+#define E 5
+#define F 6
+#define H 8
+#define I 9
+#define K 11
+#define L 12
+#define M 13
+#define S 18
+#define T 19
+#define U 20
+#define V 21
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
@@ -114,7 +131,12 @@ extern uint8_t pill[];
 extern uint8_t vertileft[];
 extern uint8_t vertiright[];
 extern uint8_t topvertileft[];
-extern uint8_t topvertiright[];
+
+extern uint8_t terminal_left[];
+extern uint8_t terminal_right[];
+extern uint8_t terminal_up[];
+extern uint8_t terminal_down[];
+
 extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 

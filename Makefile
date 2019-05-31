@@ -10,7 +10,10 @@ compile:
 	png2udg ./build/vertileft.png -a > ./build/vertileft.asm
 	png2udg ./build/vertiright.png -a > ./build/vertiright.asm
 	png2udg ./build/topvertileft.png -a > ./build/topvertileft.asm
-	png2udg ./build/topvertiright.png -a > ./build/topvertiright.asm
+	png2udg ./build/terminal_down.png -a > ./build/terminal_down.asm
+	png2udg ./build/terminal_right.png -a > ./build/terminal_right.asm
+	png2udg ./build/terminal_left.png -a > ./build/terminal_left.asm
+	png2udg ./build/terminal_up.png -a > ./build/terminal_up.asm
 	png2udg ./build/ghostpill.png -a > ./build/ghostpill.asm
 	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	png2sp1sprite ./build/prota_dead.png -b -i sprite_protar_dead -f 16 -s rodata_user > ./build/prota_dead.asm
