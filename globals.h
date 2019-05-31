@@ -60,10 +60,10 @@
 #define K 11
 #define L 12
 #define M 13
-#define S 18
-#define T 19
-#define U 20
-#define V 21
+#define S 19
+#define T 20
+#define U 21
+#define V 22
 
 // screen rectangle
 extern struct sp1_Rect full_screen;
@@ -142,8 +142,6 @@ extern uint8_t cartoon0[];
 
 extern uint8_t map[25][32];
 extern uint8_t random_value;
-extern uint8_t correspondence[];
-extern uint8_t colors[];
 
 extern uint8_t pill_eaten;
 extern struct spritep pacman;

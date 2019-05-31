@@ -2,6 +2,25 @@
 #include "int.h"
 #include <sound.h>
 
+uint8_t get_map_color(uint8_t current) {
+    if(current == I) {
+        return INK_WHITE;
+    } else if (current == K) {
+        return INK_MAGENTA;
+    }
+    return INK_BLUE;
+}
+
+uint8_t get_map_char(uint8_t current) {
+
+    if (current == 0)
+    {
+        return ' ';
+    }
+
+    return current + 96;
+}
+
 void reset_map() {
     for(row = 0; row != 24; ++row) {
       for(col = 0; col != 32; ++col) {
@@ -11,7 +30,7 @@ void reset_map() {
             map[row][col] = 9;
         }
         current = map[row][col];
-        sp1_PrintAtInv(row, col, colors[current] | INK_BLACK, correspondence[current]);
+        sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
       }
 
   }
