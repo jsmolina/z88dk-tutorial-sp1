@@ -32,6 +32,8 @@
 #define GHOST_YELLOW2 161
 #define GHOST_MAGENTA 193
 #define GHOST_MAGENTA2 225
+#define GHOST_FRIGHTENED 257
+#define GHOST_FRIGHTENED2 289
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -46,6 +48,23 @@
 #define AYCTRL 65533
 #define AYDATA 49149
 
+// map integer correspondence
+#define A 1
+#define B 2
+#define C 3
+#define D 4
+#define E 5
+#define F 6
+#define H 8
+#define I 9
+#define K 11
+#define L 12
+#define M 13
+#define S 19
+#define T 20
+#define U 21
+#define V 22
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
@@ -55,8 +74,8 @@ struct sprite {
     struct sp1_ss* alt;
     uint8_t x;
     uint8_t y;
-    uint8_t offset;
-    uint8_t currentoffset;
+    uint16_t offset;
+    uint16_t currentoffset;
     uint8_t active;
     int8_t dx;
     int8_t dy;
@@ -73,8 +92,6 @@ struct spritep {
     uint16_t offset;
     uint16_t currentoffset;
     uint8_t active;
-    int8_t dx;
-    int8_t dy;
     uint8_t direction;
     uint8_t default_x;
     uint8_t default_y;
@@ -114,14 +131,17 @@ extern uint8_t pill[];
 extern uint8_t vertileft[];
 extern uint8_t vertiright[];
 extern uint8_t topvertileft[];
-extern uint8_t topvertiright[];
+
+extern uint8_t terminal_left[];
+extern uint8_t terminal_right[];
+extern uint8_t terminal_up[];
+extern uint8_t terminal_down[];
+
 extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 
 extern uint8_t map[25][32];
 extern uint8_t random_value;
-extern uint8_t correspondence[];
-extern uint8_t colors[];
 
 extern uint8_t pill_eaten;
 extern struct spritep pacman;

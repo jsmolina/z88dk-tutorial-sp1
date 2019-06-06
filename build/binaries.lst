@@ -9,7 +9,10 @@ corner_bottom_right
 pill
 vertileft
 vertiright
-topvertiright
+terminal_up
+terminal_down
+terminal_left
+terminal_right
 topvertileft
 ghostpill
 red_ghost

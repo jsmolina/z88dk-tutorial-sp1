@@ -19,4 +19,5 @@ extern void show_cherry();
 extern void nampac_go_home();
 extern void all_ghosts_go_home();
 extern void reset_map();
+extern void set_ghosts_offsets();
 #endif

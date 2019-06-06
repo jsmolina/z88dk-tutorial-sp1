@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _terminal_left
+._terminal_left
+defb @00000000, @00111111, @01000000, @01000000, @01000000, @01000000, @00111111, @00000000

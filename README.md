@@ -388,4 +388,8 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 
 ## Text Printing
 `Zx_print_int _chr _char _str`
-`Zx_print_ink _border for colours
+`Zx_print_ink _border for colours`
+``` 
+
+### Credits
+Credits to jarlaxe for the graphics.
