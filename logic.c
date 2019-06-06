@@ -234,6 +234,24 @@ void then_go(uint8_t dir) {
 }
 
 void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    // first check collisions
+    if(ghosts[idx]->active == ELUDE) {
+        // check collission before move
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
+            // eat but skip to be moved
+            set_eaten(collided_sprite);
+            return;
+        }
+    } else { // ACTIVE
+        collided_sprite = has_collision();
+        if(collided_sprite != NULL) {
+            loose_a_live();
+            return;
+        }
+    }
+
+    // then decide direction, first based on random params
     if((random_value < t1) && could_go(DIR_RIGHT)) {
         then_go(DIR_RIGHT);
         return;
@@ -250,13 +268,6 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         return;
     }
     if(ghosts[idx]->active == ELUDE) {
-        // check collission before move
-        collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
-            // eat but skip to be moved
-            set_eaten(collided_sprite);
-            return;
-        }
 
         if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
@@ -281,11 +292,6 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         }
 
     } else { // ACTIVE
-        collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
-            loose_a_live();
-            return;
-        }
 
         if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
