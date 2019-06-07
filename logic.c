@@ -7,6 +7,8 @@ uint8_t get_map_color(uint8_t current) {
         return INK_WHITE;
     } else if (current == K) {
         return INK_MAGENTA;
+    } else if (current == Y) {
+        return INK_WHITE;
     }
     return INK_BLUE;
 }

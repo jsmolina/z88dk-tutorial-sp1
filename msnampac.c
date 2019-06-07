@@ -95,6 +95,10 @@ int main()
   sp1_TileEntry('u', terminal_up);
   sp1_TileEntry('v', terminal_down);
 
+  sp1_TileEntry('w', union_left);
+  sp1_TileEntry('x', union_right);
+  sp1_TileEntry('y', door);
+
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;

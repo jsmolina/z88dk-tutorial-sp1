@@ -64,6 +64,9 @@
 #define T 20
 #define U 21
 #define V 22
+#define W 23
+#define X 24
+#define Y 25
 
 // screen rectangle
 extern struct sp1_Rect full_screen;
@@ -136,6 +139,10 @@ extern uint8_t terminal_left[];
 extern uint8_t terminal_right[];
 extern uint8_t terminal_up[];
 extern uint8_t terminal_down[];
+
+extern uint8_t union_left[];
+extern uint8_t union_right[];
+extern uint8_t door[];
 
 extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
