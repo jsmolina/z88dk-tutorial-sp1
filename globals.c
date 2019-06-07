@@ -62,6 +62,7 @@ uint8_t remaining_points;
 uint8_t frame = 0;
 
 uint8_t lives = 0;
+uint8_t level = 0;
 uint8_t repaint_lives = 1;
 uint8_t speed;
 uint8_t idx;

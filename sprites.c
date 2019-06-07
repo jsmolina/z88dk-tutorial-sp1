@@ -99,6 +99,28 @@ void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c)
   }
 }
 
+void initialiseColourGreen(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_GREEN;
+
+}
+
+void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c)
+{
+  c->attr_mask = SP1_AMASK_INK;
+  if(count == 0) {
+     c->attr      = INK_RED;
+  } else if (count == 1){
+     c->attr      = INK_YELLOW;
+  } else if(count == 2) {
+    c->attr = INK_WHITE;
+  } else {
+    c->attr = INK_CYAN;
+  }
+}
+
 struct sp1_ss * add_cherry_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)cerezas1, 1);

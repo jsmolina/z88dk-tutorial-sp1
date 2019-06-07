@@ -58,6 +58,23 @@ void show_cherry() {
     cherry.y = 21;
     cherry.x = 14;
     cherry.showing = 100;
+
+    if(level == 1) {
+        cherry.offset = CHERRY;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
+    } else if(level == 0) {
+        cherry.offset = STRAWBERRY;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
+    } else if(level == 2) {
+        cherry.offset = COCKTAIL;
+        sp1_IterateSprChar(cherry.sp, initialiseColourRedYellowWhiteCyan);
+    } else if(level == 3) {
+        cherry.offset = APPLE;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGhostRed);
+    } else if (level == 4) {
+        cherry.offset = PEAR;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreen);
+    }
 }
 
 void hide_cherry() {
@@ -345,6 +362,7 @@ void next_level() {
     if (speed > 1) {
         --speed;
     }
+    ++level;
 }
 
 
