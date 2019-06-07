@@ -59,10 +59,10 @@ void show_cherry() {
     cherry.x = 14;
     cherry.showing = 100;
 
-    if(level == 1) {
+    if(level == 0) {
         cherry.offset = CHERRY;
         sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
-    } else if(level == 0) {
+    } else if(level == 1) {
         cherry.offset = STRAWBERRY;
         sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
     } else if(level == 2) {
@@ -362,7 +362,11 @@ void next_level() {
     if (speed > 1) {
         --speed;
     }
+
     ++level;
+    if(level == 5) {
+        level = 0;
+    }
 }
 
 
