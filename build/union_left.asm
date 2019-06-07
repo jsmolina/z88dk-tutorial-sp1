@@ -1,0 +1,4 @@
+SECTION rodata_user
+PUBLIC _union_left
+._union_left
+defb @01000010, @10000010, @00000010, @00000010, @00000010, @00000010, @10000010, @01000010
