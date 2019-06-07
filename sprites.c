@@ -114,7 +114,7 @@ void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c)
      c->attr      = INK_RED;
   } else if (count == 1){
      c->attr      = INK_YELLOW;
-  } else if(count == 2) {
+  } else if(count == 3) {
     c->attr = INK_WHITE;
   } else {
     c->attr = INK_CYAN;

@@ -1,6 +1,7 @@
 #include "logic.h"
 #include "int.h"
 #include <sound.h>
+#include <input.h>
 
 uint8_t get_map_color(uint8_t current) {
     if(current == I) {
@@ -499,5 +500,9 @@ void check_fsm() {
     if(remaining_points == 0) {
         // level finished!
         next_level();
+    }
+
+    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        show_cherry();
     }
 }
