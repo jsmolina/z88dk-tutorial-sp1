@@ -398,7 +398,11 @@ void check_fsm() {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
-                if(ghosts[idx]->active == ACTIVE) {
+                if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
+                    // stop so we could decide to "sacar pies en polvorosa"
+                    ghosts[idx]->dx = 0;
+                    ghosts[idx]->dy = 0;
+
                     ghosts[idx]->active = ELUDE;
                     ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
                     sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
