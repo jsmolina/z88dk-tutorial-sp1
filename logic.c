@@ -1,6 +1,7 @@
 #include "logic.h"
 #include "int.h"
 #include <sound.h>
+#include <input.h>
 
 uint8_t get_map_color(uint8_t current) {
     if(current == I) {
@@ -58,6 +59,23 @@ void show_cherry() {
     cherry.y = 21;
     cherry.x = 14;
     cherry.showing = 100;
+
+    if(level == 0) {
+        cherry.offset = CHERRY;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
+    } else if(level == 1) {
+        cherry.offset = STRAWBERRY;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
+    } else if(level == 2) {
+        cherry.offset = COCKTAIL;
+        sp1_IterateSprChar(cherry.sp, initialiseColourRedYellowWhiteCyan);
+    } else if(level == 3) {
+        cherry.offset = APPLE;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGhostRed);
+    } else if (level == 4) {
+        cherry.offset = PEAR;
+        sp1_IterateSprChar(cherry.sp, initialiseColourGreen);
+    }
 }
 
 void hide_cherry() {
@@ -345,6 +363,11 @@ void next_level() {
     if (speed > 1) {
         --speed;
     }
+
+    ++level;
+    if(level == 5) {
+        level = 0;
+    }
 }
 
 
@@ -375,7 +398,11 @@ void check_fsm() {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
-                if(ghosts[idx]->active == ACTIVE) {
+                if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
+                    // stop so we could decide to "sacar pies en polvorosa"
+                    ghosts[idx]->dx = 0;
+                    ghosts[idx]->dy = 0;
+
                     ghosts[idx]->active = ELUDE;
                     ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
                     sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
@@ -477,5 +504,19 @@ void check_fsm() {
     if(remaining_points == 0) {
         // level finished!
         next_level();
+    }
+
+    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        show_cherry();
+    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
+        level = 2;
+        show_cherry();
+    }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        show_cherry();
+    }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
+        level = 4;
+        show_cherry();
     }
 }

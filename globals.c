@@ -20,7 +20,7 @@ uint8_t map[25][32] = {
 {E,A,A,A,A,T,I,0,X,A,A,A,T,I,0,E,F,I,0,S,A,A,A,W,I,0,S,A,A,A,A,F},
 {0,0,0,0,0,0,I,0,B,0,0,0,0,I,0,0,0,I,0,0,0,0,0,B,I,0,0,0,0,0,0,0},
 {0,I,I,I,I,I,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,I,I,I,I,I,0,0},
-{C,A,A,A,A,T,I,0,B,I,0,C,A,A,A,Y,Y,A,A,A,D,I,0,B,I,0,S,A,A,A,A,D},
+{C,A,A,A,A,T,I,0,B,I,0,C,A,A,T,Y,Y,S,A,A,D,I,0,B,I,0,S,A,A,A,A,D},
 {B,0,0,0,0,0,I,0,B,I,0,B,0,0,0,0,0,0,0,0,B,I,0,B,I,0,0,0,0,0,0,B},
 {B,I,I,I,I,I,I,0,B,I,0,B,0,0,0,0,0,0,0,0,B,I,0,B,I,I,I,I,I,I,0,B},
 {B,I,0,C,A,D,I,0,V,I,0,E,A,A,A,A,A,A,A,A,F,I,0,V,I,0,C,A,D,I,0,B},
@@ -62,6 +62,7 @@ uint8_t remaining_points;
 uint8_t frame = 0;
 
 uint8_t lives = 0;
+uint8_t level = 0;
 uint8_t repaint_lives = 1;
 uint8_t speed;
 uint8_t idx;

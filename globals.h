@@ -68,6 +68,12 @@
 #define X 24
 #define Y 25
 
+#define CHERRY 1
+#define STRAWBERRY 33
+#define COCKTAIL 65
+#define APPLE 97
+#define PEAR 129
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
@@ -172,6 +178,7 @@ extern uint8_t speed;
 extern uint8_t frame;
 
 extern uint8_t lives;
+extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
 extern struct sprite * collided_sprite;

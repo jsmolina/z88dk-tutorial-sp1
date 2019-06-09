@@ -20,6 +20,7 @@ void all_lives_lost() {
   sp1_Invalidate(&full_screen);
   lives = 5;
   points = 0;
+  level = 0;
   speed = 6;
   nampac_go_home();
   repaint_lives = 1;
@@ -130,7 +131,7 @@ int main()
           sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
      }
      if(cherry.showing != 0) {
-         sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
+         sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) cherry.offset, cherry.y, cherry.x, 0, 0);
      }
 
      if(repaint_lives) {
