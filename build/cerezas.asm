@@ -18,6 +18,7 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
  defb @00000000
+ defb @00000000
  defb @00000001
  defb @00000010
  defb @00000100
@@ -28,7 +29,6 @@ PUBLIC _cerezas1
  defb @01111010
  defb @01100110
  defb @00111110
- defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -48,6 +48,7 @@ PUBLIC _cerezas1
  defb @00000000
 
 ._cerezas1_f2
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -71,7 +72,6 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -83,6 +83,7 @@ PUBLIC _cerezas1
  defb @00000000
 
 ._cerezas1_f3
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -106,7 +107,6 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -118,6 +118,7 @@ PUBLIC _cerezas1
  defb @00000000
 
 ._cerezas1_f4
+ defb @00000000
  defb @00000000
  defb @00000110
  defb @00000010
@@ -141,7 +142,6 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -153,6 +153,7 @@ PUBLIC _cerezas1
  defb @00000000
 
 ._cerezas1_f5
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000001
@@ -176,7 +177,6 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -190,6 +190,7 @@ PUBLIC _cerezas1
 PUBLIC _cerezas2
 ._cerezas2
 
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000110
@@ -213,7 +214,6 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -225,6 +225,7 @@ PUBLIC _cerezas2
  defb @00000000
 
 ._cerezas2_f2
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -248,7 +249,6 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -260,6 +260,7 @@ PUBLIC _cerezas2
  defb @00000000
 
 ._cerezas2_f3
+ defb @00000000
  defb @00010000
  defb @00100000
  defb @01000000
@@ -283,7 +284,6 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -295,6 +295,7 @@ PUBLIC _cerezas2
  defb @00000000
 
 ._cerezas2_f4
+ defb @00000000
  defb @00000000
  defb @01100000
  defb @11000000
@@ -318,7 +319,6 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
  defb @00000000
- defb @00000000
 
  defb @00000000
  defb @00000000
@@ -330,6 +330,7 @@ PUBLIC _cerezas2
  defb @00000000
 
 ._cerezas2_f5
+ defb @00000000
  defb @00000000
  defb @11000000
  defb @00000000
@@ -346,7 +347,6 @@ PUBLIC _cerezas2
  defb @00110000
  defb @01100000
  defb @11000000
- defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000

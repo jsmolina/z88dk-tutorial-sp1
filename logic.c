@@ -503,6 +503,16 @@ void check_fsm() {
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        show_cherry();
+    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
+        level = 2;
+        show_cherry();
+    }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
+        level = 3;
+        show_cherry();
+    }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
+        level = 4;
         show_cherry();
     }
 }
