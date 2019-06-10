@@ -507,8 +507,7 @@ void check_fsm() {
     }
 
     if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-        level = 1;
-        show_cherry();
+        sp1_MoveSprAbs(billboard, &full_screen, (void *) READY, 7, 12, 0, 0);
     } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         show_cherry();

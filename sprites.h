@@ -16,6 +16,7 @@ extern struct sp1_ss * add_ghost_cyan_sprite();
 extern struct sp1_ss * add_ghost_magenta_sprite();
 extern struct sp1_ss * add_ghost_yellow_sprite();
 extern struct sp1_ss * add_cherry_sprite();
+extern struct sp1_ss * add_billboard_sprite();
 
 extern void initialiseColourBlue(unsigned int count, struct sp1_cs *c);
 extern void initialiseColourWhite(unsigned int count, struct sp1_cs *c);

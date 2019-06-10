@@ -74,6 +74,9 @@
 #define APPLE 97
 #define PEAR 129
 
+#define GAME_OVER 1
+#define READY 25
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
@@ -164,6 +167,7 @@ extern struct sprite ghost_magenta;
 extern struct sprite ghost_yellow;
 extern struct sprite * ghosts[4];
 extern struct bonus cherry;
+extern struct sp1_ss* billboard;
 
 extern JOYFUNC joy;
 extern udk_t joy_keys;
@@ -182,6 +186,17 @@ extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
 extern struct sprite * collided_sprite;
+
+// billboard (game over / ready)
+extern uint8_t letterboxes1[];
+extern uint8_t letterboxes2[];
+extern uint8_t letterboxes3[];
+extern uint8_t letterboxes4[];
+extern uint8_t letterboxes5[];
+extern uint8_t letterboxes6[];
+extern uint8_t letterboxes7[];
+extern uint8_t letterboxes8[];
+extern uint8_t letterboxes9[];
 
 #endif
 
