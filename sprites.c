@@ -148,7 +148,5 @@ struct sp1_ss * add_billboard_sprite() {
 
   sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
 
-  sp1_IterateSprChar(sp, initialiseColourYellow);
-
   return sp;
 }

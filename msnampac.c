@@ -54,6 +54,7 @@ void all_lives_lost() {
   sp1_UpdateNow();
 
   uint16_t has_kempston = in_stick_kempston();
+  show_billboard(GAME_OVER);
 
    while(1) {
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
@@ -65,6 +66,7 @@ void all_lives_lost() {
       }
   }
   srand(tick);
+  hide_billboard();
   pick = 1;
 
 }
