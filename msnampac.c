@@ -21,7 +21,6 @@ void all_lives_lost() {
   lives = 5;
   points = 0;
   level = 0;
-  speed = 6;
   nampac_go_home();
   repaint_lives = 1;
 
@@ -54,7 +53,11 @@ void all_lives_lost() {
   sp1_UpdateNow();
 
   uint16_t has_kempston = in_stick_kempston();
-  show_billboard(GAME_OVER);
+  if(speed == 0) {
+    show_billboard(READY);
+  } else {
+    show_billboard(GAME_OVER);
+  }
 
    while(1) {
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
@@ -68,7 +71,7 @@ void all_lives_lost() {
   srand(tick);
   hide_billboard();
   pick = 1;
-
+  speed = 6;
 }
 
 
@@ -117,6 +120,9 @@ int main()
 
   // painting an UDG is just assigning it to any char
   // row, col, char
+
+  // call it to initialize vars
+  all_lives_lost();
 
   zx_border(INK_WHITE);
 
