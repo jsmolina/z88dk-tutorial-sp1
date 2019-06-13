@@ -54,6 +54,7 @@ void all_lives_lost() {
   sp1_UpdateNow();
 
   uint16_t has_kempston = in_stick_kempston();
+  show_billboard(GAME_OVER);
 
    while(1) {
       if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
@@ -65,6 +66,7 @@ void all_lives_lost() {
       }
   }
   srand(tick);
+  hide_billboard();
   pick = 1;
 
 }
@@ -105,6 +107,7 @@ int main()
   pacman.offset = 1;
   pacman.currentoffset = 1;
 
+  billboard = add_billboard_sprite();
   ghost_red.sp = add_ghost_sprite();
   ghost_cyan.sp = add_ghost_sprite();
   ghost_magenta.sp = add_ghost_sprite();

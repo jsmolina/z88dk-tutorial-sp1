@@ -45,6 +45,7 @@ struct sprite ghost_cyan;
 struct sprite ghost_magenta;
 struct sprite ghost_yellow;
 struct bonus cherry;
+struct sp1_ss* billboard;
 
 struct sprite * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
 

@@ -20,4 +20,6 @@ extern void nampac_go_home();
 extern void all_ghosts_go_home();
 extern void reset_map();
 extern void set_ghosts_offsets();
+extern void show_billboard(uint8_t offset);
+extern void hide_billboard();
 #endif

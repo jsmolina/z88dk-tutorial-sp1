@@ -3,6 +3,23 @@
 #include <sound.h>
 #include <input.h>
 
+
+void show_billboard(uint8_t offset) {
+    if(offset == READY) {
+        sp1_IterateSprChar(billboard, initialiseColourYellow);
+    } else {
+        sp1_IterateSprChar(billboard, initialiseColourGhostRed);
+    }
+
+    sp1_MoveSprAbs(billboard, &full_screen, (void *) offset, 18, 11, 0, 0);
+    sp1_UpdateNow();
+}
+
+void hide_billboard() {
+    sp1_MoveSprAbs(billboard, &full_screen, (void *) READY, 18, 32, 0, 0);
+}
+
+
 uint8_t get_map_color(uint8_t current) {
     if(current == I) {
         return INK_WHITE;
@@ -145,6 +162,10 @@ void loose_a_live() {
     sp1_UpdateNow();
 
     nampac_go_home();
+
+    show_billboard(READY);
+    in_wait_key();
+    hide_billboard();
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -440,6 +461,7 @@ void check_fsm() {
 
     // IA FOR GHOSTS
     for(idx = 0; idx != 4; ++idx) {
+        random_value = rand();
         if(ghosts[idx]->active == JAILED_EXITING) {
             if(points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, 12);
@@ -506,10 +528,7 @@ void check_fsm() {
         next_level();
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-        level = 1;
-        show_cherry();
-    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
+    if(in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         show_cherry();
     }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
