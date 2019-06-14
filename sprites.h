@@ -27,5 +27,6 @@ extern void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c);
 extern void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c);
 extern void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c);
 extern void initialiseColourGreen(unsigned int count, struct sp1_cs *c);
+extern void initialiseColourRedApple(unsigned int count, struct sp1_cs *c);
 
 #endif

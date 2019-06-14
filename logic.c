@@ -88,7 +88,7 @@ void show_cherry() {
         sp1_IterateSprChar(cherry.sp, initialiseColourRedYellowWhiteCyan);
     } else if(level == 3) {
         cherry.offset = APPLE;
-        sp1_IterateSprChar(cherry.sp, initialiseColourGhostRed);
+        sp1_IterateSprChar(cherry.sp, initialiseColourRedApple);
     } else if (level == 4) {
         cherry.offset = PEAR;
         sp1_IterateSprChar(cherry.sp, initialiseColourGreen);
@@ -528,7 +528,10 @@ void check_fsm() {
         next_level();
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_2)) {
+    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+        level = 1;
+        show_cherry();
+    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
         level = 2;
         show_cherry();
     }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
