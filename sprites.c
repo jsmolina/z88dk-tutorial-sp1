@@ -55,6 +55,19 @@ void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c)
     c->attr      = INK_MAGENTA;
 }
 
+void initialiseColourRedApple(unsigned int count, struct sp1_cs *c)
+{
+  // count defines each 8x8 block in the sprite, and thus it is possible to have a
+  // multicolor sprite in 8x8 blocks
+    if(count == 1 || count == 4) {
+        c->attr      = INK_RED;
+    } else {
+        c->attr      = INK_RED | BRIGHT;
+    }
+
+    c->attr_mask = SP1_AMASK_INK;
+}
+
 struct sp1_ss * add_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
@@ -97,13 +110,20 @@ void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c)
   } else {
      c->attr      = INK_RED;
   }
+
+  if (count != 1 && count != 4) {
+     c->attr     |= BRIGHT;
+  }
 }
 
 void initialiseColourGreen(unsigned int count, struct sp1_cs *c)
 {
-  (void)count;
-  c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_GREEN;
+    c->attr_mask = SP1_AMASK_INK;
+    if(count == 1 || count == 4) {
+        c->attr      = INK_GREEN;
+    } else {
+        c->attr      = INK_GREEN | BRIGHT;
+    }
 
 }
 
