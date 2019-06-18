@@ -104,6 +104,7 @@ int main()
   sp1_TileEntry('w', union_left);
   sp1_TileEntry('x', union_right);
   sp1_TileEntry('y', door);
+  sp1_TileEntry('z', vidas);
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
@@ -144,7 +145,7 @@ int main()
      }
 
      if(repaint_lives) {
-        sp1_PrintAtInv(0, 8, INK_CYAN | PAPER_BLACK, 48 + lives);
+        paint_lives();
         repaint_lives = 0;
      }
 

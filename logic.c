@@ -55,18 +55,14 @@ void reset_map() {
 
   }
 
-  sp1_PrintAtInv(0, 19, INK_RED | PAPER_BLACK, 'P');
-  sp1_PrintAtInv(0, 20, INK_RED | PAPER_BLACK, 'O');
-  sp1_PrintAtInv(0, 21, INK_RED | PAPER_BLACK, 'I');
-  sp1_PrintAtInv(0, 22, INK_RED | PAPER_BLACK, 'N');
-  sp1_PrintAtInv(0, 23, INK_RED | PAPER_BLACK, 'T');
-  sp1_PrintAtInv(0, 24, INK_RED | PAPER_BLACK, 'S');
+  sp1_PrintAtInv(0, 22, INK_WHITE | PAPER_BLACK, 'H');
+  sp1_PrintAtInv(0, 23, INK_WHITE | PAPER_BLACK, 'I');
+  sp1_PrintAtInv(0, 24, INK_WHITE | PAPER_BLACK, '-');
 
-  sp1_PrintAt(0, 2, INK_RED | PAPER_BLACK, 'L');
-  sp1_PrintAt(0, 3, INK_RED | PAPER_BLACK, 'I');
-  sp1_PrintAt(0, 4, INK_RED | PAPER_BLACK, 'V');
-  sp1_PrintAt(0, 5, INK_RED | PAPER_BLACK, 'E');
-  sp1_PrintAt(0, 6, INK_RED | PAPER_BLACK, 'S');
+  sp1_PrintAt(0, 2, INK_WHITE | PAPER_BLACK, '1');
+  sp1_PrintAt(0, 3, INK_WHITE | PAPER_BLACK, 'U');
+  sp1_PrintAt(0, 4, INK_WHITE | PAPER_BLACK, 'P');
+  sp1_PrintAt(0, 5, INK_WHITE | PAPER_BLACK, '-');
   // as points are restored...
   remaining_points = 238;
 
@@ -540,5 +536,15 @@ void check_fsm() {
     }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
         level = 4;
         show_cherry();
+    }
+}
+
+void paint_lives() {
+    for(idx = 0; idx != 6; ++idx) {
+        if(idx < lives) {
+            sp1_PrintAtInv(0, 6 + idx, INK_YELLOW | PAPER_BLACK | BRIGHT, 'z');
+        } else {
+            sp1_PrintAtInv(0, 6 + idx, INK_BLUE | PAPER_BLACK, 'a');
+        }
     }
 }

@@ -198,5 +198,7 @@ extern uint8_t letterboxes7[];
 extern uint8_t letterboxes8[];
 extern uint8_t letterboxes9[];
 
+extern uint8_t vidas[];
+
 #endif
 
