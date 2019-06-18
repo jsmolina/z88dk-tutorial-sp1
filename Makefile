@@ -18,6 +18,7 @@ compile:
 	png2udg ./build/union_left.png -a > ./build/union_left.asm
 	png2udg ./build/door.png -a > ./build/door.asm
 	png2udg ./build/ghostpill.png -a > ./build/ghostpill.asm
+	png2udg ./build/vidas.png -a > ./build/vidas.asm
 	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	png2sp1sprite ./build/prota_dead.png -b -i sprite_protar_dead -f 16 -s rodata_user > ./build/prota_dead.asm
 	png2sp1sprite ./build/red_ghost.png -b -i red_ghost -f 16 -s rodata_user > ./build/red_ghost.asm
