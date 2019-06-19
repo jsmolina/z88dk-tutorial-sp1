@@ -124,7 +124,7 @@ void check_keys()
 void all_ghosts_go_home() {
     uint8_t i;
     for(i = 0; i != 4; ++i) {
-        set_eaten(ghosts[i]);
+        init_ghost(ghosts[i]);
     }
 }
 
@@ -185,6 +185,14 @@ void reset_colors(struct sprite * for_who) {
 }
 
 void set_eaten(struct sprite * for_who) {
+    for_who->active = GETTING_JAILED;
+    for_who->offset = GHOST_EYES;
+    for_who->dx = 0;
+    for_who->dy = 0;
+    reset_colors(for_who);
+}
+
+void init_ghost(struct sprite * for_who) {
     for_who->x = for_who->default_x;
     for_who->y = for_who->default_y;
     for_who->active = JAILED;
@@ -271,6 +279,28 @@ void then_go(uint8_t dir) {
 }
 
 void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    if(ghosts[idx]->active == GETTING_JAILED) {
+        if(ghosts[idx]->default_y == ghosts[idx]->y && ghosts[idx]->default_x == ghosts[idx]->x) {
+            ghosts[idx]->active = JAILED;
+            return;
+        }
+
+        if(ghosts[idx]->default_y  > ghosts[idx]->y && could_go(DIR_DOWN) ) {
+            then_go(DIR_DOWN);
+        } else if(ghosts[idx]->default_y  < ghosts[idx]->y && could_go(DIR_UP) ) {
+            then_go(DIR_UP);
+        }
+
+        if(ghosts[idx]->default_x  > ghosts[idx]->x && could_go(DIR_RIGHT) ) {
+            then_go(DIR_RIGHT);
+        } else if(ghosts[idx]->default_x  < ghosts[idx]->x && could_go(DIR_LEFT) ) {
+            then_go(DIR_LEFT);
+        }
+
+
+        return;
+    }
+
     // first check collisions
     if(ghosts[idx]->active == ELUDE) {
         // check collission before move
@@ -462,7 +492,7 @@ void check_fsm() {
             if(points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, 12);
             }
-        } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
+        } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE || ghosts[idx]->active == GETTING_JAILED) {
             move_ghosts();
         } else if(ghosts[idx]->active <= JAILED) {
             --ghosts[idx]->active;
@@ -476,12 +506,12 @@ void check_fsm() {
             }
         }
 
-        if(frame == 0) {
-            ghosts[idx]->offset = ghosts[idx]->currentoffset;
-        } else if(frame == 1) {
-            ghosts[idx]->offset = ghosts[idx]->currentoffset + 32;
-        } else if(frame == 2) {
-            ghosts[idx]->offset = ghosts[idx]->currentoffset;
+        if(ghosts[idx]->active != GETTING_JAILED) {
+            if(frame == 0 || frame == 2) {
+                ghosts[idx]->offset = ghosts[idx]->currentoffset;
+            } else if(frame == 1) {
+                ghosts[idx]->offset = ghosts[idx]->currentoffset + 32;
+            }
         }
     }
     // while has eaten pill
