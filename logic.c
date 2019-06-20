@@ -133,6 +133,7 @@ void nampac_go_home() {
     pacman.x = 14;
     pacman.offset = RIGHTC1;
     pacman.direction = NONE;
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
 }
 
 
