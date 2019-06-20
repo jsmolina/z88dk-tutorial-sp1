@@ -3,6 +3,7 @@
 ## Considerations before start
 * Do you want to make a 48k game or a 128k game?
 * Do you know how ZX Spectrum paging works?
+* Do you know what's a sprite mask?
 * Do you have read about IM2 interruptions? (ISR z88dk)
 * Read about `SECTION` and how to define public vars from ASM code `PUBLIC`
 * You'll need z88dk, of course, so you could download it from here: http://nightly.z88dk.org/
