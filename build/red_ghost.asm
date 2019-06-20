@@ -1,6 +1,6 @@
 SECTION rodata_user
 
-; Original: 160, 24 (=20 x 3 chars)
+; Original: 176, 24 (=22 x 3 chars)
 ; Blocks: 2
  defb @00000000
  defb @00000000
@@ -362,6 +362,41 @@ PUBLIC _red_ghost1
  defb @00000000
  defb @00000000
 
+._red_ghost1_f11
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00001100
+ defb @00010010
+ defb @00010010
+ defb @00001100
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
 PUBLIC _red_ghost2
 ._red_ghost2
 
@@ -697,6 +732,41 @@ PUBLIC _red_ghost2
  defb @11111110
  defb @01110110
  defb @01100010
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+
+._red_ghost2_f11
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00110000
+ defb @01001000
+ defb @01001000
+ defb @00110000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000

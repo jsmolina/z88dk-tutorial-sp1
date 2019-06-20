@@ -34,6 +34,7 @@
 #define GHOST_MAGENTA2 225
 #define GHOST_FRIGHTENED 257
 #define GHOST_FRIGHTENED2 289
+#define GHOST_EYES 321
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -42,6 +43,7 @@
 #define NONE 250
 #define ELUDE 25
 #define JAILED 20
+#define GETTING_JAILED 30
 #define JAILED_EXITING 1
 #define ACTIVE 0
 
