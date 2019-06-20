@@ -5,7 +5,7 @@ void initialiseColourBlue(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
   c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_BLUE;
+  c->attr      = INK_BLUE | BRIGHT;
 }
 
 void initialiseColourWhite(unsigned int count, struct sp1_cs *c)
@@ -21,7 +21,7 @@ void initialiseColourYellow(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
   c->attr_mask = SP1_AMASK_INK;
-  c->attr      = INK_YELLOW;
+  c->attr      = INK_YELLOW | BRIGHT;
 }
 
 void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c)
@@ -32,7 +32,7 @@ void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c)
 
     c->attr_mask = SP1_AMASK_INK;
 
-    c->attr      = INK_RED;
+    c->attr      = INK_RED | BRIGHT;
 }
 
 void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c)
@@ -42,7 +42,7 @@ void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
     c->attr_mask = SP1_AMASK_INK;
-    c->attr      = INK_CYAN;
+    c->attr      = INK_CYAN | BRIGHT;
 }
 
 void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c)
@@ -52,7 +52,7 @@ void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c)
   (void)count;    /* Suppress compiler warning about unused parameter */
 
     c->attr_mask = SP1_AMASK_INK;
-    c->attr      = INK_MAGENTA;
+    c->attr      = INK_MAGENTA | BRIGHT;
 }
 
 void initialiseColourRedApple(unsigned int count, struct sp1_cs *c)
