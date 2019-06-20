@@ -392,5 +392,8 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 `Zx_print_ink _border for colours`
 ``` 
 
+### Masks
+Masks should have at least one pixel bordering the sprite... TODO
+
 ### Credits
 Credits to jarlaxe for the graphics.
