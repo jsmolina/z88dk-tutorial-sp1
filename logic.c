@@ -158,10 +158,11 @@ void loose_a_live() {
     sp1_UpdateNow();
 
     nampac_go_home();
-
-    show_billboard(READY);
-    in_wait_key();
-    hide_billboard();
+    if(lives > 0) {
+        show_billboard(READY);
+        in_wait_key();
+        hide_billboard();
+    }
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -285,16 +286,16 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             return;
         }
 
-        if(ghosts[idx]->default_y  > ghosts[idx]->y && could_go(DIR_DOWN) ) {
-            then_go(DIR_DOWN);
-        } else if(ghosts[idx]->default_y  < ghosts[idx]->y && could_go(DIR_UP) ) {
-            then_go(DIR_UP);
+        if(ghosts[idx]->default_y  > ghosts[idx]->y) {
+            ++ghosts[idx]->y;
+        } else if(ghosts[idx]->default_y  < ghosts[idx]->y ) {
+            --ghosts[idx]->y;
         }
 
-        if(ghosts[idx]->default_x  > ghosts[idx]->x && could_go(DIR_RIGHT) ) {
-            then_go(DIR_RIGHT);
-        } else if(ghosts[idx]->default_x  < ghosts[idx]->x && could_go(DIR_LEFT) ) {
-            then_go(DIR_LEFT);
+        if(ghosts[idx]->default_x  > ghosts[idx]->x  ) {
+            ++ghosts[idx]->x;
+        } else if(ghosts[idx]->default_x  < ghosts[idx]->x ) {
+            --ghosts[idx]->x;
         }
 
 
@@ -347,6 +348,10 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         } else if(allow_next(map[row + ghosts[idx]->dy][ghosts[idx]->x + ghosts[idx]->dx])) {
             ghosts[idx]->x += ghosts[idx]->dx;
             ghosts[idx]->y += ghosts[idx]->dy;
+        } else {
+            // not found a decision, re-randomize
+            random_value = rand();
+            move_one_ghost(t1, t2, t3, t4);
         }
 
         // make ghost flicker if elude mode and almost finishing pill eaten
@@ -371,6 +376,10 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         } else if(allow_next(map[row + ghosts[idx]->dy][ghosts[idx]->x + ghosts[idx]->dx])) {
             ghosts[idx]->x += ghosts[idx]->dx;
             ghosts[idx]->y += ghosts[idx]->dy;
+        } else {
+            // not found a decision, re-randomize
+            random_value = rand();
+            move_one_ghost(t1, t2, t3, t4);
         }
     }
 
