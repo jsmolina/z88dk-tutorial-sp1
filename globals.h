@@ -83,20 +83,6 @@
 extern struct sp1_Rect full_screen;
 
 // globals are supposed to generate less code and with 128k of memory it's important
-struct sprite {
-    struct sp1_ss* sp;
-    struct sp1_ss* alt;
-    uint8_t x;
-    uint8_t y;
-    uint16_t offset;
-    uint16_t currentoffset;
-    uint8_t active;
-    int8_t dx;
-    int8_t dy;
-    uint8_t default_x;
-    uint8_t default_y;
-    void *default_color;
-};
 
 struct spritep {
     struct sp1_ss* sp;
@@ -109,6 +95,7 @@ struct spritep {
     uint8_t direction;
     uint8_t default_x;
     uint8_t default_y;
+    uint8_t last_dir;
     void *default_color;
 };
 
@@ -163,11 +150,11 @@ extern uint8_t random_value;
 
 extern uint8_t pill_eaten;
 extern struct spritep pacman;
-extern struct sprite ghost_red;
-extern struct sprite ghost_cyan;
-extern struct sprite ghost_magenta;
-extern struct sprite ghost_yellow;
-extern struct sprite * ghosts[4];
+extern struct spritep ghost_red;
+extern struct spritep ghost_cyan;
+extern struct spritep ghost_magenta;
+extern struct spritep ghost_yellow;
+extern struct spritep * ghosts[4];
 extern struct bonus cherry;
 extern struct sp1_ss* billboard;
 
@@ -187,7 +174,7 @@ extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
-extern struct sprite * collided_sprite;
+extern struct spritep * collided_sprite;
 
 // billboard (game over / ready)
 extern uint8_t letterboxes1[];
