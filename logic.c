@@ -285,19 +285,13 @@ uint8_t move_ghost_in_his_direction() {
 void try_ghost_random(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 // 10, 20, 30, 40
     // then if not moved, decide direction, first based on random params
-    if((random_value > 0 && random_value < t1) && could_go(DIR_RIGHT)) {
+    if((random_value < t1) && could_go(DIR_RIGHT)) {
         then_go(DIR_RIGHT);
-    }
-
-    if((random_value > t1 && random_value < t2) && could_go(DIR_LEFT)) {
+    } else if((random_value < t2) && could_go(DIR_LEFT)) {
         then_go(DIR_LEFT);
-    }
-
-    if((random_value > t2 && random_value < t3) && could_go(DIR_DOWN)) {
+    } else if((random_value < t3) && could_go(DIR_DOWN)) {
         then_go(DIR_DOWN);
-    }
-
-    if((random_value > t3 && random_value < t4) && could_go(DIR_UP)) {
+    } else if((random_value < t4) && could_go(DIR_UP)) {
         then_go(DIR_UP);
     }
 
@@ -384,13 +378,13 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 
     if(ghosts[idx]->direction == NONE) {
         random_value = rand();
-        if(random_value < 63 && could_go(DIR_UP)) {
+        if(random_value < t1 && could_go(DIR_UP)) {
             then_go(DIR_UP);
-        } else if(random_value < 126 && could_go(DIR_DOWN)) {
+        } else if(random_value < t2 && could_go(DIR_DOWN)) {
             then_go(DIR_DOWN);
-        } else if(random_value < 189 && could_go(DIR_LEFT)) {
+        } else if(random_value < t3 && could_go(DIR_LEFT)) {
             then_go(DIR_LEFT);
-        } else if(random_value < 252 && could_go(DIR_RIGHT)) {
+        } else if(random_value < t4 && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
         }
     }
