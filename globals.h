@@ -79,6 +79,9 @@
 #define GAME_OVER 1
 #define READY 25
 
+#define POINTS_100 1
+#define POINTS_200 25
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
@@ -113,6 +116,10 @@ extern uint8_t sprite_protar2[];
 
 extern uint8_t sprite_protar_dead1[];
 extern uint8_t sprite_protar_dead2[];
+
+// points
+extern uint8_t puntos1[];
+extern uint8_t puntos2[];
 
 // extra
 extern uint8_t cerezas1[];
@@ -157,6 +164,7 @@ extern struct spritep ghost_yellow;
 extern struct spritep * ghosts[4];
 extern struct bonus cherry;
 extern struct sp1_ss* billboard;
+extern struct sp1_ss* points_sp;
 
 extern JOYFUNC joy;
 extern udk_t joy_keys;

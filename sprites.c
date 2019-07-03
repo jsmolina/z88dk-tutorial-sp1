@@ -16,6 +16,14 @@ void initialiseColourWhite(unsigned int count, struct sp1_cs *c)
   c->attr      = INK_WHITE;
 }
 
+void initialiseColourWhiteBright(unsigned int count, struct sp1_cs *c)
+{
+  (void)count;    /* Suppress compiler warning about unused parameter */
+
+  c->attr_mask = SP1_AMASK_INK;
+  c->attr      = INK_WHITE | BRIGHT;
+}
+
 void initialiseColourYellow(unsigned int count, struct sp1_cs *c)
 {
   (void)count;    /* Suppress compiler warning about unused parameter */
@@ -68,40 +76,6 @@ void initialiseColourRedApple(unsigned int count, struct sp1_cs *c)
     c->attr_mask = SP1_AMASK_INK;
 }
 
-struct sp1_ss * add_sprite() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_protar2, 1);
-
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
-
-  sp1_IterateSprChar(sp, initialiseColourYellow);
-
-  return sp;
-}
-
-struct sp1_ss * add_dead_prota_sprite() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar_dead1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_protar_dead2, 1);
-
-  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
-
-  sp1_IterateSprChar(sp, initialiseColourYellow);
-
-  return sp;
-}
-
-struct sp1_ss * add_ghost_sprite() {
-  struct sp1_ss * sp;
-  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
-
-  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
-
-  return sp;
-}
-
 void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c)
 {
   c->attr_mask = SP1_AMASK_INK;
@@ -141,6 +115,41 @@ void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c)
   }
 }
 
+
+struct sp1_ss * add_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)sprite_protar2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourYellow);
+
+  return sp;
+}
+
+struct sp1_ss * add_dead_prota_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_XOR1LB, SP1_TYPE_1BYTE, 3, (int)sprite_protar_dead1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1,    SP1_TYPE_1BYTE, (int)sprite_protar_dead2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_XOR1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourYellow);
+
+  return sp;
+}
+
+struct sp1_ss * add_ghost_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)red_ghost1, 1);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)red_ghost2, 1);
+
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  return sp;
+}
+
 struct sp1_ss * add_cherry_sprite() {
   struct sp1_ss * sp;
   sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)cerezas1, 1);
@@ -167,6 +176,17 @@ struct sp1_ss * add_billboard_sprite() {
   sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)letterboxes9, 2);
 
   sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  return sp;
+}
+
+struct sp1_ss * add_points_sprite() {
+  struct sp1_ss * sp;
+  sp = sp1_CreateSpr(SP1_DRAW_LOAD1LB, SP1_TYPE_1BYTE, 3, (int)puntos1, 2);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1,    SP1_TYPE_1BYTE, (int)puntos2, 2);
+  sp1_AddColSpr(sp, SP1_DRAW_LOAD1RB,  SP1_TYPE_1BYTE, 0, 0);
+
+  sp1_IterateSprChar(sp, initialiseColourWhiteBright);
 
   return sp;
 }

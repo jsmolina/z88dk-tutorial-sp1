@@ -111,6 +111,7 @@ int main()
   pacman.offset = 1;
   pacman.currentoffset = 1;
 
+  points_sp = add_points_sprite();
   billboard = add_billboard_sprite();
   ghost_red.sp = add_ghost_sprite();
   ghost_cyan.sp = add_ghost_sprite();

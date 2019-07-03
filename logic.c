@@ -555,7 +555,13 @@ void check_fsm() {
     if(cherry.showing > 0) {
         if(pacman.x == cherry.x && pacman.y == cherry.y) {
             hide_cherry();
-            points += 10;
+            sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 21, 14, 0, 0);
+            sp1_UpdateNow();
+            bit_beep(10, 1200);
+            zx_border(INK_BLACK);
+            // hide after some iterations...
+            sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 32, 14, 0, 0);
+            points += 100;
         }
         --cherry.showing;
         if(cherry.showing == 0) {
