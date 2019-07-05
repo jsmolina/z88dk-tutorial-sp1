@@ -150,6 +150,13 @@ int main()
         repaint_lives = 0;
      }
 
+     if(showing_points != NONE) {
+        --showing_points;
+        if (showing_points == 0) {
+            hide_points();
+        }
+     }
+
      sp1_UpdateNow();
 
      frame += 1;

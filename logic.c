@@ -98,6 +98,15 @@ void hide_cherry() {
     sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
 }
 
+void show_points(uint8_t y, uint8_t x) {
+    sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, y, x, 0, 0);
+    sp1_UpdateNow();
+    showing_points = 10;
+}
+
+void hide_points() {
+    sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 32, 14, 0, 0);
+}
 
 void check_keys()
 {
@@ -140,6 +149,7 @@ void nampac_go_home() {
 void loose_a_live() {
     uint8_t i, j;
     hide_cherry();
+    hide_points();
     repaint_lives = 1;
     --lives;
     all_ghosts_go_home();
@@ -555,12 +565,9 @@ void check_fsm() {
     if(cherry.showing > 0) {
         if(pacman.x == cherry.x && pacman.y == cherry.y) {
             hide_cherry();
-            sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 21, 14, 0, 0);
-            sp1_UpdateNow();
             bit_beep(10, 1200);
             zx_border(INK_BLACK);
-            // hide after some iterations...
-            sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 32, 14, 0, 0);
+            show_points(21, 14);
             points += 100;
         }
         --cherry.showing;

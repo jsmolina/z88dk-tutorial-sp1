@@ -67,5 +67,6 @@ uint8_t lives = 0;
 uint8_t level = 0;
 uint8_t repaint_lives = 1;
 uint8_t speed = 0;
+uint8_t showing_points = NONE;
 uint8_t idx;
 struct spritep * collided_sprite;

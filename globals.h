@@ -177,6 +177,7 @@ extern uint16_t points;
 extern uint8_t remaining_points;
 extern uint8_t speed;
 extern uint8_t frame;
+extern uint8_t showing_points;
 
 extern uint8_t lives;
 extern uint8_t level;
