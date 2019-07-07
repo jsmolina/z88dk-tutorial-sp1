@@ -201,6 +201,7 @@ void set_eaten(struct spritep * for_who) {
     for_who->offset = GHOST_EYES;
     for_who->direction = NONE;
     for_who->last_dir = NONE;
+    show_points(for_who->y, for_who->x);
     reset_colors(for_who);
 }
 
@@ -359,7 +360,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
     }
 
     if(ghosts[idx]->active == ELUDE) {
-
+        // todo think on randomly change election
         // decide direcctions
         if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
@@ -369,8 +370,6 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             then_go(DIR_DOWN);
         } else if(pacman.y > ghosts[idx]->y && could_go(DIR_UP)) {
             then_go(DIR_UP);
-        } else {
-            try_ghost_random(t1, t2, t3, t4);
         }
     } else { // ACTIVE
         if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
@@ -381,9 +380,11 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             then_go(DIR_DOWN);
         } else if(pacman.y < ghosts[idx]->y && could_go(DIR_UP)) {
             then_go(DIR_UP);
-        } else {
-            try_ghost_random(t1, t2, t3, t4);
         }
+    }
+
+    if(ghosts[idx]->direction == NONE) {
+         try_ghost_random(t1, t2, t3, t4);
     }
 
     if(ghosts[idx]->direction == NONE) {
