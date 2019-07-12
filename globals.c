@@ -40,14 +40,15 @@ uint8_t map[25][32] = {
 
 uint8_t pill_eaten = NONE;
 struct spritep pacman;
-struct sprite ghost_red;
-struct sprite ghost_cyan;
-struct sprite ghost_magenta;
-struct sprite ghost_yellow;
+struct spritep ghost_red;
+struct spritep ghost_cyan;
+struct spritep ghost_magenta;
+struct spritep ghost_yellow;
 struct bonus cherry;
 struct sp1_ss* billboard;
+struct sp1_ss* points_sp;
 
-struct sprite * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
+struct spritep * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
 
 JOYFUNC joy;
 // redefine this array to allow define keys
@@ -66,5 +67,6 @@ uint8_t lives = 0;
 uint8_t level = 0;
 uint8_t repaint_lives = 1;
 uint8_t speed = 0;
+uint8_t showing_points = NONE;
 uint8_t idx;
-struct sprite * collided_sprite;
+struct spritep * collided_sprite;

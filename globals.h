@@ -79,24 +79,13 @@
 #define GAME_OVER 1
 #define READY 25
 
+#define POINTS_100 1
+#define POINTS_200 25
+
 // screen rectangle
 extern struct sp1_Rect full_screen;
 
 // globals are supposed to generate less code and with 128k of memory it's important
-struct sprite {
-    struct sp1_ss* sp;
-    struct sp1_ss* alt;
-    uint8_t x;
-    uint8_t y;
-    uint16_t offset;
-    uint16_t currentoffset;
-    uint8_t active;
-    int8_t dx;
-    int8_t dy;
-    uint8_t default_x;
-    uint8_t default_y;
-    void *default_color;
-};
 
 struct spritep {
     struct sp1_ss* sp;
@@ -109,6 +98,7 @@ struct spritep {
     uint8_t direction;
     uint8_t default_x;
     uint8_t default_y;
+    uint8_t last_dir;
     void *default_color;
 };
 
@@ -126,6 +116,10 @@ extern uint8_t sprite_protar2[];
 
 extern uint8_t sprite_protar_dead1[];
 extern uint8_t sprite_protar_dead2[];
+
+// points
+extern uint8_t puntos1[];
+extern uint8_t puntos2[];
 
 // extra
 extern uint8_t cerezas1[];
@@ -163,13 +157,14 @@ extern uint8_t random_value;
 
 extern uint8_t pill_eaten;
 extern struct spritep pacman;
-extern struct sprite ghost_red;
-extern struct sprite ghost_cyan;
-extern struct sprite ghost_magenta;
-extern struct sprite ghost_yellow;
-extern struct sprite * ghosts[4];
+extern struct spritep ghost_red;
+extern struct spritep ghost_cyan;
+extern struct spritep ghost_magenta;
+extern struct spritep ghost_yellow;
+extern struct spritep * ghosts[4];
 extern struct bonus cherry;
 extern struct sp1_ss* billboard;
+extern struct sp1_ss* points_sp;
 
 extern JOYFUNC joy;
 extern udk_t joy_keys;
@@ -182,12 +177,13 @@ extern uint16_t points;
 extern uint8_t remaining_points;
 extern uint8_t speed;
 extern uint8_t frame;
+extern uint8_t showing_points;
 
 extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
-extern struct sprite * collided_sprite;
+extern struct spritep * collided_sprite;
 
 // billboard (game over / ready)
 extern uint8_t letterboxes1[];

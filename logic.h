@@ -13,8 +13,8 @@
 
 extern void check_fsm();
 extern uint8_t allow_next(uint8_t next);
-extern void set_eaten(struct sprite * for_who);
-extern void init_ghost(struct sprite * for_who);
+extern void set_eaten(struct spritep * for_who);
+extern void init_ghost(struct spritep * for_who);
 extern void hide_cherry();
 extern void show_cherry();
 extern void nampac_go_home();
@@ -24,4 +24,5 @@ extern void set_ghosts_offsets();
 extern void show_billboard(uint8_t offset);
 extern void hide_billboard();
 extern void paint_lives() ;
+extern void hide_points();
 #endif
