@@ -362,14 +362,26 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
     if(ghosts[idx]->active == ELUDE) {
         // todo think on randomly change election
         // decide direcctions
-        if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
-            then_go(DIR_RIGHT);
-        } else if(pacman.x > ghosts[idx]->x && could_go(DIR_LEFT)) {
-            then_go(DIR_LEFT);
-        } else if(pacman.y < ghosts[idx]->y && could_go(DIR_DOWN)) {
-            then_go(DIR_DOWN);
-        } else if(pacman.y > ghosts[idx]->y && could_go(DIR_UP)) {
-            then_go(DIR_UP);
+        if(((frame + idx) & 1) == 0) {
+            if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
+                then_go(DIR_RIGHT);
+            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_LEFT)) {
+                then_go(DIR_LEFT);
+            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_DOWN)) {
+                then_go(DIR_DOWN);
+            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_UP)) {
+                then_go(DIR_UP);
+            }
+        } else {
+            if(pacman.x < ghosts[idx]->x && could_go(DIR_UP)) {
+                then_go(DIR_UP);
+            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_DOWN)) {
+                then_go(DIR_DOWN);
+            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_LEFT)) {
+                then_go(DIR_LEFT);
+            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_RIGHT)) {
+                then_go(DIR_RIGHT);
+            }
         }
     } else { // ACTIVE
         if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
