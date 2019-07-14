@@ -28,6 +28,7 @@ uint8_t get_map_color(uint8_t current) {
     } else if (current == Y) {
         return INK_WHITE;
     }
+    // INK_BLUE for level 1, INK_CYAN level2
     return INK_BLUE;
 }
 
@@ -49,7 +50,7 @@ void reset_map() {
         } else if(map[row][col] == 16) {
             map[row][col] = 9;
         }
-        current = map[row][col];
+        current = currentmap[(row * 32) + col]; // todo access currentmap
         sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
       }
 
@@ -474,7 +475,7 @@ void check_fsm() {
     check_keys();
 
     // pill eat
-    current = map[row][col];
+    current = currentmap[(row * 32) + col];
     if(current != 16 && current != 18) {
         map[row][col] = current + 7; // 9 + 7 = 16, 11 + 7 = 18
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');

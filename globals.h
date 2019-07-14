@@ -59,6 +59,7 @@
 #define F 6
 #define H 8
 #define I 9
+#define J 10    // esta bien un 10???
 #define K 11
 #define L 12
 #define M 13
@@ -139,6 +140,7 @@ extern uint8_t pill[];
 extern uint8_t vertileft[];
 extern uint8_t vertiright[];
 extern uint8_t topvertileft[];
+extern uint8_t bottomvertileft[];
 
 extern uint8_t terminal_left[];
 extern uint8_t terminal_right[];
@@ -153,6 +155,7 @@ extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 
 extern uint8_t map[25][32];
+extern uint8_t map2[25][32];
 extern uint8_t random_value;
 
 extern uint8_t pill_eaten;
@@ -197,6 +200,7 @@ extern uint8_t letterboxes8[];
 extern uint8_t letterboxes9[];
 
 extern uint8_t vidas[];
+extern uint8_t * currentmap;
 
 #endif
 

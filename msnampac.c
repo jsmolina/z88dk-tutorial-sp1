@@ -96,6 +96,8 @@ int main()
   sp1_TileEntry('l', vertiright);
   sp1_TileEntry('m', topvertileft);
 
+  sp1_TileEntry('j', bottomvertileft);
+
   sp1_TileEntry('s', terminal_left);
   sp1_TileEntry('t', terminal_right);
   sp1_TileEntry('u', terminal_up);
@@ -110,6 +112,7 @@ int main()
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
+  currentmap = &map[0][0];
 
   points_sp = add_points_sprite();
   billboard = add_billboard_sprite();

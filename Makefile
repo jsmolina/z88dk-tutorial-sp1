@@ -10,6 +10,7 @@ compile:
 	png2udg ./build/vertileft.png -a > ./build/vertileft.asm
 	png2udg ./build/vertiright.png -a > ./build/vertiright.asm
 	png2udg ./build/topvertileft.png -a > ./build/topvertileft.asm
+	png2udg ./build/bottomvertileft.png -a > ./build/bottomvertileft.asm
 	png2udg ./build/terminal_down.png -a > ./build/terminal_down.asm
 	png2udg ./build/terminal_right.png -a > ./build/terminal_right.asm
 	png2udg ./build/terminal_left.png -a > ./build/terminal_left.asm
