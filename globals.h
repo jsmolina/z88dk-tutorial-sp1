@@ -50,6 +50,9 @@
 #define AYCTRL 65533
 #define AYDATA 49149
 
+#define Y_GHOSTS_HOME_MAP1 15;
+#define Y_GHOSTS_HOME_MAP2  10;
+
 // map integer correspondence
 #define A 1
 #define B 2

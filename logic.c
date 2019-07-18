@@ -69,6 +69,20 @@ void reset_map() {
 
 }
 
+void set_ghosts_default_coords() {
+    current = 12;
+    for(idx = 0; idx != 4; ++idx) {
+        ghosts[idx]->default_x = current;
+        current = current + 2;
+
+        if((level & 1) == 0) {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP1;
+        } else {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP2;
+        }
+    }
+}
+
 void show_cherry() {
     cherry.y = 21;
     cherry.x = 14;
@@ -424,13 +438,14 @@ void move_ghosts() {
     row = ghosts[idx]->y + 1;
 
     switch(idx) {
-        case 0: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
-            move_one_ghost(10, 20, 30, 40);
-            break;
-        case 1:
+        case 0: // Cyan
             // hasta que Pac-Man captura al menos 30 pildoras
             move_one_ghost(50, 100, 150, 200);
             break;
+        case 1: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
+            move_one_ghost(10, 20, 30, 40);
+            break;
+
         case 2:
             // su comportamiento  siempre es llegar hacia el punto donde Pac-Man
             move_one_ghost(5, 10, 20, 30);
@@ -446,7 +461,16 @@ void next_level() {
     zx_border(INK_BLUE);
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
+    ++level;
+
+    if((level & 1) == 0) {
+        currentmap = &map[0][0];
+    } else {
+        currentmap = &map2[0][0];
+    }
     reset_map();
+    set_ghosts_default_coords();
+
     repaint_lives = 1;
     nampac_go_home();
     all_ghosts_go_home();
@@ -454,7 +478,6 @@ void next_level() {
         --speed;
     }
 
-    ++level;
     if(level == 5) {
         level = 0;
     }
@@ -609,8 +632,7 @@ void check_fsm() {
         level = 3;
         show_cherry();
     }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 4;
-        show_cherry();
+        next_level();
     }
 }
 

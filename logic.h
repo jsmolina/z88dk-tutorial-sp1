@@ -25,4 +25,6 @@ extern void show_billboard(uint8_t offset);
 extern void hide_billboard();
 extern void paint_lives() ;
 extern void hide_points();
+extern void set_ghosts_default_coords();
+
 #endif

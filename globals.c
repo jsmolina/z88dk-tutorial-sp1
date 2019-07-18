@@ -77,7 +77,7 @@ struct bonus cherry;
 struct sp1_ss* billboard;
 struct sp1_ss* points_sp;
 
-struct spritep * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
+struct spritep * ghosts[4] = {&ghost_cyan, &ghost_red, &ghost_magenta, &ghost_yellow};
 
 JOYFUNC joy;
 // redefine this array to allow define keys
