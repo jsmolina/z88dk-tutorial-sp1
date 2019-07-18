@@ -20,6 +20,7 @@
 #define DOWN1 289
 #define DOWN2 321
 #define DOWN3 353
+#define NCLS 32
 
 #define DECIDED_DIRECTION 1
 #define UNDECIDED 0
@@ -189,6 +190,8 @@ extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
+extern uint16_t matrixrow;
+extern uint16_t matrixrow_ghost;
 extern struct spritep * collided_sprite;
 
 // billboard (game over / ready)

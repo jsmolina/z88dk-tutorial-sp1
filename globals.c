@@ -98,4 +98,6 @@ uint8_t repaint_lives = 1;
 uint8_t speed = 0;
 uint8_t showing_points = NONE;
 uint8_t idx;
+uint16_t matrixrow;
+uint16_t matrixrow_ghost;
 struct spritep * collided_sprite;
