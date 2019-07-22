@@ -262,16 +262,16 @@ struct spritep * has_collision() {
 uint8_t could_go(uint8_t dir) {
     switch(dir) {
         case DIR_RIGHT:
-            return allow_next(currentmap[matrixrow_ghost + (col + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
+            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
         break;
         case DIR_LEFT:
-            return allow_next(currentmap[matrixrow_ghost + (col - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
+            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
         break;
         case DIR_DOWN:
-            return allow_next(currentmap[(matrixrow_ghost + NCLS) + col]) && ghosts[idx]->last_dir != DIR_UP;
+            return allow_next(currentmap[(matrixrow_ghost + NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_UP;
         break;
         case DIR_UP:
-            return allow_next(currentmap[(matrixrow_ghost - NCLS) + col]) && ghosts[idx]->last_dir != DIR_DOWN;
+            return allow_next(currentmap[(matrixrow_ghost - NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_DOWN;
         break;
     }
     return 0;
@@ -321,6 +321,7 @@ void try_ghost_random(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 }
 
 void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
     // make ghost flicker if elude mode and almost finishing pill eaten
     if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
@@ -432,8 +433,6 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 
 void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
-    row = ghosts[idx]->y + 1;
-    matrixrow_ghost = row * NCLS;
 
     switch(idx) {
         case 0: // Cyan
