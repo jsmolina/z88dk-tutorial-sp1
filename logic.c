@@ -262,16 +262,16 @@ struct spritep * has_collision() {
 uint8_t could_go(uint8_t dir) {
     switch(dir) {
         case DIR_RIGHT:
-            return allow_next(currentmap[matrixrow_ghost + col + 1]) && ghosts[idx]->last_dir != DIR_LEFT;
+            return allow_next(currentmap[matrixrow_ghost + (col + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
         break;
         case DIR_LEFT:
-            return allow_next(currentmap[matrixrow_ghost + col - 1]) && ghosts[idx]->last_dir != DIR_RIGHT;
+            return allow_next(currentmap[matrixrow_ghost + (col - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
         break;
         case DIR_DOWN:
-            return allow_next(currentmap[matrixrow_ghost + NCLS + col]) && ghosts[idx]->last_dir != DIR_UP;
+            return allow_next(currentmap[(matrixrow_ghost + NCLS) + col]) && ghosts[idx]->last_dir != DIR_UP;
         break;
         case DIR_UP:
-            return allow_next(currentmap[matrixrow_ghost - NCLS + col]) && ghosts[idx]->last_dir != DIR_DOWN;
+            return allow_next(currentmap[(matrixrow_ghost - NCLS) + col]) && ghosts[idx]->last_dir != DIR_DOWN;
         break;
     }
     return 0;
@@ -535,9 +535,9 @@ void check_fsm() {
         --pacman.y;
     } else if(pacman.direction == DIR_DOWN && allow_next(currentmap[matrixrow + NCLS + col])) {
         ++pacman.y;
-    } else if(pacman.direction == DIR_LEFT && allow_next(currentmap[matrixrow - NCLS + col - 1])) {
+    } else if(pacman.direction == DIR_LEFT && allow_next(currentmap[matrixrow + (col - 1)])) {
         --pacman.x;
-    } else if(pacman.direction == DIR_RIGHT && allow_next(currentmap[matrixrow - NCLS + col + 1])) {
+    } else if(pacman.direction == DIR_RIGHT && allow_next(currentmap[matrixrow + (col + 1)])) {
         ++pacman.x;
     }
 
