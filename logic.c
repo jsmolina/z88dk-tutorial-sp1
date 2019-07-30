@@ -69,9 +69,6 @@ void reset_map() {
   sp1_PrintAt(0, 3, INK_WHITE | PAPER_BLACK, 'U');
   sp1_PrintAt(0, 4, INK_WHITE | PAPER_BLACK, 'P');
   sp1_PrintAt(0, 5, INK_WHITE | PAPER_BLACK, '-');
-  // as points are restored...
-  remaining_points = 238;
-
 }
 
 void set_ghosts_default_coords() {
@@ -466,6 +463,7 @@ void next_level() {
 
     if((level & 1) == 0) {
         currentmap = &map[0][0];
+        remaining_points = MAP1_TOTAL_POINTS;
         // only when returning to first map again, increase speed
         if (speed > 1) {
             --speed;
@@ -473,6 +471,7 @@ void next_level() {
         map_num = 1;
     } else {
         currentmap = &map2[0][0];
+        remaining_points = MAP2_TOTAL_POINTS;
         map_num = 2;
     }
     reset_map();
@@ -533,7 +532,7 @@ void check_fsm() {
         (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG)) {
         if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
             pacman.x = 30;
-        } else if(pacman.x > 29 && pacman.direction == DIR_RIGHT) {
+        } else if(pacman.x >= 29 && pacman.direction == DIR_RIGHT) {
             pacman.x = 1;
         }
     }

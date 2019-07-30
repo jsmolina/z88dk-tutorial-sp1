@@ -88,7 +88,7 @@ uint8_t row;
 uint8_t col;
 uint8_t current;
 uint16_t points = 0;
-uint8_t remaining_points;
+uint8_t remaining_points = MAP1_TOTAL_POINTS;
 
 uint8_t frame = 0;
 
