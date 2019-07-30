@@ -7,7 +7,8 @@
 #include <arch/zx/sp1.h>
 #include <input.h>
 
-
+#define MAP1_Y_SIDE_CHG 12
+#define MAP2_Y_SIDE_CHG 10
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define RIGHTC3 65
@@ -74,6 +75,9 @@
 #define W 23
 #define X 24
 #define Y 25
+// side change
+#define s 250
+#define t 251
 
 #define CHERRY 1
 #define STRAWBERRY 33
@@ -186,6 +190,7 @@ extern uint8_t speed;
 extern uint8_t frame;
 extern uint8_t showing_points;
 
+extern uint8_t map_num;
 extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;

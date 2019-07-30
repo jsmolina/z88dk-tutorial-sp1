@@ -29,7 +29,11 @@ uint8_t get_map_color(uint8_t current) {
         return INK_WHITE;
     }
     // INK_BLUE for level 1, INK_CYAN level2
-    return INK_BLUE;
+    if(map_num == 2) {
+        return INK_CYAN | BRIGHT;
+    } else {
+        return INK_BLUE;
+    }
 }
 
 uint8_t get_map_char(uint8_t current) {
@@ -462,8 +466,14 @@ void next_level() {
 
     if((level & 1) == 0) {
         currentmap = &map[0][0];
+        // only when returning to first map again, increase speed
+        if (speed > 1) {
+            --speed;
+        }
+        map_num = 1;
     } else {
         currentmap = &map2[0][0];
+        map_num = 2;
     }
     reset_map();
     set_ghosts_default_coords();
@@ -471,9 +481,6 @@ void next_level() {
     repaint_lives = 1;
     nampac_go_home();
     all_ghosts_go_home();
-    if (speed > 1) {
-        --speed;
-    }
 
     if(level == 5) {
         level = 0;
@@ -522,10 +529,11 @@ void check_fsm() {
     }
 
     // side change
-    if(pacman.y == 12) {
+    if((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) ||
+        (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG)) {
         if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
-            pacman.x = 29;
-        } else if(pacman.x > 28 && pacman.direction == DIR_RIGHT) {
+            pacman.x = 30;
+        } else if(pacman.x > 29 && pacman.direction == DIR_RIGHT) {
             pacman.x = 1;
         }
     }
@@ -639,7 +647,7 @@ void paint_lives() {
         if(idx < lives) {
             sp1_PrintAtInv(0, 6 + idx, INK_YELLOW | PAPER_BLACK | BRIGHT, 'z');
         } else {
-            sp1_PrintAtInv(0, 6 + idx, INK_BLUE | PAPER_BLACK, 'a');
+            sp1_PrintAtInv(0, 6 + idx, get_map_color(0) | PAPER_BLACK, 'a');
         }
     }
 }

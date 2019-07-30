@@ -55,7 +55,7 @@ uint8_t map2[25][32] = {
 {B,I,0,B,0,B,I,0,B,0,0,0,B,I,I,I,I,I,0,B,0,0,0,B,I,0,B,0,B,I,0,B},
 {B,K,0,E,A,F,I,0,E,A,A,A,F,I,0,C,D,I,0,E,A,A,A,F,I,0,E,A,F,K,0,B},
 {B,I,0,0,0,0,I,0,0,0,0,0,0,I,0,B,B,I,0,0,0,0,0,0,I,0,0,0,0,I,0,B},
-{B,I,I,I,I,I,I,I,I,I,I,I,I,I,I,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
+{B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
 {E,A,A,A,A,A,A,A,A,A,A,A,A,A,A,J,J,A,A,A,A,A,A,A,A,A,A,A,A,A,A,F}
 };
 
@@ -100,4 +100,5 @@ uint8_t showing_points = NONE;
 uint8_t idx;
 uint16_t matrixrow;
 uint16_t matrixrow_ghost;
+uint8_t map_num = 1;
 struct spritep * collided_sprite;
