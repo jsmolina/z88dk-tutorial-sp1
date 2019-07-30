@@ -21,6 +21,7 @@ void all_lives_lost() {
   lives = 5;
   points = 0;
   level = 0;
+  map_num = 1;
   nampac_go_home();
   repaint_lives = 1;
 
