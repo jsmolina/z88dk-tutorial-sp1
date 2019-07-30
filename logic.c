@@ -415,13 +415,13 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 
     if(ghosts[idx]->direction == NONE) {
         random_value = rand();
-        if(random_value < t1 && could_go(DIR_UP)) {
+        if(could_go(DIR_UP)) {
             then_go(DIR_UP);
-        } else if(random_value < t2 && could_go(DIR_DOWN)) {
+        } else if(could_go(DIR_DOWN)) {
             then_go(DIR_DOWN);
-        } else if(random_value < t3 && could_go(DIR_LEFT)) {
+        } else if(could_go(DIR_LEFT)) {
             then_go(DIR_LEFT);
-        } else if(random_value < t4 && could_go(DIR_RIGHT)) {
+        } else if(could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
         }
     }
@@ -568,7 +568,8 @@ void check_fsm() {
             --ghosts[idx]->active;
         }
         // side change
-        if(ghosts[idx]->y == 12) {
+        if((map_num == 1 && ghosts[idx]->y == MAP1_Y_SIDE_CHG) ||
+            (map_num == 2 && ghosts[idx]->y == MAP2_Y_SIDE_CHG)) {
             if(ghosts[idx]->x < 2 && ghosts[idx]->direction == DIR_LEFT) {
                 ghosts[idx]->x = 29;
             } else if(ghosts[idx]->x > 28 && ghosts[idx]->direction == DIR_RIGHT) {
