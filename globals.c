@@ -32,6 +32,35 @@ uint8_t map[25][32] = {
 {E,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,F},
 };
 
+uint8_t map2[25][32] = {
+{C,A,A,A,A,A,A,A,A,A,A,A,A,A,A,M,M,A,A,A,A,A,A,A,A,A,A,A,A,A,A,D},
+{B,0,0,0,0,0,0,0,0,0,0,0,0,0,0,B,B,0,0,0,0,0,0,0,0,0,0,0,0,0,0,B},
+{B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
+{B,I,0,S,A,T,I,0,S,A,A,A,T,I,0,E,F,I,0,S,A,A,A,T,I,0,S,A,T,I,0,B},
+{B,I,0,0,0,0,I,0,0,0,0,0,0,I,0,0,0,I,0,0,0,0,0,0,I,0,0,0,0,I,0,B},
+{B,K,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,K,0,B},
+{B,I,0,S,A,D,I,0,C,A,T,I,0,S,A,A,A,A,T,I,0,S,A,D,I,0,C,A,T,I,0,B},
+{B,I,0,0,0,B,I,0,B,0,0,I,0,0,0,0,0,0,0,I,0,0,0,B,I,0,B,0,0,I,0,B},
+{B,I,I,I,0,B,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,0,B,I,I,I,0,B},
+{E,A,T,I,0,V,I,0,V,I,0,C,A,A,T,Y,Y,S,A,A,D,I,0,V,I,0,V,I,0,S,A,F},
+{0,0,0,I,0,0,I,0,0,I,0,B,0,0,0,0,0,0,0,0,B,I,0,0,I,0,0,I,0,0,0,0},
+{0,I,I,I,I,I,I,I,I,I,0,B,0,0,0,0,0,0,0,0,B,I,I,I,I,I,I,I,I,I,I,0},
+{C,A,T,I,0,S,A,A,D,I,0,E,A,A,A,A,A,A,A,A,F,I,0,C,A,A,T,I,0,S,A,D},
+{B,0,0,I,0,0,0,0,B,I,0,0,0,0,0,0,0,0,0,0,0,I,0,B,0,0,0,I,0,0,0,B},
+{B,I,I,I,I,I,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,I,I,I,I,I,0,B},
+{B,I,0,S,A,T,I,0,E,A,A,A,T,I,0,C,D,I,0,S,A,A,A,F,I,0,S,A,T,I,0,B},
+{B,I,0,0,0,0,I,0,0,0,0,0,0,I,0,B,B,I,0,0,0,0,0,0,I,0,0,0,0,I,0,B},
+{B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,E,F,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
+{B,I,0,C,A,D,I,0,C,A,A,A,D,I,0,0,0,I,0,C,A,A,A,D,I,0,C,A,D,I,0,B},
+{B,I,0,B,0,B,I,0,B,0,0,0,B,I,I,I,I,I,0,B,0,0,0,B,I,0,B,0,B,I,0,B},
+{B,K,0,E,A,F,I,0,E,A,A,A,F,I,0,C,D,I,0,E,A,A,A,F,I,0,E,A,F,K,0,B},
+{B,I,0,0,0,0,I,0,0,0,0,0,0,I,0,B,B,I,0,0,0,0,0,0,I,0,0,0,0,I,0,B},
+{B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
+{E,A,A,A,A,A,A,A,A,A,A,A,A,A,A,J,J,A,A,A,A,A,A,A,A,A,A,A,A,A,A,F}
+};
+
+uint8_t * currentmap;
+// todo puntero al mapa actual, posiciones diferentes para el mapa
 
 // 15
 
@@ -48,7 +77,7 @@ struct bonus cherry;
 struct sp1_ss* billboard;
 struct sp1_ss* points_sp;
 
-struct spritep * ghosts[4] = {&ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow};
+struct spritep * ghosts[4] = {&ghost_cyan, &ghost_red, &ghost_magenta, &ghost_yellow};
 
 JOYFUNC joy;
 // redefine this array to allow define keys
@@ -69,4 +98,7 @@ uint8_t repaint_lives = 1;
 uint8_t speed = 0;
 uint8_t showing_points = NONE;
 uint8_t idx;
+uint16_t matrixrow;
+uint16_t matrixrow_ghost;
+uint8_t map_num = 1;
 struct spritep * collided_sprite;

@@ -7,7 +7,8 @@
 #include <arch/zx/sp1.h>
 #include <input.h>
 
-
+#define MAP1_Y_SIDE_CHG 12
+#define MAP2_Y_SIDE_CHG 10
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define RIGHTC3 65
@@ -20,6 +21,7 @@
 #define DOWN1 289
 #define DOWN2 321
 #define DOWN3 353
+#define NCLS 32
 
 #define DECIDED_DIRECTION 1
 #define UNDECIDED 0
@@ -50,6 +52,9 @@
 #define AYCTRL 65533
 #define AYDATA 49149
 
+#define Y_GHOSTS_HOME_MAP1 15;
+#define Y_GHOSTS_HOME_MAP2  10;
+
 // map integer correspondence
 #define A 1
 #define B 2
@@ -59,6 +64,7 @@
 #define F 6
 #define H 8
 #define I 9
+#define J 10    // esta bien un 10???
 #define K 11
 #define L 12
 #define M 13
@@ -69,6 +75,9 @@
 #define W 23
 #define X 24
 #define Y 25
+// side change
+#define s 250
+#define t 251
 
 #define CHERRY 1
 #define STRAWBERRY 33
@@ -139,6 +148,7 @@ extern uint8_t pill[];
 extern uint8_t vertileft[];
 extern uint8_t vertiright[];
 extern uint8_t topvertileft[];
+extern uint8_t bottomvertileft[];
 
 extern uint8_t terminal_left[];
 extern uint8_t terminal_right[];
@@ -153,6 +163,7 @@ extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 
 extern uint8_t map[25][32];
+extern uint8_t map2[25][32];
 extern uint8_t random_value;
 
 extern uint8_t pill_eaten;
@@ -179,10 +190,13 @@ extern uint8_t speed;
 extern uint8_t frame;
 extern uint8_t showing_points;
 
+extern uint8_t map_num;
 extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;
 extern uint8_t idx;
+extern uint16_t matrixrow;
+extern uint16_t matrixrow_ghost;
 extern struct spritep * collided_sprite;
 
 // billboard (game over / ready)
@@ -197,6 +211,7 @@ extern uint8_t letterboxes8[];
 extern uint8_t letterboxes9[];
 
 extern uint8_t vidas[];
+extern uint8_t * currentmap;
 
 #endif
 

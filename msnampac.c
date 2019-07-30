@@ -24,26 +24,20 @@ void all_lives_lost() {
   nampac_go_home();
   repaint_lives = 1;
 
-  ghost_red.offset = GHOST_RED;
-  ghost_red.default_color =  initialiseColourGhostRed;
-  ghost_red.default_y = 15;
-  ghost_red.default_x = 14;
 
   ghost_cyan.offset = GHOST_CYAN;
   ghost_cyan.default_color =  initialiseColourGhostCyan;
-  ghost_cyan.default_y = 15;
-  ghost_cyan.default_x = 12;
+
+  ghost_red.offset = GHOST_RED;
+  ghost_red.default_color =  initialiseColourGhostRed;
 
   ghost_magenta.offset = GHOST_MAGENTA;
   ghost_magenta.default_color =  initialiseColourGhostMagenta;
-  ghost_magenta.default_y = 15;
-  ghost_magenta.default_x = 16;
 
   ghost_yellow.offset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
-  ghost_yellow.default_y = 15;
-  ghost_yellow.default_x = 18;
 
+  set_ghosts_default_coords();
 
   reset_map();
 
@@ -96,6 +90,8 @@ int main()
   sp1_TileEntry('l', vertiright);
   sp1_TileEntry('m', topvertileft);
 
+  sp1_TileEntry('j', bottomvertileft);
+
   sp1_TileEntry('s', terminal_left);
   sp1_TileEntry('t', terminal_right);
   sp1_TileEntry('u', terminal_up);
@@ -110,6 +106,7 @@ int main()
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
+  currentmap = &map[0][0];
 
   points_sp = add_points_sprite();
   billboard = add_billboard_sprite();

@@ -28,7 +28,12 @@ uint8_t get_map_color(uint8_t current) {
     } else if (current == Y) {
         return INK_WHITE;
     }
-    return INK_BLUE;
+    // INK_BLUE for level 1, INK_CYAN level2
+    if(map_num == 2) {
+        return INK_CYAN | BRIGHT;
+    } else {
+        return INK_BLUE;
+    }
 }
 
 uint8_t get_map_char(uint8_t current) {
@@ -43,13 +48,14 @@ uint8_t get_map_char(uint8_t current) {
 
 void reset_map() {
     for(row = 0; row != 24; ++row) {
+      matrixrow = row * NCLS;
       for(col = 0; col != 32; ++col) {
-        if(map[row][col] == 18) {
-             map[row][col] = 11;
-        } else if(map[row][col] == 16) {
-            map[row][col] = 9;
+        if(currentmap[matrixrow + col] == 18) {
+            currentmap[matrixrow + col] = 11;
+        } else if(currentmap[matrixrow + col] == 16) {
+            currentmap[matrixrow + col] = 9;
         }
-        current = map[row][col];
+        current = currentmap[matrixrow + col]; // todo access currentmap
         sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
       }
 
@@ -68,9 +74,23 @@ void reset_map() {
 
 }
 
+void set_ghosts_default_coords() {
+    current = 12;
+    for(idx = 0; idx != 4; ++idx) {
+        ghosts[idx]->default_x = current;
+        current = current + 2;
+
+        if((level & 1) == 0) {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP1;
+        } else {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP2;
+        }
+    }
+}
+
 void show_cherry() {
     cherry.y = 21;
-    cherry.x = 14;
+    cherry.x = 13;
     cherry.showing = 100;
 
     if(level == 0) {
@@ -112,19 +132,19 @@ void check_keys()
 {
     // checks keys
     // allow jump in directions
-    if ((in & IN_STICK_UP) && allow_next(map[row - 1][col])) {
+    if ((in & IN_STICK_UP) && allow_next(currentmap[matrixrow - NCLS + col])) {
         pacman.currentoffset = UP1;
         pacman.direction = DIR_UP;
 
-    } else if((in & IN_STICK_DOWN) && allow_next(map[row + 1][col])) {
+    } else if((in & IN_STICK_DOWN) && allow_next(currentmap[matrixrow + NCLS + col])) {
         pacman.currentoffset = DOWN1;
         pacman.direction = DIR_DOWN;
     }
 
-    if((in & IN_STICK_LEFT) && allow_next(map[row][col - 1])) {
+    if((in & IN_STICK_LEFT) && allow_next(currentmap[matrixrow + (col - 1)])) {
         pacman.currentoffset = LEFTC1;
         pacman.direction = DIR_LEFT;
-    } else if((in & IN_STICK_RIGHT) && allow_next(map[row][col + 1])) {
+    } else if((in & IN_STICK_RIGHT) && allow_next(currentmap[matrixrow + (col + 1)])) {
         pacman.currentoffset = RIGHTC1;
         pacman.direction = DIR_RIGHT;
     }
@@ -139,7 +159,7 @@ void all_ghosts_go_home() {
 
 void nampac_go_home() {
     pacman.y = 21;
-    pacman.x = 14;
+    pacman.x = 13;
     pacman.offset = RIGHTC1;
     pacman.direction = NONE;
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
@@ -242,24 +262,20 @@ struct spritep * has_collision() {
     return NULL;
 }
 
-uint8_t allow_next_ghost_pos(int8_t dy, int8_t dx) {
-    row = ghosts[idx]->y + 1;
-    return allow_next(map[row + dy][ghosts[idx]->x + dx]);
-}
 
 uint8_t could_go(uint8_t dir) {
     switch(dir) {
         case DIR_RIGHT:
-            return allow_next(map[row][ghosts[idx]->x + 1]) && ghosts[idx]->last_dir != DIR_LEFT;
+            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
         break;
         case DIR_LEFT:
-            return allow_next(map[row][ghosts[idx]->x - 1]) && ghosts[idx]->last_dir != DIR_RIGHT;
+            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
         break;
         case DIR_DOWN:
-            return allow_next(map[row + 1][ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_UP;
+            return allow_next(currentmap[(matrixrow_ghost + NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_UP;
         break;
         case DIR_UP:
-            return allow_next(map[row - 1][ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_DOWN;
+            return allow_next(currentmap[(matrixrow_ghost - NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_DOWN;
         break;
     }
     return 0;
@@ -309,6 +325,7 @@ void try_ghost_random(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 }
 
 void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+    matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
     // make ghost flicker if elude mode and almost finishing pill eaten
     if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
@@ -420,16 +437,16 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
 
 void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
-    row = ghosts[idx]->y + 1;
 
     switch(idx) {
-        case 0: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
-            move_one_ghost(10, 20, 30, 40);
-            break;
-        case 1:
+        case 0: // Cyan
             // hasta que Pac-Man captura al menos 30 pildoras
             move_one_ghost(50, 100, 150, 200);
             break;
+        case 1: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
+            move_one_ghost(10, 20, 30, 40);
+            break;
+
         case 2:
             // su comportamiento  siempre es llegar hacia el punto donde Pac-Man
             move_one_ghost(5, 10, 20, 30);
@@ -445,15 +462,26 @@ void next_level() {
     zx_border(INK_BLUE);
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
+    ++level;
+
+    if((level & 1) == 0) {
+        currentmap = &map[0][0];
+        // only when returning to first map again, increase speed
+        if (speed > 1) {
+            --speed;
+        }
+        map_num = 1;
+    } else {
+        currentmap = &map2[0][0];
+        map_num = 2;
+    }
     reset_map();
+    set_ghosts_default_coords();
+
     repaint_lives = 1;
     nampac_go_home();
     all_ghosts_go_home();
-    if (speed > 1) {
-        --speed;
-    }
 
-    ++level;
     if(level == 5) {
         level = 0;
     }
@@ -471,12 +499,13 @@ void check_fsm() {
         col = 31;
     }
     // row and col must be set at this point
+    matrixrow = row * NCLS;
     check_keys();
 
     // pill eat
-    current = map[row][col];
+    current = currentmap[matrixrow + col];
     if(current != 16 && current != 18) {
-        map[row][col] = current + 7; // 9 + 7 = 16, 11 + 7 = 18
+        currentmap[matrixrow + col] = current + 7; // 9 + 7 = 16, 11 + 7 = 18
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
 
         if(current == 9) {
@@ -500,21 +529,22 @@ void check_fsm() {
     }
 
     // side change
-    if(pacman.y == 12) {
+    if((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) ||
+        (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG)) {
         if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
-            pacman.x = 29;
-        } else if(pacman.x > 28 && pacman.direction == DIR_RIGHT) {
+            pacman.x = 30;
+        } else if(pacman.x > 29 && pacman.direction == DIR_RIGHT) {
             pacman.x = 1;
         }
     }
 
-    if(pacman.direction == DIR_UP && allow_next(map[row - 1][col])) {
+    if(pacman.direction == DIR_UP && allow_next(currentmap[matrixrow - NCLS + col])) {
         --pacman.y;
-    } else if(pacman.direction == DIR_DOWN && allow_next(map[row + 1][col])) {
+    } else if(pacman.direction == DIR_DOWN && allow_next(currentmap[matrixrow + NCLS + col])) {
         ++pacman.y;
-    } else if(pacman.direction == DIR_LEFT && allow_next(map[row][col - 1])) {
+    } else if(pacman.direction == DIR_LEFT && allow_next(currentmap[matrixrow + (col - 1)])) {
         --pacman.x;
-    } else if(pacman.direction == DIR_RIGHT && allow_next(map[row][col + 1])) {
+    } else if(pacman.direction == DIR_RIGHT && allow_next(currentmap[matrixrow + (col + 1)])) {
         ++pacman.x;
     }
 
@@ -531,7 +561,7 @@ void check_fsm() {
         random_value = rand();
         if(ghosts[idx]->active == JAILED_EXITING) {
             if(points > 300 || (points > 10 && idx != 1)) {
-                ghosts[idx]->active = goto_xy(ghosts[idx], 15, 12);
+                ghosts[idx]->active = goto_xy(ghosts[idx], 15, ghosts[idx]->default_y - 3);
             }
         } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE || ghosts[idx]->active == GETTING_JAILED) {
             move_ghosts();
@@ -608,8 +638,7 @@ void check_fsm() {
         level = 3;
         show_cherry();
     }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
-        level = 4;
-        show_cherry();
+        next_level();
     }
 }
 
@@ -618,7 +647,7 @@ void paint_lives() {
         if(idx < lives) {
             sp1_PrintAtInv(0, 6 + idx, INK_YELLOW | PAPER_BLACK | BRIGHT, 'z');
         } else {
-            sp1_PrintAtInv(0, 6 + idx, INK_BLUE | PAPER_BLACK, 'a');
+            sp1_PrintAtInv(0, 6 + idx, get_map_color(0) | PAPER_BLACK, 'a');
         }
     }
 }
