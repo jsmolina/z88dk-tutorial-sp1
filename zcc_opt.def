@@ -1,4 +1,17 @@
 
+IF !NEED_fzxterminal
+	DEFINE	NEED_fzxterminal
+ENDIF
+
+
+IF !DEFINED_CRT_FONT_FZX
+	PUBLIC CRT_FONT_FZX
+	EXTERN _ff_ao_Prefect
+	defc	DEFINED_CRT_FONT_FZX = 1
+	defc CRT_FONT_FZX = _ff_ao_Prefect
+ENDIF
+
+
 IF !DEFINED_startup
 	defc	DEFINED_startup = 1
 	defc startup = 31

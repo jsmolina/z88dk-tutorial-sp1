@@ -1,5 +1,6 @@
 @build/binaries.lst
 @fx/fx.lst
+@font/fonts.lst
 game_zx.c
 logic.c
 sprites.c
