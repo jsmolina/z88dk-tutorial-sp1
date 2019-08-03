@@ -395,5 +395,9 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 ### Masks
 Masks should have at least one pixel bordering the sprite... TODO
 
+### Fonts
+https://github.com/jsmolina/z88dk-tutorial-sp1/pull/45
 ### Credits
 Credits to jarlaxe for the graphics.
+
+
