@@ -20,6 +20,8 @@ compile:
 	png2udg ./build/door.png -a > ./build/door.asm
 	png2udg ./build/ghostpill.png -a > ./build/ghostpill.asm
 	png2udg ./build/vidas.png -a > ./build/vidas.asm
+	png2udg ./font/numbers.png -a > ./font/numbers.asm
+	png2udg ./font/abecedary.png -a > ./font/abecedary.asm
 	png2sp1sprite ./build/puntos.png -b -i puntos -f 16 -s rodata_user > ./build/puntos.asm
 	png2sp1sprite ./build/prota_sprites.png -b -i sprite_protar -f 16 -s rodata_user > ./build/prota.asm
 	png2sp1sprite ./build/prota_dead.png -b -i sprite_protar_dead -f 16 -s rodata_user > ./build/prota_dead.asm
