@@ -396,7 +396,17 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 Masks should have at least one pixel bordering the sprite... TODO
 
 ### Fonts
-https://github.com/jsmolina/z88dk-tutorial-sp1/pull/45
+(Thanks Timmy)
+fzx is pretty much incompatible with splib... one of them uses a buffer while the other prints directly on screen.
+usual way to go is to override the ascii table with a wider udg (8x multiple width)
+```
+sp1_TileEntry(33, font1);
+   for (i=1; i<46; i++)
+   {
+        sp1_TileEntry(45+i, font1+i*8);
+   }
+ ```
+   
 ### Credits
 Credits to jarlaxe for the graphics.
 
