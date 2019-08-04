@@ -406,7 +406,9 @@ sp1_TileEntry(33, font1);
         sp1_TileEntry(45+i, font1+i*8);
    }
  ```
-   
+see for how we added font:
+
+https://github.com/jsmolina/z88dk-tutorial-sp1/pull/46   
 ### Credits
 Credits to jarlaxe for the graphics.
 
