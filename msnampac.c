@@ -78,6 +78,9 @@ int main()
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
                   INK_BLACK | PAPER_BLACK,
                   ' ' );
+  for (idx=0; idx != 10; idx++) {
+      sp1_TileEntry(48+idx, numbers+idx*8);
+  }
 
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
