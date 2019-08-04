@@ -166,6 +166,7 @@ extern uint8_t cartoon0[];
 
 extern uint8_t map[25][32];
 extern uint8_t map2[25][32];
+extern uint8_t map3[25][32];
 extern uint8_t random_value;
 
 extern uint8_t pill_eaten;
