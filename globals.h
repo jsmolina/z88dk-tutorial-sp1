@@ -214,6 +214,7 @@ extern uint8_t letterboxes9[];
 
 extern uint8_t vidas[];
 extern uint8_t numbers[];
+extern uint8_t abecedary[];
 extern uint8_t * currentmap;
 
 #endif
