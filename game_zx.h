@@ -6,5 +6,5 @@
 
 extern void print_points();
 extern void make_sound();
-
+extern void printatstr(uint8_t y, uint8_t x, uint8_t attr, char *chars);
 #endif

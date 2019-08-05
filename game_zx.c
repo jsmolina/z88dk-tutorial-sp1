@@ -9,6 +9,16 @@ extern uint8_t strlen(char * chars);
 // temporary buffer to print points (e.g. 65535)
 char * chars = "0000000\0";
 
+
+void printatstr(uint8_t y, uint8_t x, uint8_t attr, char *chars) {
+
+    uint8_t xx, i;
+    xx = x; i=0;
+    while (chars[i]) {
+        sp1_PrintAtInv(y, xx++, attr, chars[i++]);
+    }
+}
+
 // reversed order digit extract
 void print_points() {
     utoa(points, chars, 10);
