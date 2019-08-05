@@ -59,6 +59,33 @@ uint8_t map2[25][32] = {
 {E,A,A,A,A,A,A,A,A,A,A,A,A,A,A,J,J,A,A,A,A,A,A,A,A,A,A,A,A,A,A,F}
 };
 
+uint8_t map3[25][32] = {
+{C,A,A,A,A,A,A,A,A,A,A,M,M,A,A,A,A,A,A,M,M,A,A,A,A,A,A,A,A,A,A,D},
+{B,0,0,0,0,0,0,0,0,0,0,B,B,0,0,0,0,0,0,B,B,0,0,0,0,0,0,0,0,0,0,B},
+{B,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,0,B},
+{B,I,0,U,I,0,C,A,D,I,0,B,B,I,0,S,T,I,0,B,B,I,0,C,A,D,I,0,U,I,0,B},
+{B,K,0,B,I,0,B,0,B,I,0,B,B,I,0,0,0,I,0,B,B,I,0,B,0,B,I,0,B,K,0,B},
+{B,I,0,V,I,0,E,A,F,I,0,E,F,I,I,I,I,I,0,E,F,I,0,E,A,F,I,0,V,I,0,B},
+{B,I,0,0,I,0,0,0,0,I,0,0,0,I,0,C,D,I,0,0,0,I,0,0,0,0,0,0,0,I,0,B},
+{B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B},
+{B,I,0,S,A,T,I,0,C,A,T,I,0,S,A,J,J,A,T,I,0,S,A,D,I,0,S,A,T,I,0,B},
+{B,I,0,0,0,0,I,0,B,0,0,I,0,0,0,0,0,0,0,I,0,0,0,B,I,0,0,0,0,I,0,B},
+{B,I,I,I,I,I,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,I,I,I,I,I,0,B},
+{E,A,A,T,I,0,S,A,F,I,0,C,A,A,T,Y,Y,S,A,A,D,I,0,E,A,T,I,0,S,A,A,F},
+{0,0,0,0,I,0,0,0,0,I,0,B,0,0,0,0,0,0,0,0,B,I,0,0,0,0,I,0,0,0,0,0},
+{0,I,I,I,I,I,I,I,I,I,0,B,0,0,0,0,0,0,0,0,B,I,I,I,I,I,I,I,I,I,I,0},
+{C,A,A,T,I,0,S,A,D,I,0,E,A,A,A,A,A,A,A,A,F,I,0,C,A,T,I,0,S,A,A,D},
+{B,0,0,0,I,0,0,0,B,I,0,0,0,0,0,0,0,0,0,0,0,I,0,B,0,0,I,0,0,0,0,B},
+{B,I,I,I,I,I,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,I,I,I,I,I,0,B},
+{B,I,0,C,A,T,I,0,E,A,T,I,0,S,T,I,0,S,T,I,0,S,A,F,I,0,S,A,D,I,0,B},
+{B,I,0,B,0,0,I,0,0,0,0,I,0,0,0,I,0,0,0,I,0,0,0,0,I,0,0,0,B,I,0,B},
+{B,I,0,B,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,I,0,B},
+{B,K,0,V,I,0,C,D,I,0,S,A,T,I,0,S,T,I,0,S,A,T,I,0,C,D,I,0,V,K,0,B},
+{B,I,0,0,I,0,B,B,I,0,0,0,0,I,0,0,0,I,0,0,0,0,I,0,B,B,I,0,0,I,0,B},
+{B,I,I,I,I,0,B,B,I,I,I,I,I,I,I,I,I,I,I,I,I,I,I,0,B,B,I,I,I,I,0,B},
+{E,A,A,A,A,A,J,J,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,A,J,J,A,A,A,A,A,F}
+};
+
 uint8_t * currentmap;
 // todo puntero al mapa actual, posiciones diferentes para el mapa
 

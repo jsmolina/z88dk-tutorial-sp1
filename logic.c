@@ -29,11 +29,12 @@ uint8_t get_map_color(uint8_t current) {
         return INK_WHITE;
     }
     // INK_BLUE for level 1, INK_CYAN level2
-    if(map_num == 2) {
+    if(map_num == 3) {
+        return INK_MAGENTA | BRIGHT;
+    } else if(map_num == 2) {
         return INK_CYAN | BRIGHT;
-    } else {
-        return INK_BLUE;
     }
+    return INK_BLUE;
 }
 
 uint8_t get_map_char(uint8_t current) {
@@ -77,10 +78,12 @@ void set_ghosts_default_coords() {
         ghosts[idx]->default_x = current;
         current = current + 2;
 
-        if((level & 1) == 0) {
+        if(map_num == 1) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP1;
-        } else {
+        } else if(map_num == 2) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP2;
+        } else if(map_num == 3) {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP3;
         }
     }
 }
@@ -461,19 +464,30 @@ void next_level() {
     zx_border(INK_BLACK);
     ++level;
 
-    if((level & 1) == 0) {
-        currentmap = &map[0][0];
+    if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
         // only when returning to first map again, increase speed
-        if (speed > 1) {
+        if (speed > 1 && map_num > 3) {
             --speed;
         }
-        map_num = 1;
-    } else {
-        currentmap = &map2[0][0];
+    } else if(map_num == 2){
         remaining_points = MAP2_TOTAL_POINTS;
-        map_num = 2;
+    } else if(map_num == 3){
+        remaining_points = MAP3_TOTAL_POINTS;
     }
+    ++map_num;
+    if(map_num > 3) {
+        map_num = 1;
+    }
+
+    if(map_num == 1) {
+        currentmap = &map[0][0];
+    } else if(map_num == 2) {
+        currentmap = &map2[0][0];
+    } else {
+        currentmap = &map3[0][0];
+    }
+
     reset_map();
     set_ghosts_default_coords();
 
@@ -529,7 +543,8 @@ void check_fsm() {
 
     // side change
     if((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) ||
-        (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG)) {
+        (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG) ||
+        (map_num == 3 && pacman.y == MAP3_Y_SIDE_CHG)) {
         if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
             pacman.x = 30;
         } else if(pacman.x >= 29 && pacman.direction == DIR_RIGHT) {
@@ -569,7 +584,8 @@ void check_fsm() {
         }
         // side change
         if((map_num == 1 && ghosts[idx]->y == MAP1_Y_SIDE_CHG) ||
-            (map_num == 2 && ghosts[idx]->y == MAP2_Y_SIDE_CHG)) {
+            (map_num == 2 && ghosts[idx]->y == MAP2_Y_SIDE_CHG)||
+            (map_num == 3 && ghosts[idx]->y == MAP3_Y_SIDE_CHG)) {
             if(ghosts[idx]->x < 2 && ghosts[idx]->direction == DIR_LEFT) {
                 ghosts[idx]->x = 29;
             } else if(ghosts[idx]->x > 28 && ghosts[idx]->direction == DIR_RIGHT) {
