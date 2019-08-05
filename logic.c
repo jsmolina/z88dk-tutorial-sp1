@@ -1,5 +1,6 @@
 #include "logic.h"
 #include "int.h"
+#include "game_zx.h"
 #include <sound.h>
 #include <input.h>
 
@@ -61,15 +62,8 @@ void reset_map() {
       }
 
   }
-
-  sp1_PrintAtInv(0, 22, INK_WHITE | PAPER_BLACK, 'H');
-  sp1_PrintAtInv(0, 23, INK_WHITE | PAPER_BLACK, 'I');
-  sp1_PrintAtInv(0, 24, INK_WHITE | PAPER_BLACK, '-');
-
-  sp1_PrintAt(0, 2, INK_WHITE | PAPER_BLACK, '1');
-  sp1_PrintAt(0, 3, INK_WHITE | PAPER_BLACK, 'U');
-  sp1_PrintAt(0, 4, INK_WHITE | PAPER_BLACK, 'P');
-  sp1_PrintAt(0, 5, INK_WHITE | PAPER_BLACK, '-');
+  printatstr(0, 21, INK_WHITE | PAPER_BLACK, "1UP-");
+  printatstr(0, 1, INK_WHITE | PAPER_BLACK, "LIVE-");
 }
 
 void set_ghosts_default_coords() {
