@@ -115,7 +115,7 @@ int main()
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
-  currentmap = &map3[0][0];
+  currentmap = &map[0][0];
 
   points_sp = add_points_sprite();
   billboard = add_billboard_sprite();

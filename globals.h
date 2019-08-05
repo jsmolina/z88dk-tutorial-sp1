@@ -9,6 +9,7 @@
 
 #define MAP1_Y_SIDE_CHG 12
 #define MAP2_Y_SIDE_CHG 10
+#define MAP3_Y_SIDE_CHG 12
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define RIGHTC3 65
@@ -39,6 +40,7 @@
 #define GHOST_EYES 321
 #define MAP1_TOTAL_POINTS 238
 #define MAP2_TOTAL_POINTS 251
+#define MAP3_TOTAL_POINTS 254
 
 #define DIR_UP 1
 #define DIR_DOWN 2
@@ -56,6 +58,7 @@
 
 #define Y_GHOSTS_HOME_MAP1 15;
 #define Y_GHOSTS_HOME_MAP2  10;
+#define Y_GHOSTS_HOME_MAP3  12;
 
 // map integer correspondence
 #define A 1
