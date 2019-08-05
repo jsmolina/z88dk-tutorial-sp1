@@ -656,7 +656,7 @@ void check_fsm() {
 }
 
 void paint_lives() {
-    for(idx = 0; idx != 6; ++idx) {
+    for(idx = 0; idx != 5; ++idx) {
         if(idx < lives) {
             sp1_PrintAtInv(0, 6 + idx, INK_YELLOW | PAPER_BLACK | BRIGHT, 'z');
         } else {
