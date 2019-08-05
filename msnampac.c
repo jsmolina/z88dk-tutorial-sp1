@@ -75,7 +75,7 @@ void all_lives_lost() {
   ghost_yellow.offset = GHOST_YELLOW;
   ghost_yellow.default_color =  initialiseColourYellow;
 
-  printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS. NAM-PAC");
+  printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
