@@ -16,63 +16,6 @@
 
 
 void all_lives_lost() {
-  zx_border(INK_BLACK);
-  sp1_Invalidate(&full_screen);
-  lives = 5;
-  points = 0;
-  level = 0;
-  map_num = 1;
-  nampac_go_home();
-  repaint_lives = 1;
-
-
-  ghost_cyan.offset = GHOST_CYAN;
-  ghost_cyan.default_color =  initialiseColourGhostCyan;
-
-  ghost_red.offset = GHOST_RED;
-  ghost_red.default_color =  initialiseColourGhostRed;
-
-  ghost_magenta.offset = GHOST_MAGENTA;
-  ghost_magenta.default_color =  initialiseColourGhostMagenta;
-
-  ghost_yellow.offset = GHOST_YELLOW;
-  ghost_yellow.default_color =  initialiseColourYellow;
-
-  set_ghosts_default_coords();
-
-  reset_map();
-
-  all_ghosts_go_home();
-
-
-  sp1_UpdateNow();
-
-  uint16_t has_kempston = in_stick_kempston();
-  if(speed == 0) {
-    show_billboard(READY);
-  } else {
-    show_billboard(GAME_OVER);
-  }
-
-   while(1) {
-      if(in_key_pressed( IN_KEY_SCANCODE_SPACE )) {
-          joy = (JOYFUNC)in_stick_keyboard;
-          break;
-      } else if(has_kempston == 0 && (in_stick_kempston() & IN_STICK_FIRE)) {
-          joy = (JOYFUNC)in_stick_kempston;
-          break;
-      }
-  }
-  srand(tick);
-  hide_billboard();
-  pick = 1;
-  speed = 6;
-}
-
-
-int main()
-{
-  setup_int();
 
   // now sp1
   sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
@@ -111,6 +54,81 @@ int main()
   sp1_TileEntry('y', door);
   sp1_TileEntry('z', vidas);
 
+  zx_border(INK_BLACK);
+  sp1_Invalidate(&full_screen);
+  lives = 5;
+  points = 0;
+  level = 0;
+  map_num = 1;
+  repaint_lives = 1;
+
+
+  ghost_cyan.offset = GHOST_CYAN;
+  ghost_cyan.default_color =  initialiseColourGhostCyan;
+
+  ghost_red.offset = GHOST_RED;
+  ghost_red.default_color =  initialiseColourGhostRed;
+
+  ghost_magenta.offset = GHOST_MAGENTA;
+  ghost_magenta.default_color =  initialiseColourGhostMagenta;
+
+  ghost_yellow.offset = GHOST_YELLOW;
+  ghost_yellow.default_color =  initialiseColourYellow;
+
+  printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS NAMPAC");
+
+  printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
+  printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
+  printatstr(10, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "3.SINCLAIR");
+
+  printatstr(18, 6, INK_GREEN | PAPER_BLACK, "JARLAXE - GRAPHICS");
+  printatstr(19, 6, INK_RED | BRIGHT | PAPER_BLACK, "JORDI - CODING");
+  printatstr(20, 6, INK_CYAN | PAPER_BLACK, "SP1 POWERED");
+  printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
+
+
+  sp1_UpdateNow();
+
+   while(1) {
+      // todo check joystick fire also so joystick is chosen
+      if(in_key_pressed(IN_KEY_SCANCODE_1)) {
+          joy = (JOYFUNC)in_stick_keyboard;
+          break;
+      } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
+          joy = (JOYFUNC)in_stick_kempston;
+          break;
+      } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
+          joy = (JOYFUNC)in_stick_sinclair2;
+          break;
+      }
+  }
+
+  if(speed == 0) {
+    show_billboard(READY);
+  } else {
+    show_billboard(GAME_OVER);
+  }
+  in_wait_key();
+
+  srand(tick);
+
+  set_ghosts_default_coords();
+  nampac_go_home();
+
+  reset_map();
+
+  all_ghosts_go_home();
+  hide_billboard();
+  pick = 1;
+  speed = 6;
+}
+
+
+int main()
+{
+  setup_int();
+
+
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
@@ -124,15 +142,13 @@ int main()
   ghost_magenta.sp = add_ghost_sprite();
   ghost_yellow.sp = add_ghost_sprite();
   cherry.sp = add_cherry_sprite();
-  hide_cherry();
 
   // painting an UDG is just assigning it to any char
   // row, col, char
 
   // call it to initialize vars
   all_lives_lost();
-
-  zx_border(INK_WHITE);
+  hide_cherry();
 
   while(1) {
 
