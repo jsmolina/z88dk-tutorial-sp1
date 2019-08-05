@@ -185,9 +185,12 @@ void loose_a_live() {
     nampac_go_home();
     if(lives > 0) {
         show_billboard(READY);
-        in_wait_key();
-        hide_billboard();
+    } else {
+        show_billboard(GAME_OVER);
     }
+    in_wait_key();
+    hide_billboard();
+
 }
 
 uint8_t allow_next(uint8_t next) {
