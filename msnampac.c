@@ -98,17 +98,10 @@ void all_lives_lost() {
           joy = (JOYFUNC)in_stick_kempston;
           break;
       } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-          joy = (JOYFUNC)in_stick_sinclair2;
+          joy = (JOYFUNC)in_stick_sinclair1;
           break;
       }
   }
-
-  if(speed == 0) {
-    show_billboard(READY);
-  } else {
-    show_billboard(GAME_OVER);
-  }
-  in_wait_key();
 
   srand(tick);
 
@@ -118,7 +111,12 @@ void all_lives_lost() {
   reset_map();
 
   all_ghosts_go_home();
+  show_billboard(READY);
+
+  in_wait_key();
   hide_billboard();
+
+
   pick = 1;
   speed = 6;
 }
