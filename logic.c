@@ -508,6 +508,12 @@ void check_fsm() {
     if(col > 31) {
         col = 31;
     }
+    if(points > 65500) {
+        if(lives < 5) {
+            ++lives;
+            bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
+        }
+    }
     // row and col must be set at this point
     matrixrow = row * NCLS;
     check_keys();
