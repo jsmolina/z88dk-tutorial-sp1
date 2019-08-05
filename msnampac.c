@@ -76,6 +76,7 @@ void all_lives_lost() {
   ghost_yellow.default_color =  initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
+  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.0.2");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
