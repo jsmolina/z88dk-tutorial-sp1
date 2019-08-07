@@ -460,7 +460,11 @@ void next_level() {
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
     ++level;
-
+    ++map_num;
+    if(map_num > 3) {
+        map_num = 1;
+    }
+    
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
         // only when returning to first map again, increase speed
@@ -472,10 +476,7 @@ void next_level() {
     } else if(map_num == 3){
         remaining_points = MAP3_TOTAL_POINTS;
     }
-    ++map_num;
-    if(map_num > 3) {
-        map_num = 1;
-    }
+
 
     if(map_num == 1) {
         currentmap = &map[0][0];
