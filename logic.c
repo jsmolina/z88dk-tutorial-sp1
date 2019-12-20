@@ -245,7 +245,7 @@ uint8_t goto_xy(struct spritep * for_who, uint8_t x, uint8_t y) {
         } else if(for_who->y < y) {
             ++for_who->y;
         } else {
-            return ACTIVE;
+            return CHASE;
         }
     }
     return JAILED_EXITING;
@@ -306,26 +306,12 @@ uint8_t move_ghost_in_his_direction() {
     return 1;
 }
 
-void try_ghost_random(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
-// 10, 20, 30, 40
-    // then if not moved, decide direction, first based on random params
-    if((random_value < t1) && could_go(DIR_RIGHT)) {
-        then_go(DIR_RIGHT);
-    } else if((random_value < t2) && could_go(DIR_LEFT)) {
-        then_go(DIR_LEFT);
-    } else if((random_value < t3) && could_go(DIR_DOWN)) {
-        then_go(DIR_DOWN);
-    } else if((random_value < t4) && could_go(DIR_UP)) {
-        then_go(DIR_UP);
-    }
 
-}
-
-void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+void move_one_ghost() {
     matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
     // make ghost flicker if elude mode and almost finishing pill eaten
-    if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
+    if(pill_eaten < 40 && ghosts[idx]->active == FRIGHTENED) {
         if((frame & 1) == 0) {
             sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
         } else {
@@ -357,7 +343,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
     }
 
     // first check collisions
-    if(ghosts[idx]->active == ELUDE) {
+    if(ghosts[idx]->active == FRIGHTENED) {
         // check collission before move
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
@@ -365,7 +351,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             set_eaten(collided_sprite);
             return;
         }
-    } else { // ACTIVE
+    } else { // CHASE
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
             loose_a_live();
@@ -373,48 +359,21 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         }
     }
 
-    if(ghosts[idx]->active == ELUDE) {
-        // todo think on randomly change election
-        // decide direcctions
-        if(((frame + idx) & 1) == 0) {
-            if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
-                then_go(DIR_RIGHT);
-            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_LEFT)) {
-                then_go(DIR_LEFT);
-            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_DOWN)) {
-                then_go(DIR_DOWN);
-            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_UP)) {
-                then_go(DIR_UP);
-            }
-        } else {
-            if(pacman.x < ghosts[idx]->x && could_go(DIR_UP)) {
-                then_go(DIR_UP);
-            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_DOWN)) {
-                then_go(DIR_DOWN);
-            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_LEFT)) {
-                then_go(DIR_LEFT);
-            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_RIGHT)) {
-                then_go(DIR_RIGHT);
-            }
+    if(ghosts[idx]->active == FRIGHTENED) {
+        // direction constants go from 1 to 4
+        tmp_val = ghosts[idx]->last_dir;
+        while(!(could_go(tmp_val))) {
+            tmp_val = (rand() & 3) + 1;
         }
-    } else { // ACTIVE
-        if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
-            then_go(DIR_RIGHT);
-        } else if(pacman.x < ghosts[idx]->x && could_go(DIR_LEFT)) {
-            then_go(DIR_LEFT);
-        } else if(pacman.y > ghosts[idx]->y && could_go(DIR_DOWN)) {
-            then_go(DIR_DOWN);
-        } else if(pacman.y < ghosts[idx]->y && could_go(DIR_UP)) {
-            then_go(DIR_UP);
-        }
+        then_go(tmp_val);
+
+    } else if(ghosts[idx]->active == CHASE) {
+
+    } else if(ghosts[idx]->active == SCATTER) {
+
     }
 
-    if(ghosts[idx]->direction == NONE) {
-         try_ghost_random(t1, t2, t3, t4);
-    }
-
-    if(ghosts[idx]->direction == NONE) {
-        random_value = rand();
+    /*if(ghosts[idx]->direction == NONE) {
         if(could_go(DIR_UP)) {
             then_go(DIR_UP);
         } else if(could_go(DIR_DOWN)) {
@@ -424,9 +383,13 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         } else if(could_go(DIR_RIGHT)) {
             then_go(DIR_RIGHT);
         }
-    }
+    }*/
 
     if(ghosts[idx]->direction != NONE) { // not found already a collision
+        if (ghosts[idx]->active == FRIGHTENED && (((frame + idx) & 1) == 0)) {
+            // no move for altern frames: make ghost slower
+            return;
+        }
         move_ghost_in_his_direction();
     }
 
@@ -436,21 +399,21 @@ void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
 
     switch(idx) {
-        case 0: // Cyan
+        case GCYAN: // Cyan
             // hasta que Pac-Man captura al menos 30 pildoras
-            move_one_ghost(50, 100, 150, 200);
+            move_one_ghost();
             break;
-        case 1: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
-            move_one_ghost(10, 20, 30, 40);
+        case GRED: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
+            move_one_ghost();
             break;
 
-        case 2:
+        case GMAGENTA:
             // su comportamiento  siempre es llegar hacia el punto donde Pac-Man
-            move_one_ghost(5, 10, 20, 30);
+            move_one_ghost();
             break;
-        case 3:
+        case GYELLOW:
             // "a su bola"
-            move_one_ghost(200, 210, 220, 230);
+            move_one_ghost();
     }
 }
 
@@ -464,7 +427,7 @@ void next_level() {
     if(map_num > 3) {
         map_num = 1;
     }
-    
+
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
         // only when returning to first map again, increase speed
@@ -533,11 +496,11 @@ void check_fsm() {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
-                if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
+                if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED) {
                     // stop so we could decide to "sacar pies en polvorosa"
                     ghosts[idx]->direction = NONE;
 
-                    ghosts[idx]->active = ELUDE;
+                    ghosts[idx]->active = FRIGHTENED;
                     ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
                     sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
                 }
@@ -581,7 +544,8 @@ void check_fsm() {
             if(points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, ghosts[idx]->default_y - 3);
             }
-        } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE || ghosts[idx]->active == GETTING_JAILED) {
+        } else if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+            || ghosts[idx]->active == GETTING_JAILED || ghosts[idx]->active == SCATTER) {
             move_ghosts();
         } else if(ghosts[idx]->active <= JAILED && random_value < 100) {
             --ghosts[idx]->active;
@@ -614,8 +578,8 @@ void check_fsm() {
     if(pill_eaten == 0) {
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
-            if(ghosts[idx]->active == ELUDE) {
-                ghosts[idx]->active = ACTIVE;
+            if(ghosts[idx]->active == FRIGHTENED) {
+                ghosts[idx]->active = CHASE;
                 reset_colors(ghosts[idx]);
             }
         }

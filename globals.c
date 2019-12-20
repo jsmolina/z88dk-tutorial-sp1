@@ -3,6 +3,7 @@
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 uint8_t random_value;
+uint8_t tmp_val;
 
 // or using UDG from just code
 uint8_t map[25][32] = {
