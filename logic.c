@@ -306,6 +306,13 @@ uint8_t move_ghost_in_his_direction() {
     return 1;
 }
 
+void choose_random_direction() {
+    tmp_val = ghosts[idx]->last_dir;
+    while(!(could_go(tmp_val))) {
+        tmp_val = (rand() & 3) + 1;
+    }
+    then_go(tmp_val);
+}
 
 void move_one_ghost() {
     matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
@@ -370,7 +377,19 @@ void move_one_ghost() {
     } else if(ghosts[idx]->active == CHASE) {
 
     } else if(ghosts[idx]->active == SCATTER) {
-
+       // cyan: x=32 x y=24
+       // red: x = 32, y=0
+       // magenta: x= 0, y = 0
+       // yellow: x= 0, y= 24
+        if(idx == GCYAN) {
+            if(ghosts[idx]->x < 32 && could_go(DIR_RIGHT)) {
+               then_go(DIR_UP);
+            } else if(ghosts[idx]->y < 24 && could_go(DIR_DOWN)) {
+               then_go(DIR_DOWN);
+            } else {
+               choose_random_direction();
+            }
+        }
     }
 
     /*if(ghosts[idx]->direction == NONE) {
