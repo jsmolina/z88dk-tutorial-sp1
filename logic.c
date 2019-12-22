@@ -314,6 +314,45 @@ void choose_random_direction() {
     then_go(tmp_val);
 }
 
+uint8_t euclidean_dist(int8_t x, int8_t y, uint8_t px, uint8_t py) {
+    x = px - x;
+    y = py - y;
+    return (x * x) + (y * y);
+}
+/**
+px is targeted x coord, while py is targeted y coord
+**/
+uint8_t ghost_gotoIA(uint8_t px, uint8_t py) {
+    uint8_t upcost = 255;
+    uint8_t downcost = 255;
+    uint8_t leftcost = 255;
+    uint8_t rightcost = 255;
+
+    // si suma + 1 en la direccion que va a tomar, deberia ser la distancia
+    // mas pequeña
+    // si misma distancia, primero arriba, izquierda, abajo, derecha
+    if(could_go(DIR_UP)) {
+        upcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px, py - 1);
+    } else if (could_go(DIR_LEFT)) {
+        leftcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px - 1, py);
+    } else if (could_go(DIR_DOWN)) {
+        downcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px, py + 1);
+    } else if (could_go(DIR_RIGHT)) {
+        rightcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px + 1, py);
+    }
+
+    if(upcost <= leftcost && upcost <= downcost && upcost <= rightcost) {
+        return DIR_UP;
+    } else if(leftcost < upcost && leftcost <= downcost && leftcost <= rightcost) {
+        return DIR_LEFT;
+    } else if(rightcost < leftcost && rightcost <= downcost) {
+        return DIR_RIGHT;
+    } else if(downcost != 255) {
+        return DIR_DOWN;
+    }
+    return NONE;
+}
+
 void move_one_ghost() {
     matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
@@ -358,7 +397,7 @@ void move_one_ghost() {
             set_eaten(collided_sprite);
             return;
         }
-    } else { // CHASE
+    } else { // CHASE or SCATTER
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
             loose_a_live();
@@ -375,20 +414,20 @@ void move_one_ghost() {
         then_go(tmp_val);
 
     } else if(ghosts[idx]->active == CHASE) {
-
+        then_go(ghost_gotoIA(pacman.x, pacman.y));
     } else if(ghosts[idx]->active == SCATTER) {
        // cyan: x=32 x y=24
        // red: x = 32, y=0
        // magenta: x= 0, y = 0
        // yellow: x= 0, y= 24
         if(idx == GCYAN) {
-            if(ghosts[idx]->x < 32 && could_go(DIR_RIGHT)) {
-               then_go(DIR_UP);
-            } else if(ghosts[idx]->y < 24 && could_go(DIR_DOWN)) {
-               then_go(DIR_DOWN);
-            } else {
-               choose_random_direction();
-            }
+            then_go(ghost_gotoIA(32, 24));
+        } else if (idx == GRED) {
+            then_go(ghost_gotoIA(32, 0));
+        } else if (idx == GMAGENTA) {
+            then_go(ghost_gotoIA(0, 0));
+        } else if (idx == GYELLOW) {
+            then_go(ghost_gotoIA(0, 24));
         }
     }
 
