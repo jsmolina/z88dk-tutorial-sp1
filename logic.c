@@ -420,7 +420,52 @@ void move_one_ghost() {
         then_go(tmp_val);
 
     } else if(ghosts[idx]->active == CHASE) {
-        then_go(ghost_gotoIA(pacman.x, pacman.y));
+
+        if (idx == GRED) {
+            // blinky is directly targeting pacman
+            then_go(ghost_gotoIA(pacman.x, pacman.y));
+        } else if (idx == GMAGENTA) {
+            // Pinky four tiles in front of pacman
+            tmp_val = pacman.x;
+            tmp_val2 = pacman.y;
+
+            if(pacman.direction == DIR_LEFT) {
+                tmp_val -= 4;
+            } else if (pacman.direction == DIR_RIGHT) {
+                tmp_val += 4;
+            } else if (pacman.direction == DIR_UP) {
+                tmp_val -= 4;
+                tmp_val2 -= 4;
+            } else {
+                tmp_val2 += 4;
+            }
+            then_go(ghost_gotoIA(tmp_val, tmp_val2));
+        } else if(idx == GCYAN) {
+            tmp_val = pacman.x;
+            tmp_val2 = pacman.y;
+            if(pacman.direction == DIR_LEFT) {
+                tmp_val -= 2;
+            } else if (pacman.direction == DIR_RIGHT) {
+                tmp_val += 2;
+            } else if (pacman.direction == DIR_UP) {
+                tmp_val -= 2;
+                tmp_val2 -= 2;
+            } else {
+                tmp_val2 += 2;
+            }
+            // Inky has 180 degrees over RED (blinky) target vector!
+            then_go(ghost_gotoIA(tmp_val - ghost_red.x, tmp_val2 - ghost_red.y));
+        } else if(idx == GYELLOW) {
+           //Clyde
+           // go chase, except when close, so then x=0, y= 24
+           if (abs(ghosts[idx]->x - pacman.x) > 4 && abs(ghosts[idx]->y - pacman.y) > 4) {
+                then_go(ghost_gotoIA(pacman.x, pacman.y));
+           } else {
+                // if so close, scatter
+                then_go(ghost_gotoIA(0, 24));
+           }
+        }
+
     } else if(ghosts[idx]->active == SCATTER) {
        // cyan: x=32 x y=24
        // red: x = 32, y=0

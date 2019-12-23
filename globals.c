@@ -4,6 +4,7 @@ struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 uint8_t random_value;
 uint8_t tmp_val;
+uint8_t tmp_val2;
 uint8_t exit_count;
 
 // or using UDG from just code
