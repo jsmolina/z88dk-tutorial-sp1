@@ -314,7 +314,7 @@ void choose_random_direction() {
     then_go(tmp_val);
 }
 
-uint8_t euclidean_dist(int8_t x, int8_t y, uint8_t px, uint8_t py) {
+uint16_t euclidean_dist(int8_t x, int8_t y, int8_t px, int8_t py) {
     x = px - x;
     y = py - y;
     return (x * x) + (y * y);
@@ -323,34 +323,40 @@ uint8_t euclidean_dist(int8_t x, int8_t y, uint8_t px, uint8_t py) {
 px is targeted x coord, while py is targeted y coord
 **/
 uint8_t ghost_gotoIA(uint8_t px, uint8_t py) {
-    uint8_t upcost = 255;
-    uint8_t downcost = 255;
-    uint8_t leftcost = 255;
-    uint8_t rightcost = 255;
+    uint16_t mincost = 65500;
+    uint16_t foundcost;
+    // keep current if not found
+    uint8_t chosen = ghosts[idx]->direction;
 
     // si suma + 1 en la direccion que va a tomar, deberia ser la distancia
     // mas pequeña
     // si misma distancia, primero arriba, izquierda, abajo, derecha
     if(could_go(DIR_UP)) {
-        upcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px, py - 1);
-    } else if (could_go(DIR_LEFT)) {
-        leftcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px - 1, py);
-    } else if (could_go(DIR_DOWN)) {
-        downcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px, py + 1);
-    } else if (could_go(DIR_RIGHT)) {
-        rightcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y, px + 1, py);
+        mincost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y - 1, px, py);
+        chosen = DIR_UP;
+    }
+    if (could_go(DIR_LEFT)) {
+        foundcost = euclidean_dist(ghosts[idx]->x - 1, ghosts[idx]->y, px, py);
+        if (foundcost < mincost) {
+            mincost = foundcost;
+            chosen = DIR_LEFT;
+        }
+    }
+    if (could_go(DIR_DOWN)) {
+        foundcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y + 1, px, py);
+        if (foundcost < mincost) {
+            mincost = foundcost;
+            chosen = DIR_DOWN;
+        }
+    }
+    if (could_go(DIR_RIGHT)) {
+        foundcost = euclidean_dist(ghosts[idx]->x + 1, ghosts[idx]->y, px, py);
+        if (foundcost < mincost) {
+            chosen = DIR_RIGHT;
+        }
     }
 
-    if(upcost <= leftcost && upcost <= downcost && upcost <= rightcost) {
-        return DIR_UP;
-    } else if(leftcost < upcost && leftcost <= downcost && leftcost <= rightcost) {
-        return DIR_LEFT;
-    } else if(rightcost < leftcost && rightcost <= downcost) {
-        return DIR_RIGHT;
-    } else if(downcost != 255) {
-        return DIR_DOWN;
-    }
-    return NONE;
+    return chosen;
 }
 
 void move_one_ghost() {
@@ -420,7 +426,7 @@ void move_one_ghost() {
        // red: x = 32, y=0
        // magenta: x= 0, y = 0
        // yellow: x= 0, y= 24
-        if(idx == GCYAN) {
+        /*if(idx == GCYAN) {
             then_go(ghost_gotoIA(32, 24));
         } else if (idx == GRED) {
             then_go(ghost_gotoIA(32, 0));
@@ -428,7 +434,7 @@ void move_one_ghost() {
             then_go(ghost_gotoIA(0, 0));
         } else if (idx == GYELLOW) {
             then_go(ghost_gotoIA(0, 24));
-        }
+        }*/
     }
 
     /*if(ghosts[idx]->direction == NONE) {
@@ -555,7 +561,16 @@ void check_fsm() {
             pill_eaten = 125;
             for(idx = 0; idx != 4; ++idx) {
                 if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED) {
-                    // stop so we could decide to "sacar pies en polvorosa"
+                    // "sacar pies en polvorosa"
+                    if(ghosts[idx]->direction == DIR_LEFT) {
+                        ghosts[idx]->direction = DIR_RIGHT;
+                    } else if(ghosts[idx]->direction == DIR_RIGHT) {
+                        ghosts[idx]->direction = DIR_LEFT;
+                    } else if(ghosts[idx]->direction == DIR_UP) {
+                        ghosts[idx]->direction = DIR_DOWN;
+                    } else {
+                        ghosts[idx]->direction = DIR_UP;
+                    }
                     ghosts[idx]->direction = NONE;
 
                     ghosts[idx]->active = FRIGHTENED;
