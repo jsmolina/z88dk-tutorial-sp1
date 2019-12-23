@@ -156,6 +156,7 @@ void nampac_go_home() {
     pacman.x = 13;
     pacman.offset = RIGHTC1;
     pacman.direction = NONE;
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, 2, 2, 0, 0);
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
 }
 
@@ -229,6 +230,10 @@ void init_ghost(struct spritep * for_who) {
     for_who->direction = NONE;
     for_who->last_dir = NONE;
     reset_colors(for_who);
+
+    // ensure repaint: sp1 tricky
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, 2, 2, 0, 0);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->y, for_who->x, 0, 0);
 }
 
 
@@ -467,11 +472,8 @@ void move_one_ghost() {
         }
 
     } else if(ghosts[idx]->active == SCATTER) {
-       // cyan: x=32 x y=24
-       // red: x = 32, y=0
-       // magenta: x= 0, y = 0
-       // yellow: x= 0, y= 24
-        /*if(idx == GCYAN) {
+
+        if(idx == GCYAN) {
             then_go(ghost_gotoIA(32, 24));
         } else if (idx == GRED) {
             then_go(ghost_gotoIA(32, 0));
@@ -479,20 +481,9 @@ void move_one_ghost() {
             then_go(ghost_gotoIA(0, 0));
         } else if (idx == GYELLOW) {
             then_go(ghost_gotoIA(0, 24));
-        }*/
+        }
     }
 
-    /*if(ghosts[idx]->direction == NONE) {
-        if(could_go(DIR_UP)) {
-            then_go(DIR_UP);
-        } else if(could_go(DIR_DOWN)) {
-            then_go(DIR_DOWN);
-        } else if(could_go(DIR_LEFT)) {
-            then_go(DIR_LEFT);
-        } else if(could_go(DIR_RIGHT)) {
-            then_go(DIR_RIGHT);
-        }
-    }*/
 
     if(ghosts[idx]->direction != NONE) { // not found already a collision
         if (ghosts[idx]->active == FRIGHTENED && (((frame + idx) & 1) == 0)) {
@@ -508,22 +499,71 @@ void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
 
     switch(idx) {
-        case GCYAN: // Cyan
-            // hasta que Pac-Man captura al menos 30 pildoras
+        case GCYAN:
             move_one_ghost();
             break;
-        case GRED: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
+        case GRED:
             move_one_ghost();
             break;
 
         case GMAGENTA:
-            // su comportamiento  siempre es llegar hacia el punto donde Pac-Man
             move_one_ghost();
             break;
+
         case GYELLOW:
-            // "a su bola"
             move_one_ghost();
     }
+
+    // switches to scatter or chase, except blinky that depends on number of remaining points
+    if (idx == GRED ) {
+        if(reached_level == 0 && remaining_points < 20) {
+            return;
+        } else if(reached_level == 1 && remaining_points < 30) {
+            return;
+        } else if(reached_level >= 2 && reached_level <= 5 && remaining_points < 40) {
+            return;
+        } else if(reached_level >= 6 && reached_level <= 8 && remaining_points < 50) {
+            return;
+        } else if(reached_level >= 9 && reached_level <= 11 && remaining_points < 60) {
+            return;
+        } else if(reached_level >= 12 && reached_level <= 14 && remaining_points < 80) {
+            return;
+        } else if(reached_level > 14  && remaining_points < 120) {
+            // blinky almost always chase after passing 14 times!
+            return;
+        }
+    }
+
+    if((ghosts[idx]->active == CHASE || ghosts[idx]->active == SCATTER)) {
+
+        if(idx == GCYAN && frame == 1) { // only advances if ghosts are actively moving and for one ghost
+            ++slowticker;
+        }
+
+        if(slowticker == 8) {
+            // go scatter
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 30) {
+            ghosts[idx]->active = CHASE;
+
+        } else if(slowticker == 38) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 55) {
+            ghosts[idx]->active = CHASE;
+
+        } else if(slowticker == 63) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 85) {
+            ghosts[idx]->active = CHASE;
+
+        } else if((reached_level < 3 && slowticker == 91) || (reached_level > 3 && slowticker == 155) ) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 160 || slowticker == 96) {
+            ghosts[idx]->active = CHASE;
+        }
+    }
+
+
 }
 
 
@@ -532,6 +572,9 @@ void next_level() {
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
     ++level;
+    // helps determining scatter mode changes and some others
+    slowticker = 0;
+    ++reached_level;
     ++map_num;
     if(map_num > 3) {
         map_num = 1;
@@ -539,10 +582,6 @@ void next_level() {
 
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-        // only when returning to first map again, increase speed
-        if (speed > 1 && map_num > 3) {
-            --speed;
-        }
     } else if(map_num == 2){
         remaining_points = MAP2_TOTAL_POINTS;
     } else if(map_num == 3){
@@ -603,9 +642,10 @@ void check_fsm() {
             --remaining_points;
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
-            pill_eaten = 125;
+            pill_eaten = 90;
             for(idx = 0; idx != 4; ++idx) {
-                if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED) {
+                if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+                || ghosts[idx]->active == SCATTER) && level < 19) {
                     // "sacar pies en polvorosa"
                     if(ghosts[idx]->direction == DIR_LEFT) {
                         then_go(DIR_RIGHT);
@@ -729,18 +769,6 @@ void check_fsm() {
         next_level();
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-        level = 1;
-        show_cherry();
-    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
-        level = 2;
-        show_cherry();
-    }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-        level = 3;
-        show_cherry();
-    }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
-        next_level();
-    }
 }
 
 void paint_lives() {

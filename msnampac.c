@@ -106,11 +106,11 @@ void all_lives_lost() {
 
   srand(tick);
 
-  set_ghosts_default_coords();
   nampac_go_home();
 
   reset_map();
 
+  set_ghosts_default_coords();
   all_ghosts_go_home();
   show_billboard(READY);
 
@@ -119,7 +119,8 @@ void all_lives_lost() {
 
 
   pick = 1;
-  speed = 6;
+  reached_level = 0;
+  slowticker = 0;
 }
 
 
@@ -180,7 +181,7 @@ int main()
 
      sp1_UpdateNow();
 
-     frame += 1;
+     ++frame;
 
      if(frame == 3) { // frame will go 0, 1, 2
         frame = 0;

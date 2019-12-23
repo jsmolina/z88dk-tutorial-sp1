@@ -13,7 +13,7 @@ unsigned char pick;
 void
 wait(void)
 {
-   while (abs(tick - timer) < speed) {
+   while (abs(tick - timer) < SPEED) {
       intrinsic_halt();
       in = (joy)(&joy_keys);
    }
