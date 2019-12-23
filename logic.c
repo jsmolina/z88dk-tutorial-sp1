@@ -154,8 +154,15 @@ void all_ghosts_go_home() {
 void nampac_go_home() {
     pacman.y = 21;
     pacman.x = 13;
-    pacman.offset = RIGHTC1;
-    pacman.direction = NONE;
+    if (map_num == 1) {
+        pacman.currentoffset = RIGHTC1;
+        pacman.offset = RIGHTC1;
+        pacman.direction = DIR_RIGHT;
+    } else {
+        pacman.currentoffset = UP1;
+        pacman.offset = UP1;
+        pacman.direction = DIR_UP;
+    }
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, 2, 2, 0, 0);
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
 }
@@ -607,6 +614,10 @@ void next_level() {
     if(level == 5) {
         level = 0;
     }
+
+    show_billboard(READY);
+    in_wait_key();
+    hide_billboard();
 }
 
 
