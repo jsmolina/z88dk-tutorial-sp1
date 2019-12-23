@@ -3,6 +3,9 @@
 struct sp1_Rect full_screen = {0, 0, 32, 24};
 
 uint8_t random_value;
+uint8_t tmp_val;
+uint8_t tmp_val2;
+uint8_t exit_count;
 
 // or using UDG from just code
 uint8_t map[25][32] = {
@@ -122,7 +125,8 @@ uint8_t frame = 0;
 uint8_t lives = 0;
 uint8_t level = 0;
 uint8_t repaint_lives = 1;
-uint8_t speed = 0;
+uint8_t reached_level = 0;
+uint8_t slowticker = 0;
 uint8_t showing_points = NONE;
 uint8_t idx;
 uint16_t matrixrow;

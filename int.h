@@ -17,6 +17,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 #define WFRAMES  2
 #endif
 
+#define SPEED 6
+
 #define clock(x) (tick)
 
 extern unsigned char tick;

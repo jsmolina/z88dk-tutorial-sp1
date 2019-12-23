@@ -76,7 +76,7 @@ void all_lives_lost() {
   ghost_yellow.default_color =  initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
-  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.0.2");
+  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.0.5");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
@@ -106,11 +106,11 @@ void all_lives_lost() {
 
   srand(tick);
 
-  set_ghosts_default_coords();
   nampac_go_home();
 
   reset_map();
 
+  set_ghosts_default_coords();
   all_ghosts_go_home();
   show_billboard(READY);
 
@@ -119,7 +119,8 @@ void all_lives_lost() {
 
 
   pick = 1;
-  speed = 6;
+  reached_level = 0;
+  slowticker = 0;
 }
 
 
@@ -180,7 +181,7 @@ int main()
 
      sp1_UpdateNow();
 
-     frame += 1;
+     ++frame;
 
      if(frame == 3) { // frame will go 0, 1, 2
         frame = 0;

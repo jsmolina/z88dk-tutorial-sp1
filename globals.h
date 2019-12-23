@@ -47,11 +47,18 @@
 #define DIR_LEFT 3
 #define DIR_RIGHT 4
 #define NONE 250
-#define ELUDE 25
+#define FRIGHTENED 25
 #define JAILED 20
 #define GETTING_JAILED 30
 #define JAILED_EXITING 1
-#define ACTIVE 0
+#define CHASE 0
+#define SCATTER 40
+
+// ghost index
+#define GCYAN 0
+#define GRED 1
+#define GMAGENTA 2
+#define GYELLOW 3
 
 #define AYCTRL 65533
 #define AYDATA 49149
@@ -171,6 +178,9 @@ extern uint8_t map[25][32];
 extern uint8_t map2[25][32];
 extern uint8_t map3[25][32];
 extern uint8_t random_value;
+extern uint8_t tmp_val;
+extern uint8_t tmp_val2;
+extern uint8_t exit_count;
 
 extern uint8_t pill_eaten;
 extern struct spritep pacman;
@@ -192,7 +202,8 @@ extern uint8_t col;
 extern uint8_t current;
 extern uint16_t points;
 extern uint8_t remaining_points;
-extern uint8_t speed;
+extern uint8_t reached_level;
+extern uint8_t slowticker;
 extern uint8_t frame;
 extern uint8_t showing_points;
 

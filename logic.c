@@ -154,8 +154,16 @@ void all_ghosts_go_home() {
 void nampac_go_home() {
     pacman.y = 21;
     pacman.x = 13;
-    pacman.offset = RIGHTC1;
-    pacman.direction = NONE;
+    if (map_num == 1) {
+        pacman.currentoffset = RIGHTC1;
+        pacman.offset = RIGHTC1;
+        pacman.direction = DIR_RIGHT;
+    } else {
+        pacman.currentoffset = UP1;
+        pacman.offset = UP1;
+        pacman.direction = DIR_UP;
+    }
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, 2, 2, 0, 0);
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
 }
 
@@ -229,6 +237,10 @@ void init_ghost(struct spritep * for_who) {
     for_who->direction = NONE;
     for_who->last_dir = NONE;
     reset_colors(for_who);
+
+    // ensure repaint: sp1 tricky
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, 2, 2, 0, 0);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->y, for_who->x, 0, 0);
 }
 
 
@@ -245,7 +257,7 @@ uint8_t goto_xy(struct spritep * for_who, uint8_t x, uint8_t y) {
         } else if(for_who->y < y) {
             ++for_who->y;
         } else {
-            return ACTIVE;
+            return CHASE;
         }
     }
     return JAILED_EXITING;
@@ -306,26 +318,64 @@ uint8_t move_ghost_in_his_direction() {
     return 1;
 }
 
-void try_ghost_random(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
-// 10, 20, 30, 40
-    // then if not moved, decide direction, first based on random params
-    if((random_value < t1) && could_go(DIR_RIGHT)) {
-        then_go(DIR_RIGHT);
-    } else if((random_value < t2) && could_go(DIR_LEFT)) {
-        then_go(DIR_LEFT);
-    } else if((random_value < t3) && could_go(DIR_DOWN)) {
-        then_go(DIR_DOWN);
-    } else if((random_value < t4) && could_go(DIR_UP)) {
-        then_go(DIR_UP);
+void choose_random_direction() {
+    tmp_val = ghosts[idx]->last_dir;
+    while(!(could_go(tmp_val))) {
+        tmp_val = (rand() & 3) + 1;
     }
-
+    then_go(tmp_val);
 }
 
-void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
+uint16_t euclidean_dist(int8_t x, int8_t y, int8_t px, int8_t py) {
+    x = px - x;
+    y = py - y;
+    return (x * x) + (y * y);
+}
+/**
+px is targeted x coord, while py is targeted y coord
+**/
+uint8_t ghost_gotoIA(uint8_t px, uint8_t py) {
+    uint16_t mincost = 65500;
+    uint16_t foundcost;
+    // keep current if not found
+    uint8_t chosen = ghosts[idx]->direction;
+
+    // si suma + 1 en la direccion que va a tomar, deberia ser la distancia
+    // mas pequeña
+    // si misma distancia, primero arriba, izquierda, abajo, derecha
+    if(could_go(DIR_UP)) {
+        mincost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y - 1, px, py);
+        chosen = DIR_UP;
+    }
+    if (could_go(DIR_LEFT)) {
+        foundcost = euclidean_dist(ghosts[idx]->x - 1, ghosts[idx]->y, px, py);
+        if (foundcost < mincost) {
+            mincost = foundcost;
+            chosen = DIR_LEFT;
+        }
+    }
+    if (could_go(DIR_DOWN)) {
+        foundcost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y + 1, px, py);
+        if (foundcost < mincost) {
+            mincost = foundcost;
+            chosen = DIR_DOWN;
+        }
+    }
+    if (could_go(DIR_RIGHT)) {
+        foundcost = euclidean_dist(ghosts[idx]->x + 1, ghosts[idx]->y, px, py);
+        if (foundcost < mincost) {
+            chosen = DIR_RIGHT;
+        }
+    }
+
+    return chosen;
+}
+
+void move_one_ghost() {
     matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
     // make ghost flicker if elude mode and almost finishing pill eaten
-    if(pill_eaten < 40 && ghosts[idx]->active == ELUDE) {
+    if(pill_eaten < 40 && ghosts[idx]->active == FRIGHTENED) {
         if((frame & 1) == 0) {
             sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
         } else {
@@ -357,7 +407,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
     }
 
     // first check collisions
-    if(ghosts[idx]->active == ELUDE) {
+    if(ghosts[idx]->active == FRIGHTENED) {
         // check collission before move
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
@@ -365,7 +415,7 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
             set_eaten(collided_sprite);
             return;
         }
-    } else { // ACTIVE
+    } else { // CHASE or SCATTER
         collided_sprite = has_collision();
         if(collided_sprite != NULL) {
             loose_a_live();
@@ -373,60 +423,80 @@ void move_one_ghost(uint8_t t1, uint8_t t2, uint8_t t3, uint8_t t4) {
         }
     }
 
-    if(ghosts[idx]->active == ELUDE) {
-        // todo think on randomly change election
-        // decide direcctions
-        if(((frame + idx) & 1) == 0) {
-            if(pacman.x < ghosts[idx]->x && could_go(DIR_RIGHT)) {
-                then_go(DIR_RIGHT);
-            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_LEFT)) {
-                then_go(DIR_LEFT);
-            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_DOWN)) {
-                then_go(DIR_DOWN);
-            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_UP)) {
-                then_go(DIR_UP);
-            }
-        } else {
-            if(pacman.x < ghosts[idx]->x && could_go(DIR_UP)) {
-                then_go(DIR_UP);
-            } else if(pacman.x > ghosts[idx]->x && could_go(DIR_DOWN)) {
-                then_go(DIR_DOWN);
-            } else if(pacman.y < ghosts[idx]->y && could_go(DIR_LEFT)) {
-                then_go(DIR_LEFT);
-            } else if(pacman.y > ghosts[idx]->y && could_go(DIR_RIGHT)) {
-                then_go(DIR_RIGHT);
-            }
+    if(ghosts[idx]->active == FRIGHTENED) {
+        // direction constants go from 1 to 4
+        tmp_val = ghosts[idx]->last_dir;
+        while(!(could_go(tmp_val))) {
+            tmp_val = (rand() & 3) + 1;
         }
-    } else { // ACTIVE
-        if(pacman.x > ghosts[idx]->x && could_go(DIR_RIGHT)) {
-            then_go(DIR_RIGHT);
-        } else if(pacman.x < ghosts[idx]->x && could_go(DIR_LEFT)) {
-            then_go(DIR_LEFT);
-        } else if(pacman.y > ghosts[idx]->y && could_go(DIR_DOWN)) {
-            then_go(DIR_DOWN);
-        } else if(pacman.y < ghosts[idx]->y && could_go(DIR_UP)) {
-            then_go(DIR_UP);
+        then_go(tmp_val);
+
+    } else if(ghosts[idx]->active == CHASE) {
+
+        if (idx == GRED) {
+            // blinky is directly targeting pacman
+            then_go(ghost_gotoIA(pacman.x, pacman.y));
+        } else if (idx == GMAGENTA) {
+            // Pinky four tiles in front of pacman
+            tmp_val = pacman.x;
+            tmp_val2 = pacman.y;
+
+            if(pacman.direction == DIR_LEFT) {
+                tmp_val -= 4;
+            } else if (pacman.direction == DIR_RIGHT) {
+                tmp_val += 4;
+            } else if (pacman.direction == DIR_UP) {
+                tmp_val -= 4;
+                tmp_val2 -= 4;
+            } else {
+                tmp_val2 += 4;
+            }
+            then_go(ghost_gotoIA(tmp_val, tmp_val2));
+        } else if(idx == GCYAN) {
+            tmp_val = pacman.x;
+            tmp_val2 = pacman.y;
+            if(pacman.direction == DIR_LEFT) {
+                tmp_val -= 2;
+            } else if (pacman.direction == DIR_RIGHT) {
+                tmp_val += 2;
+            } else if (pacman.direction == DIR_UP) {
+                tmp_val -= 2;
+                tmp_val2 -= 2;
+            } else {
+                tmp_val2 += 2;
+            }
+            // Inky has 180 degrees over RED (blinky) target vector!
+            then_go(ghost_gotoIA(tmp_val - ghost_red.x, tmp_val2 - ghost_red.y));
+        } else if(idx == GYELLOW) {
+           //Clyde
+           // go chase, except when close, so then x=0, y= 24
+           if (abs(ghosts[idx]->x - pacman.x) > 4 && abs(ghosts[idx]->y - pacman.y) > 4) {
+                then_go(ghost_gotoIA(pacman.x, pacman.y));
+           } else {
+                // if so close, scatter
+                then_go(ghost_gotoIA(0, 24));
+           }
+        }
+
+    } else if(ghosts[idx]->active == SCATTER) {
+
+        if(idx == GCYAN) {
+            then_go(ghost_gotoIA(32, 24));
+        } else if (idx == GRED) {
+            then_go(ghost_gotoIA(32, 0));
+        } else if (idx == GMAGENTA) {
+            then_go(ghost_gotoIA(0, 0));
+        } else if (idx == GYELLOW) {
+            then_go(ghost_gotoIA(0, 24));
         }
     }
 
-    if(ghosts[idx]->direction == NONE) {
-         try_ghost_random(t1, t2, t3, t4);
-    }
-
-    if(ghosts[idx]->direction == NONE) {
-        random_value = rand();
-        if(could_go(DIR_UP)) {
-            then_go(DIR_UP);
-        } else if(could_go(DIR_DOWN)) {
-            then_go(DIR_DOWN);
-        } else if(could_go(DIR_LEFT)) {
-            then_go(DIR_LEFT);
-        } else if(could_go(DIR_RIGHT)) {
-            then_go(DIR_RIGHT);
-        }
-    }
 
     if(ghosts[idx]->direction != NONE) { // not found already a collision
+        if (ghosts[idx]->active == FRIGHTENED && (((frame + idx) & 1) == 0)) {
+            // no move for altern frames: make ghost slower
+            return;
+        }
         move_ghost_in_his_direction();
     }
 
@@ -436,22 +506,71 @@ void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
 
     switch(idx) {
-        case 0: // Cyan
-            // hasta que Pac-Man captura al menos 30 pildoras
-            move_one_ghost(50, 100, 150, 200);
+        case GCYAN:
+            move_one_ghost();
             break;
-        case 1: // Rojo: Intenta estár detras de Pac-Man en modo "Acoso"
-            move_one_ghost(10, 20, 30, 40);
+        case GRED:
+            move_one_ghost();
             break;
 
-        case 2:
-            // su comportamiento  siempre es llegar hacia el punto donde Pac-Man
-            move_one_ghost(5, 10, 20, 30);
+        case GMAGENTA:
+            move_one_ghost();
             break;
-        case 3:
-            // "a su bola"
-            move_one_ghost(200, 210, 220, 230);
+
+        case GYELLOW:
+            move_one_ghost();
     }
+
+    // switches to scatter or chase, except blinky that depends on number of remaining points
+    if (idx == GRED ) {
+        if(reached_level == 0 && remaining_points < 20) {
+            return;
+        } else if(reached_level == 1 && remaining_points < 30) {
+            return;
+        } else if(reached_level >= 2 && reached_level <= 5 && remaining_points < 40) {
+            return;
+        } else if(reached_level >= 6 && reached_level <= 8 && remaining_points < 50) {
+            return;
+        } else if(reached_level >= 9 && reached_level <= 11 && remaining_points < 60) {
+            return;
+        } else if(reached_level >= 12 && reached_level <= 14 && remaining_points < 80) {
+            return;
+        } else if(reached_level > 14  && remaining_points < 120) {
+            // blinky almost always chase after passing 14 times!
+            return;
+        }
+    }
+
+    if((ghosts[idx]->active == CHASE || ghosts[idx]->active == SCATTER)) {
+
+        if(idx == GCYAN && frame == 1) { // only advances if ghosts are actively moving and for one ghost
+            ++slowticker;
+        }
+
+        if(slowticker == 8) {
+            // go scatter
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 30) {
+            ghosts[idx]->active = CHASE;
+
+        } else if(slowticker == 38) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 55) {
+            ghosts[idx]->active = CHASE;
+
+        } else if(slowticker == 63) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 85) {
+            ghosts[idx]->active = CHASE;
+
+        } else if((reached_level < 3 && slowticker == 91) || (reached_level > 3 && slowticker == 155) ) {
+            ghosts[idx]->active = SCATTER;
+        } else if(slowticker == 160 || slowticker == 96) {
+            ghosts[idx]->active = CHASE;
+        }
+    }
+
+
 }
 
 
@@ -460,17 +579,16 @@ void next_level() {
     bit_beepfx_di_fastcall(BEEPFX_SCORE);
     zx_border(INK_BLACK);
     ++level;
+    // helps determining scatter mode changes and some others
+    slowticker = 0;
+    ++reached_level;
     ++map_num;
     if(map_num > 3) {
         map_num = 1;
     }
-    
+
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-        // only when returning to first map again, increase speed
-        if (speed > 1 && map_num > 3) {
-            --speed;
-        }
     } else if(map_num == 2){
         remaining_points = MAP2_TOTAL_POINTS;
     } else if(map_num == 3){
@@ -496,6 +614,10 @@ void next_level() {
     if(level == 5) {
         level = 0;
     }
+
+    show_billboard(READY);
+    in_wait_key();
+    hide_billboard();
 }
 
 
@@ -531,13 +653,22 @@ void check_fsm() {
             --remaining_points;
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
-            pill_eaten = 125;
+            pill_eaten = 90;
             for(idx = 0; idx != 4; ++idx) {
-                if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE) {
-                    // stop so we could decide to "sacar pies en polvorosa"
-                    ghosts[idx]->direction = NONE;
+                if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+                || ghosts[idx]->active == SCATTER) && level < 19) {
+                    // "sacar pies en polvorosa"
+                    if(ghosts[idx]->direction == DIR_LEFT) {
+                        then_go(DIR_RIGHT);
+                    } else if(ghosts[idx]->direction == DIR_RIGHT) {
+                        then_go(DIR_LEFT);
+                    } else if(ghosts[idx]->direction == DIR_UP) {
+                        then_go(DIR_DOWN);
+                    } else {
+                        then_go(DIR_UP);
+                    }
 
-                    ghosts[idx]->active = ELUDE;
+                    ghosts[idx]->active = FRIGHTENED;
                     ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
                     sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
                 }
@@ -581,7 +712,8 @@ void check_fsm() {
             if(points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, ghosts[idx]->default_y - 3);
             }
-        } else if(ghosts[idx]->active == ACTIVE || ghosts[idx]->active == ELUDE || ghosts[idx]->active == GETTING_JAILED) {
+        } else if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+            || ghosts[idx]->active == GETTING_JAILED || ghosts[idx]->active == SCATTER) {
             move_ghosts();
         } else if(ghosts[idx]->active <= JAILED && random_value < 100) {
             --ghosts[idx]->active;
@@ -614,8 +746,8 @@ void check_fsm() {
     if(pill_eaten == 0) {
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
-            if(ghosts[idx]->active == ELUDE) {
-                ghosts[idx]->active = ACTIVE;
+            if(ghosts[idx]->active == FRIGHTENED) {
+                ghosts[idx]->active = CHASE;
                 reset_colors(ghosts[idx]);
             }
         }
@@ -648,18 +780,6 @@ void check_fsm() {
         next_level();
     }
 
-    if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-        level = 1;
-        show_cherry();
-    } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
-        level = 2;
-        show_cherry();
-    }else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-        level = 3;
-        show_cherry();
-    }else if(in_key_pressed(IN_KEY_SCANCODE_4)) {
-        next_level();
-    }
 }
 
 void paint_lives() {
