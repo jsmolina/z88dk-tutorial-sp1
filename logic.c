@@ -563,15 +563,14 @@ void check_fsm() {
                 if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED) {
                     // "sacar pies en polvorosa"
                     if(ghosts[idx]->direction == DIR_LEFT) {
-                        ghosts[idx]->direction = DIR_RIGHT;
+                        then_go(DIR_RIGHT);
                     } else if(ghosts[idx]->direction == DIR_RIGHT) {
-                        ghosts[idx]->direction = DIR_LEFT;
+                        then_go(DIR_LEFT);
                     } else if(ghosts[idx]->direction == DIR_UP) {
-                        ghosts[idx]->direction = DIR_DOWN;
+                        then_go(DIR_DOWN);
                     } else {
-                        ghosts[idx]->direction = DIR_UP;
+                        then_go(DIR_UP);
                     }
-                    ghosts[idx]->direction = NONE;
 
                     ghosts[idx]->active = FRIGHTENED;
                     ghosts[idx]->currentoffset = GHOST_FRIGHTENED;
