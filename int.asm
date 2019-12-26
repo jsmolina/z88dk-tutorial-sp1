@@ -1,7 +1,9 @@
 EXTERN _tick
 EXTERN _pick
-EXTERN _playBasic
-
+EXTERN afxFrame
+EXTERN _ambient
+EXTERN afxInit
+EXTERN afxPlay
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -14,7 +16,13 @@ PUBLIC _setup_int
 _setup_int:
 
    ; im2 table @ 0xd000
-
+   di
+   ; ayfx stuff
+    ld hl, _ambient
+    call afxInit
+    ld a, 0
+    call afxPlay
+   ; int
    ld hl,0xd000
    ld de,0xd001
    ld bc,256
@@ -92,7 +100,7 @@ isr_skip:
    dec a              ; else decrement
    ld (_pick),a
    ; https://www.sounds-resource.com/nes/mspacmannamco/sound/5206/
-    call _playBasic
+    call afxFrame
 
 it_was_zero:
    ld a,0xd0
