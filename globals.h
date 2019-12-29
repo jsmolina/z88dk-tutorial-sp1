@@ -232,5 +232,6 @@ extern uint8_t numbers[];
 extern uint8_t abecedary[];
 extern uint8_t * currentmap;
 
+extern uint8_t aybank[83];
 #endif
 

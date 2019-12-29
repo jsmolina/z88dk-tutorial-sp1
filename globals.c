@@ -133,3 +133,5 @@ uint16_t matrixrow;
 uint16_t matrixrow_ghost;
 uint8_t map_num = 1;
 struct spritep * collided_sprite;
+
+uint8_t aybank[83]; // 83 bytes bank

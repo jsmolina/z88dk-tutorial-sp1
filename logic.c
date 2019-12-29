@@ -3,7 +3,7 @@
 #include "game_zx.h"
 #include <sound.h>
 #include <input.h>
-
+#include "fx/game_audio.h"
 
 void show_billboard(uint8_t offset) {
     if(offset == READY) {
@@ -648,7 +648,7 @@ void check_fsm() {
         sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
 
         if(current == 9) {
-            pick += 1;
+            audio_eat_dot();
             points += 5; // 5 points each dot
             --remaining_points;
         } else if(current == 11) {

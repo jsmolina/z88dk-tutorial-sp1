@@ -117,8 +117,6 @@ void all_lives_lost() {
   in_wait_key();
   hide_billboard();
 
-
-  pick = 1;
   reached_level = 0;
   slowticker = 0;
 }
