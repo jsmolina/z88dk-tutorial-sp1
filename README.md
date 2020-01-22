@@ -1,6 +1,12 @@
 # SP1 TUTORIAL
-## Interesting demo
+## Another Interesting demo
 https://github.com/z88dk/z88dk/tree/f6caa95eba4653ed79e0bd3460c4ebfa56820721/libsrc/_DEVELOPMENT/EXAMPLES/zx/demo_sp1/demo2
+
+## Building this project
+1. Makefile uses png2sp1sprite python scripts, which are available to be installed at: https://github.com/jsmolina/png2sp1sprite
+Just clone the repo and do a => python setup.py install 
+2. bas2tap is compiled for MacOS, you should first compile it yourself for Linux/Windows/whatever os you are using.
+
 
 ## Considerations before start
 * Do you want to make a 48k game or a 128k game?
