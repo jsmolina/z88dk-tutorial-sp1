@@ -1,6 +1,4 @@
 # SP1 TUTORIAL
-## Another Interesting demo
-https://github.com/z88dk/z88dk/tree/f6caa95eba4653ed79e0bd3460c4ebfa56820721/libsrc/_DEVELOPMENT/EXAMPLES/zx/demo_sp1/demo2
 
 ## Building this project
 1. Makefile uses png2sp1sprite python scripts, which are available to be installed at: https://github.com/jsmolina/png2sp1sprite
@@ -16,6 +14,8 @@ Just clone the repo and do a => python setup.py install
 * Read about `SECTION` and how to define public vars from ASM code `PUBLIC`
 * You'll need z88dk, of course, so you could download it from here: http://nightly.z88dk.org/
 * Interesting to read as well is sp1 library tutorial: https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_01_GettingStarted.md https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_02_SimpleMaskedSprite.md
+* Interesting demo for z88dk as well 
+https://github.com/z88dk/z88dk/tree/f6caa95eba4653ed79e0bd3460c4ebfa56820721/libsrc/_DEVELOPMENT/EXAMPLES/zx/demo_sp1/demo2
 * png2sp1sprite.py Quick and dirty png to sprite converter. Right now it only uses 1-bit sprites (no color), and ignores color info. Based on https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_04_BiggerSprites.md
 
 ### Drawing on the screen with SP1
