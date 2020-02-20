@@ -1,6 +1,5 @@
 EXTERN _tick
 EXTERN _pick
-EXTERN _playBasic
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
@@ -84,17 +83,6 @@ isr_skip:
    ld a,h
    or l
 
-   ; FX
-   ld a,(_pick)
-   or a
-   JR Z, it_was_zero  ; skip if it reaches zero
-
-   dec a              ; else decrement
-   ld (_pick),a
-   ; https://www.sounds-resource.com/nes/mspacmannamco/sound/5206/
-    call _playBasic
-
-it_was_zero:
    ld a,0xd0
    ld i,a                      ; restore I
 

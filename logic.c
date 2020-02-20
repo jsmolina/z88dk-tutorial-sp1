@@ -3,6 +3,7 @@
 #include "game_zx.h"
 #include <sound.h>
 #include <input.h>
+#include "mssound.h"
 
 
 void show_billboard(uint8_t offset) {
@@ -649,6 +650,7 @@ void check_fsm() {
 
         if(current == 9) {
             pick += 1;
+            sounds_waka();
             points += 5; // 5 points each dot
             --remaining_points;
         } else if(current == 11) {

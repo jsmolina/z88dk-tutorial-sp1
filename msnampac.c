@@ -13,7 +13,7 @@
 #include "globals.h"
 #include "int.h"
 #include "game_zx.h"
-
+#include "mssound.h"
 
 void all_lives_lost() {
 
@@ -87,6 +87,7 @@ void all_lives_lost() {
   printatstr(20, 6, INK_CYAN | PAPER_BLACK, "SP1 POWERED");
   printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
 
+  sounds_init();
 
   sp1_UpdateNow();
 
