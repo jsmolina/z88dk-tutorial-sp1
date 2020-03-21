@@ -87,7 +87,6 @@ void all_lives_lost() {
   printatstr(20, 6, INK_CYAN | PAPER_BLACK, "SP1 POWERED");
   printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
 
-  sounds_init();
 
   sp1_UpdateNow();
 
@@ -127,8 +126,10 @@ void all_lives_lost() {
 
 int main()
 {
-  setup_int();
+  sounds_init();
 
+  setup_int();
+  intrinsic_ei();
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();

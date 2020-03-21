@@ -1,11 +1,11 @@
 @build/binaries.lst
 @fx/fx.lst
 @font/font.lst
+int.c
 game_zx.c
 logic.c
 sprites.c
 globals.c
-int.asm
-int.c
+mssound.c
 msnampac.c
 asm_strlen

@@ -1,7 +1,7 @@
 #ifndef MSSOUND_H
 #define MSSOUND_H
 
-#include <psg/wyz.h>
+#include <sound/aywyz.h>
 
 extern void sounds_init();
 
