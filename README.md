@@ -401,7 +401,12 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 ``` 
 
 ### Masks
-Masks should have at least one pixel bordering the sprite... TODO
+Masks should have at least one pixel bordering the sprite.
+* Misifu mask: https://github.com/jsmolina/speccy-misifu/blob/master/sprites/cat_sprites_mask.png
+* Misifu sprite: https://github.com/jsmolina/speccy-misifu/blob/master/sprites/cat_sprites.png
+There you have a very simple example of using masks for drawing a circle with animations included:
+https://github.com/jsmolina/png2sp1sprite/tree/master/sample
+
 
 ### Fonts
 (Thanks Timmy)
