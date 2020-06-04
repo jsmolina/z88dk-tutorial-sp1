@@ -407,6 +407,7 @@ Masks should have at least one pixel bordering the sprite.
 * AND there you have a very simple example of using masks for drawing a circle with animations included:
 https://github.com/jsmolina/png2sp1sprite/tree/master/sample
 
+* And Some info about offsets: https://www.z88dk.org/forum/viewtopic.php?id=10277
 
 ### Fonts
 (Thanks Timmy)
