@@ -165,6 +165,8 @@ struct sp1_ss * add_sprite_misifu() {
   return sp;
 }
 ```
+sp1_CreateSpr. First param is Left bound of mask (if masked), second says that as it is masked it has 2BYTE, third param is (number_of_tiles + 1). Each tile is 8px, so if it is 24, third param will equal FOUR. 
+Last param is the distance from background (higher is nearer to the 'screen').
 
 But I guess you want to see the sprite now, add this in MAIN
 ```C
