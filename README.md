@@ -195,6 +195,13 @@ So you can verify which one was pressed using binary checks like `in & IN_STICK_
 
 But it moves so fast, right? It's time for the tricks... 
 
+### Collisions between sprites
+As any videogame sometimes there will be a collission. Best way to do them in anyvideogame are 'bubble collisions', which means calculating the absolute difference between x1 and x2, then y1 and y2.
+
+`has_collision` function in this file shows the easyest way to do it:
+https://github.com/jsmolina/z88dk-tutorial-sp1/blob/master/logic.c#L266
+In my case, it returns a pointer to the 'eaten' ghost, so it's easy then to perform some actions over it (like changing ghost state or moving it home).
+
 ### Slowdown games
 Bad news, you don't have a RTC here. 
 
