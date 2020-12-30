@@ -18,6 +18,12 @@ Just clone the repo and do a => python setup.py install
 https://github.com/z88dk/z88dk/tree/f6caa95eba4653ed79e0bd3460c4ebfa56820721/libsrc/_DEVELOPMENT/EXAMPLES/zx/demo_sp1/demo2
 * png2sp1sprite.py Quick and dirty png to sprite converter. Right now it only uses 1-bit sprites (no color), and ignores color info. Based on https://github.com/z88dk/z88dk/blob/master/doc/ZXSpectrumZSDCCnewlib_SP1_04_BiggerSprites.md
 
+## Saving memory
+I really enjoy structured code, and having functions and meaningful var names usually helps 'storytelling', but remember this system is very limited in memory, so you'll become dirty in your C programming:
+* mallocs should not be used
+* global vars are welcome (I will deny and request a lawyer if someone says I said this).
+* function calls should be only for code used on many places. You could keep them for readability, but then use `inline`.
+
 ### Drawing on the screen with SP1
 
 Graphics are usually composed of pixel information (all pixels are stored as on or off) and color information that goes 
