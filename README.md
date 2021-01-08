@@ -159,7 +159,7 @@ static void initialiseColour(unsigned int count, struct sp1_cs *c)
 // adds a sprite with MASK (SP1_DRAW_MASK2LB)
 struct sp1_ss * add_sprite_misifu() {
   struct sp1_ss * sp;
-   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 3, (int)sprite_protar1, 1);
+   sp = sp1_CreateSpr(SP1_DRAW_MASK2LB, SP1_TYPE_2BYTE, 4, 0, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar2, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar3, 1);
   sp1_AddColSpr(sp, SP1_DRAW_MASK2,    SP1_TYPE_2BYTE, (int)sprite_protar4, 1);
@@ -174,7 +174,14 @@ struct sp1_ss * add_sprite_misifu() {
 sp1_CreateSpr. 
 First param is Left bound of mask (if masked), second says that as it is masked it has 2 BYTES (that is mask,pixels). 
 Third param is number_of_tiles + 1. Each tile is 8px, so if it is 24px heigh, third param will equal FOUR. 
-Last param is the distance from background (higher is nearer to the 'screen').
+Last param is the distance from background, the plane, (higher is nearer to the 'screen').
+
+sp1_AddColSpr. One per column. A 24px sprite will have three AddColSpr, two normal and one of right bound.
+First param is created sprite, second param is if it has mask or not, third param will be 2BYTE in case of mask.
+Fourth param will be WHERE the column is located. For a masked 24px sprite (24 * 2 = 48 + 16 padding = 64). 
+In my png2sp1sprite (pending fix), I'm writing the animation frames together and columns far away, 
+so `64*[NUMBER_OF_FRAMES e.g. 10]=640` will be the first AddColSpr, while `128*10=1280` will be this value for second call to AddColSpr.
+Last call will have just sprite, type of mask, number of bits, and lastly, the plane.
 
 But I guess you want to see the sprite now, add this in MAIN
 ```C
@@ -197,12 +204,13 @@ Introduced in branch example1: https://github.com/jsmolina/z88dk-tutorial-sp1/tr
 allowing the user to choose one using a menu or detecting fire button is pressed in one of the devices.
 Then function pointer `joy` can be called directly in game loop:
 `in = (joy)(&joy_keys);`
-So you can verify which one was pressed using binary checks like `in & IN_STICK_UP`
+So you can verify which one was pressed using binary checks like `in & IN_STICK_UP`.
+The last two params, roty and rotx are a bit tricky, they are used for repositioning the sprite inside its box. Imagine the case of having a 24x24px sprite, but sometimes it is lying down or sometimes hanging. In that case it's possible that you need some readjustment to not drive you crazy with collisions.
 
 But it moves so fast, right? It's time for the tricks... 
 
 ### Collisions between sprites
-As any videogame sometimes there will be a collission. Best way to do them in anyvideogame are 'bubble collisions', which means calculating the absolute difference between x1 and x2, then y1 and y2.
+As any videogame sometimes there will be a collission. Best way to do them in anyvideogame are 'bubble collisions', which means calculating the absolute difference between x1 and x2, then y1 and y2. For complex sprites, consider that sprite x and y are the topmost and leftmost part of the sprite, NOT the center (unless you adjust it using hrot and vrot seen before).
 
 `has_collision` function in this file shows the easyest way to do it:
 https://github.com/jsmolina/z88dk-tutorial-sp1/blob/master/logic.c#L266
