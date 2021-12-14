@@ -27,4 +27,6 @@ extern unsigned char pick;
 extern void wait(void);
 extern void setup_int(void);
 
+extern void load_music(void);
+
 #endif

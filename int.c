@@ -20,3 +20,11 @@ wait(void)
 
    timer = tick;
 }
+
+
+void start_ay() {
+__asm
+    extern load_music
+    call load_music
+__endasm;
+}

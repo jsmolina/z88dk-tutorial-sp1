@@ -2,6 +2,8 @@ SECTION rodata_user
 
 ; Original: 32, 16 (=4 x 2 chars)
 ; Blocks: 2
+; sprite
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -13,6 +15,8 @@ SECTION rodata_user
 PUBLIC _puntos1
 ._puntos1
 
+PUBLIC _puntos1_f1
+._puntos1_f1
  defb @00000000
  defb @00010000
  defb @00110001
@@ -39,6 +43,7 @@ PUBLIC _puntos1
  defb @00000000
  defb @00000000
 
+PUBLIC _puntos1_f2
 ._puntos1_f2
  defb @00000000
  defb @01110000
@@ -69,6 +74,8 @@ PUBLIC _puntos1
 PUBLIC _puntos2
 ._puntos2
 
+PUBLIC _puntos2_f1
+._puntos2_f1
  defb @00000000
  defb @00000000
  defb @10000000
@@ -95,6 +102,7 @@ PUBLIC _puntos2
  defb @00000000
  defb @00000000
 
+PUBLIC _puntos2_f2
 ._puntos2_f2
  defb @00000000
  defb @00000000
