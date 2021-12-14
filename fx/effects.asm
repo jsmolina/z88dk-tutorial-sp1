@@ -1,4 +1,4 @@
-SECTION code_user
+SECTION BANK_6
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  TinyPlayer as PacMan style ;;;
