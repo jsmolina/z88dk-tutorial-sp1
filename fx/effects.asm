@@ -7,9 +7,9 @@ SECTION BANK_6
 ;
 ;CreativeCommons CC BY
 ;
-PUBLIC	load_music
+PUBLIC	startLoad
 
-load_music:
+startLoad:
     call MuteAy
 	ld a, 2
 	ld hl, fxSirena2
@@ -17,6 +17,7 @@ load_music:
     ld hl, mInitGameA
 	ld de, mInitGameB
 	call Load_Music
+	ret
 
 ;
 ;Para cargar una musica
@@ -114,6 +115,8 @@ sumamas:
 ;;;
 ;;FxPlay - En IX ha de venir la dirección de la tabla del FX
 ;;
+PUBLIC FxPlay
+
 FxPlay:
 	push ix
 	push iy
@@ -276,6 +279,7 @@ siguesumando:
 ;;
 ;;Si se ha iniciado un Track y aun no ha terminado, se procesan los Canales A y B
 ;;
+PUBLIC MusicPlay
 
 MusicPlay:
 	ld a,(playing_mus)
@@ -416,6 +420,8 @@ MuteAy:
 ;;Esta rutina vuelca la Ay table en los registros del AY
 ;;
 ;; fuerza a actualizar todos los registros del AY, segun lo que haya en el buffer
+PUBLIC UpdateAy
+
 UpdateAy:
 	push hl
 	push bc

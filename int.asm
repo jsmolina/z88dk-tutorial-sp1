@@ -1,5 +1,8 @@
 EXTERN _tick
 EXTERN _pick
+EXTERN MusicPlay
+EXTERN FxPlay
+EXTERN UpdateAy
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
@@ -84,6 +87,11 @@ isr_skip:
    or l
 
 ; FX here
+  ld a,6
+  call enable_bank_n
+   call MusicPlay
+   call UpdateAy
+  call restore_bank_0
 
    ld a,0xd0
    ld i,a                      ; restore I

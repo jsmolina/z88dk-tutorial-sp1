@@ -24,14 +24,12 @@ wait(void)
 
 void start_ay() {
 __asm
-    extern load_music
+    extern startLoad
     extern enable_bank_n
     extern restore_bank_0
-    extern mInitGameA
-    extern mInitGameB
     ld a,6
     call enable_bank_n
-     call load_music
+     call startLoad
     call restore_bank_0         ; bank 0 in top 16k, stack restored
 __endasm;
 }

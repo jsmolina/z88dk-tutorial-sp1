@@ -126,9 +126,9 @@ void all_lives_lost() {
 
 int main()
 {
-  setup_int();
-
   start_ay();
+
+  setup_int();
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
