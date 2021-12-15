@@ -10,8 +10,12 @@ SECTION BANK_6
 PUBLIC	load_music
 
 load_music:
-    ld hl,mInitGameA
-	ld de,mInitGameB
+    call MuteAy
+	ld a, 2
+	ld hl, fxSirena2
+	call Load_Fx
+    ld hl, mInitGameA
+	ld de, mInitGameB
 	call Load_Music
 
 ;

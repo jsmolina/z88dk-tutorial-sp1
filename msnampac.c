@@ -128,6 +128,7 @@ int main()
 {
   setup_int();
 
+  start_ay();
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
