@@ -84,7 +84,7 @@ void all_lives_lost() {
 
   printatstr(18, 6, INK_GREEN | PAPER_BLACK, "JARLAXE - GRAPHICS");
   printatstr(19, 6, INK_RED | BRIGHT | PAPER_BLACK, "JORDI - CODING");
-  printatstr(20, 6, INK_CYAN | PAPER_BLACK, "SP1 POWERED");
+  printatstr(20, 6, INK_CYAN | PAPER_BLACK, "POPE - MUSIC");
   printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
 
 
