@@ -651,6 +651,7 @@ void check_fsm() {
             pick += 1;
             points += 5; // 5 points each dot
             --remaining_points;
+            eat_ball();
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 90;

@@ -1,8 +1,11 @@
 EXTERN _tick
 EXTERN _pick
+EXTERN _music_playing
 EXTERN MusicPlay
 EXTERN FxPlay
 EXTERN UpdateAy
+EXTERN letsplay
+EXTERN MuteAy
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
@@ -89,10 +92,10 @@ isr_skip:
 ; FX here
   ld a,6
   call enable_bank_n
+   call FxPlay
    call MusicPlay
    call UpdateAy
   call restore_bank_0
-
    ld a,0xd0
    ld i,a                      ; restore I
 

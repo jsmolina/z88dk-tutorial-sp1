@@ -91,7 +91,6 @@ void all_lives_lost() {
   sp1_UpdateNow();
 
    while(1) {
-      // todo check joystick fire also so joystick is chosen
       if(in_key_pressed(IN_KEY_SCANCODE_1)) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
@@ -112,10 +111,13 @@ void all_lives_lost() {
 
   set_ghosts_default_coords();
   all_ghosts_go_home();
+  start_ay();
   show_billboard(READY);
 
   in_wait_key();
   hide_billboard();
+  stop_ay();
+  start_fx();
 
 
   pick = 1;
@@ -126,8 +128,6 @@ void all_lives_lost() {
 
 int main()
 {
-  start_ay();
-
   setup_int();
 
   pacman.sp = add_sprite();

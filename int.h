@@ -27,6 +27,9 @@ extern unsigned char pick;
 extern void wait(void);
 extern void setup_int(void);
 
-extern void start_ay(void);
+extern void start_ay();
+extern void stop_ay();
+extern void start_fx();
+extern void eat_ball();
 
 #endif

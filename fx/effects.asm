@@ -7,17 +7,32 @@ SECTION BANK_6
 ;
 ;CreativeCommons CC BY
 ;
-PUBLIC	startLoad
+PUBLIC	startMusic
+PUBLIC Load_Fx
+PUBLIC playSiren
 
-startLoad:
-    call MuteAy
-	ld a, 2
-	ld hl, fxSirena2
-	call Load_Fx
+EXTERN _pill_eaten
+EXTERN enable_bank_n
+EXTERN restore_bank_0
+
+startMusic:
     ld hl, mInitGameA
 	ld de, mInitGameB
 	call Load_Music
 	ret
+
+
+
+IsFxPlayin:
+  push hl
+  ld hl, canal_A_fx_estado + 2
+  ld a,(hl)
+  ld hl, canal_B_fx_estado + 2
+  or (hl)
+  ld hl, canal_C_fx_estado + 2
+  or (hl)
+  pop hl
+  ret
 
 ;
 ;Para cargar una musica
@@ -56,9 +71,13 @@ startLoad:
 ; Call UpdateAy
 ;
 ;
+;para saber si la musica ha terminado de sonar, puedes verificar la
+; variable playing_mus
+
+
+PUBLIC letsplay
 
 letsplay:
-	call FxPlay
 	call MusicPlay
 	call UpdateAy
 	halt
@@ -68,6 +87,21 @@ letsplay:
 	jr z, letsplay
 	call MuteAy
 	ret
+
+
+playSiren:
+    RRC b
+    jp nc, isEven
+    isOdd:
+        ld hl, fxComeBola_1
+        jp cont
+    isEven:
+        ld hl, fxComeBola_2
+    cont:
+    ld a, 1
+    call Load_Fx
+    ret
+
 
 ;;;
 ;;Load Music : Inicializa la tabla del player con los tracks en el canal A y B
@@ -401,6 +435,7 @@ MusicStop:
 ;;Mute - Deja las tablas de AY para que se quede muteado. Ojo, no modifica ninguno de los osciladores
 ;;
 ;; en la siguiente actualización del Ay, se dejarán de oir los 3 canales
+PUBLIC MuteAy
 
 MuteAy:
 	push hl
@@ -532,13 +567,13 @@ tabla_periodos:
 ;Musica de inicio de partida - Track1 para el Canal A
 mInitGameA:
 	db 1,$fe, 0,$70, 6,$7e, 1,$fe, 0,$70, 6,$7e, 2,$fe, 0,$70, 7,$7e, 2,$fe, 0,$70, 7,$7e
-	db 1,$fe, 0,$70, 6,$7e, 1,$fe, 0,$70, 6,$7e, 6,$fe, 8,$fe, 10,$fe, 11,$fe, $80
+	db 1,$fe, 0,$70, 6,$7e, 1,$fe, 0,$70, 6,$7e, 6,$fe, 8,$fe, 10,$fe, 11,$fe, $80,0
 ;Track1 para el canal B
 mInitGameB:
 	db 23,$3f, 0,$30, 32, $3f, 0, $30, 29,$3f, 0,$30, 26,$3f, 0,$30, 32,$3f, 29,$3f, 0,$70, 26,$7f, 0,$70, 24,$3f, 0,$30
 	db 33,$3f, 0,$30, 30,$3f, 0,$30, 27,$3f, 0,$30, 33,$3f, 30,$3f, 0,$70, 27,$7f, 0,$70, 23,$3f, 0,$30, 32,$3f, 0,$30
 	db 29,$3f, 0,$30, 26,$3f, 0,$30, 32,$3f, 29,$3f, 0,$70, 26,$7f, 0,$70, 25,$3f, 26,$3f, 27,$3f, 0,$30, 27,$3f, 28,$3f
-	db 29,$3f, 0,$30, 29,$3f, 30,$3f, 31,$3f, 0,$30, 32,$7f, 16,$70
+	db 29,$3f, 0,$30, 29,$3f, 30,$3f, 31,$3f, 0,$30, 32,$7f, 16,$70,0
 
 ;Música para entre-fases (suena en bucle)- Track2 para el Canal A
 mInterfaseA:
@@ -584,6 +619,21 @@ mInterfaseB:
 ;; 				db $23, $e6
 ;;				db 0	(termina el efecto)
 ;;
+PUBLIC fxInsert_coin
+PUBLIC fxComeBola_1
+PUBLIC fxComeBola_2
+PUBLIC fxComeFruta
+PUBLIC fxComeFantasma
+PUBLIC fxOjosACasa
+PUBLIC fxMuerte
+PUBLIC fxTinTin
+PUBLIC fxSirena1
+PUBLIC fxSirena2
+PUBLIC fxSirena3
+PUBLIC fxSirena4
+PUBLIC fxSirena5
+PUBLIC fxHuidaFantasmas
+
 fxInsert_coin:
 	db $1f, $21, $02, $82, $3d, $9b, $22, $46, $23, $e6, $2d, $a7, $23, $e6, $22, $46, $21, $9b, $82, $3d, $02, $20, $da, $81, $bc, 0
 fxComeBola_1:
