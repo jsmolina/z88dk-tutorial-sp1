@@ -31,5 +31,6 @@ extern void start_ay();
 extern void stop_ay();
 extern void start_fx();
 extern void eat_ball();
+extern void loose_a_live_sound();
 
 #endif

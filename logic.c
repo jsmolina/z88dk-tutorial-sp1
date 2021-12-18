@@ -175,6 +175,8 @@ void loose_a_live() {
     repaint_lives = 1;
     --lives;
     all_ghosts_go_home();
+    stop_ay();
+    loose_a_live_sound();
 
     // prota dead animation, first hide the sprite from the screen
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);

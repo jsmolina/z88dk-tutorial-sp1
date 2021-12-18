@@ -84,13 +84,28 @@ __endasm;
 void eat_ball() {
 __asm
     extern _pill_eaten
-    extern playSiren
+    extern playBall
     extern enable_bank_n
     extern restore_bank_0
-    ld b, _pill_eaten
+    ld e, _pill_eaten
     ld a, 6
     call enable_bank_n
-        call playSiren
+        call playBall
+    call restore_bank_0
+__endasm;
+}
+
+void loose_a_live_sound() {
+__asm
+    extern fxMuerte
+    extern Load_Fx
+    extern enable_bank_n
+    extern restore_bank_0
+    ld a,6
+    call enable_bank_n
+      ld a, 1
+	  ld hl, fxMuerte
+	  call Load_Fx
     call restore_bank_0
 __endasm;
 }

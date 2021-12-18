@@ -9,7 +9,7 @@ SECTION BANK_6
 ;
 PUBLIC	startMusic
 PUBLIC Load_Fx
-PUBLIC playSiren
+PUBLIC playBall
 
 EXTERN _pill_eaten
 EXTERN enable_bank_n
@@ -89,18 +89,15 @@ letsplay:
 	ret
 
 
-playSiren:
-    RRC b
-    jp nc, isEven
-    isOdd:
-        ld hl, fxComeBola_1
-        jp cont
-    isEven:
-        ld hl, fxComeBola_2
+playBall:
+    RRC e
+    ld hl, fxComeBola_2
+    jr nc, cont
+    ld hl, fxComeBola_1
     cont:
-    ld a, 1
-    call Load_Fx
-    ret
+        ld a, 1
+        call Load_Fx
+        ret
 
 
 ;;;
