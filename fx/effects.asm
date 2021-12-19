@@ -10,6 +10,7 @@ SECTION BANK_6
 PUBLIC	startMusic
 PUBLIC Load_Fx
 PUBLIC playBall
+PUBLIC waitMusicEnd
 
 EXTERN _pill_eaten
 EXTERN enable_bank_n
@@ -21,6 +22,13 @@ startMusic:
 	call Load_Music
 	ret
 
+waitMusicEnd:
+    ; bucle infinito hasta que pare
+    while:
+    ld a, (playing_mus)
+    cp 0
+    jr nz, while
+    ret
 
 
 IsFxPlayin:
@@ -75,24 +83,10 @@ IsFxPlayin:
 ; variable playing_mus
 
 
-PUBLIC letsplay
-
-letsplay:
-	call MusicPlay
-	call UpdateAy
-	halt
-	in a,(254)
-	cpl
-	and %00011111
-	jr z, letsplay
-	call MuteAy
-	ret
-
-
 playBall:
-    RRC e
     ld hl, fxComeBola_2
-    jr nc, cont
+    bit 0, e
+    jr z, cont
     ld hl, fxComeBola_1
     cont:
         ld a, 1

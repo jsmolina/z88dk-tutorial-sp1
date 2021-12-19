@@ -3,7 +3,6 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <input.h>
-#include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include <stdlib.h>
 #include <intrinsic.h>
@@ -29,7 +28,7 @@ void all_lives_lost() {
   for (idx=0; idx != 25; idx++) {
       sp1_TileEntry(65+idx, abecedary+idx*8);
   }
-
+  // todo poner tileentry como en misifu
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
   sp1_TileEntry('c', corner_left);
@@ -113,13 +112,16 @@ void all_lives_lost() {
   all_ghosts_go_home();
   start_ay();
   show_billboard(READY);
-
   in_wait_key();
-  hide_billboard();
+
+  //wait_music_stop();
+  for(idx = 0; idx != 20; ++idx) {
+    wait();
+  }
   stop_ay();
-  start_fx();
 
-
+  hide_billboard();
+  sonidoSirena();
   pick = 1;
   reached_level = 0;
   slowticker = 0;

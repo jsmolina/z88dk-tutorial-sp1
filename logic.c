@@ -1,7 +1,6 @@
 #include "logic.h"
 #include "int.h"
 #include "game_zx.h"
-#include <sound.h>
 #include <input.h>
 
 
@@ -169,14 +168,13 @@ void nampac_go_home() {
 
 
 void loose_a_live() {
+    loose_a_live_sound();
     uint8_t i, j;
     hide_cherry();
     hide_points();
     repaint_lives = 1;
     --lives;
     all_ghosts_go_home();
-    stop_ay();
-    loose_a_live_sound();
 
     // prota dead animation, first hide the sprite from the screen
     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
@@ -195,6 +193,7 @@ void loose_a_live() {
     nampac_go_home();
     if(lives > 0) {
         show_billboard(READY);
+        sonidoSirena();
     } else {
         show_billboard(GAME_OVER);
     }
@@ -223,16 +222,17 @@ void reset_colors(struct spritep * for_who) {
     sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
 }
 
-void set_eaten(struct spritep * for_who) {
+inline void set_eaten(struct spritep * for_who) {
     for_who->active = GETTING_JAILED;
     for_who->offset = GHOST_EYES;
     for_who->direction = NONE;
     for_who->last_dir = NONE;
     show_points(for_who->y, for_who->x);
     reset_colors(for_who);
+    eat_ghost_sound();
 }
 
-void init_ghost(struct spritep * for_who) {
+inline void init_ghost(struct spritep * for_who) {
     for_who->x = for_who->default_x;
     for_who->y = for_who->default_y;
     for_who->active = JAILED;
@@ -577,9 +577,7 @@ void move_ghosts() {
 
 
 void next_level() {
-    zx_border(INK_BLUE);
-    bit_beepfx_di_fastcall(BEEPFX_SCORE);
-    zx_border(INK_BLACK);
+    // todo sound for next leevel
     ++level;
     // helps determining scatter mode changes and some others
     slowticker = 0;
@@ -636,7 +634,6 @@ void check_fsm() {
     if(points > 65500) {
         if(lives < 5) {
             ++lives;
-            bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
         }
     }
     // row and col must be set at this point
@@ -653,10 +650,11 @@ void check_fsm() {
             pick += 1;
             points += 5; // 5 points each dot
             --remaining_points;
-            eat_ball();
+            eat_ball_sound();
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 90;
+            sonidoHuida();
             for(idx = 0; idx != 4; ++idx) {
                 if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
                 || ghosts[idx]->active == SCATTER) && level < 19) {
@@ -747,6 +745,7 @@ void check_fsm() {
     }
 
     if(pill_eaten == 0) {
+        sonidoSirena();
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
             if(ghosts[idx]->active == FRIGHTENED) {
@@ -762,9 +761,8 @@ void check_fsm() {
 
     if(cherry.showing > 0) {
         if(pacman.x == cherry.x && pacman.y == cherry.y) {
+            eat_fruit_sound();
             hide_cherry();
-            bit_beep(10, 1200);
-            zx_border(INK_BLACK);
             show_points(21, 14);
             points += 100;
         }
@@ -774,8 +772,6 @@ void check_fsm() {
         }
     } else if(random_value == 200) {
         show_cherry();
-        zx_border(INK_RED);
-        zx_border(INK_BLACK);
     }
 
     if(remaining_points == 0) {

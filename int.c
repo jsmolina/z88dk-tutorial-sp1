@@ -46,7 +46,7 @@ __asm
     extern startMusic
     extern enable_bank_n
     extern restore_bank_0
-    ld a,6
+    ld a, 6
     call enable_bank_n
      call startMusic
     call restore_bank_0
@@ -58,21 +58,21 @@ __asm
     extern MuteAy
     extern enable_bank_n
     extern restore_bank_0
-    ld a,6
+    ld a, 6
     call enable_bank_n
      call MuteAy
     call restore_bank_0
 __endasm;
 }
 
-void start_fx() {
-// todo poner if de sonido
+void sonidoSirena() {
+// todo variarla segun bolas comidas
 __asm
     extern fxSirena1
     extern Load_Fx
     extern enable_bank_n
     extern restore_bank_0
-    ld a,6
+    ld a, 6
     call enable_bank_n
       ld a, 2
 	  ld hl, fxSirena1
@@ -81,7 +81,22 @@ __asm
 __endasm;
 }
 
-void eat_ball() {
+void sonidoHuida() {
+__asm
+    extern fxHuidaFantasmas
+    extern Load_Fx
+    extern enable_bank_n
+    extern restore_bank_0
+    ld a,6
+    call enable_bank_n
+      ld a, 2
+	  ld hl, fxHuidaFantasmas
+	  call Load_Fx
+    call restore_bank_0
+__endasm;
+}
+
+void eat_ball_sound() {
 __asm
     extern _pill_eaten
     extern playBall
@@ -103,8 +118,42 @@ __asm
     extern restore_bank_0
     ld a,6
     call enable_bank_n
-      ld a, 1
+      ld a, 2
 	  ld hl, fxMuerte
+	  call Load_Fx
+    call restore_bank_0
+__endasm;
+}
+
+
+void eat_ghost_sound() {
+__asm
+    extern fxComeFantasma
+    extern Load_Fx
+    extern enable_bank_n
+    extern restore_bank_0
+    ld a,6
+    call enable_bank_n
+      ld a, 1
+      ; fxOjosACasa
+	  ld hl, fxComeFantasma
+	  call Load_Fx
+    call restore_bank_0
+__endasm;
+}
+
+
+void eat_fruit_sound() {
+__asm
+    extern fxComeFruta
+    extern Load_Fx
+    extern enable_bank_n
+    extern restore_bank_0
+    ld a,6
+    call enable_bank_n
+      ld a, 1
+      ; fxOjosACasa
+	  ld hl, fxComeFruta
 	  call Load_Fx
     call restore_bank_0
 __endasm;

@@ -27,10 +27,12 @@ extern unsigned char pick;
 extern void wait(void);
 extern void setup_int(void);
 
+extern void sonidoSirena();
+extern inline void sonidoHuida();
 extern void start_ay();
 extern void stop_ay();
-extern void start_fx();
-extern void eat_ball();
-extern void loose_a_live_sound();
-
+extern inline void eat_ball_sound();
+extern inline void loose_a_live_sound();
+extern inline void eat_ghost_sound();
+extern inline void eat_fruit_sound();
 #endif
