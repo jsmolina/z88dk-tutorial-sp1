@@ -283,24 +283,35 @@ actualizaticks:
 ;; FxStop detiene el fx que este reproduciendose en el Canal indicado por A (1..3)
 ;; mutea ese canal instantaneamente en la siguiente actualizacion
 FxStop:
-	push ix
-	push bc
-	push af		;guardo el valor del canal
-	ld ix,canal_A_fx_estado - size_canalfx_estado
-	ld bc, size_canalfx_estado
+  push ix
+  push bc
+  push af ;guardo el valor del canal
+  ld ix,canal_A_fx_estado - size_canalfx_estado
+  ld bc, size_canalfx_estado
 siguesumando:
-	add ix,bc
-	dec a
-	jr nz, siguesumando
-	ld (ix+2),a	;al llegar aquí A vale 0
-	pop bc		;recupero el valor del canal en C, B queda "sucio"
-	ld ix, Ay_Volumen_A - 1
-	ld b,0
-	add ix, bc
-	ld (ix+0),0	;pongo a 0 el volumen del canal en el buffer de registros del ay
-	pop bc
-	pop ix
-	ret
+  add ix,bc
+  dec a
+  jr nz, siguesumando
+  ld (ix+2),a ;al llegar aquí A vale 0
+  pop af ;recupero el valor del canal en C, B queda "sucio"
+  ld c,a
+  ld ix, Ay_Volumen_A - 1
+  ld b,0
+  add ix, bc
+  ld (ix+0),0 ;pongo a 0 el volumen del canal en el buffer de registros del ay
+  pop bc
+  pop ix
+  ret
+
+FxKillAll:
+  push bc
+  ld b,3
+otrocanal:
+  call FxStop
+  djnz otrocanal
+  pop bc
+  ret
+
 
 ;;
 ;;Si se ha iniciado un Track y aun no ha terminado, se procesan los Canales A y B

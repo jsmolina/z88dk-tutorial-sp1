@@ -65,7 +65,7 @@ __asm
 __endasm;
 }
 
-void sonidoSirena() {
+void sonido2Sirena() {
 // todo variarla segun bolas comidas
 __asm
     extern fxSirena1
@@ -91,17 +91,8 @@ void stopCanal2() {
     __endasm;
 }
 
-void stopCanal1() {
-    __asm
-    extern FxStop
-    call enable_bank_6
-      ld a, 1
-	  call FxStop
-    call restore_bank_0
-    __endasm;
-}
 
-void sonidoHuida() {
+void sonido2Huida() {
 __asm
     extern fxHuidaFantasmas
     extern Load_Fx
@@ -116,7 +107,7 @@ __asm
 __endasm;
 }
 
-void eat_ball_sound() {
+void sonido1Bola() {
 __asm
     extern _pill_eaten
     extern playBall
@@ -130,7 +121,7 @@ __asm
 __endasm;
 }
 
-void loose_a_live_sound() {
+void sonido3PierdeVida() {
 __asm
     extern fxMuerte
     extern Load_Fx
@@ -138,7 +129,7 @@ __asm
     extern restore_bank_0
     ;ld a, 6
     call enable_bank_6
-      ld a, 2
+      ld a, 3
 	  ld hl, fxMuerte
 	  call Load_Fx
     call restore_bank_0
@@ -146,7 +137,7 @@ __endasm;
 }
 
 
-void eat_ghost_sound() {
+void sonido13ComeGhost() {
 __asm
     extern fxComeFantasma
     extern Load_Fx
@@ -155,24 +146,26 @@ __asm
     ;ld a, 6
     call enable_bank_6
       ld a, 1
-      ; fxOjosACasa
 	  ld hl, fxComeFantasma
+	  call Load_Fx
+      ld a, 3
+	  ld hl, fxOjosACasa
 	  call Load_Fx
     call restore_bank_0
 __endasm;
 }
 
 
-void eat_fruit_sound() {
+void sonido1Fruta() {
 __asm
     extern fxComeFruta
+    extern fxOjosACasa
     extern Load_Fx
     extern enable_bank_6
     extern restore_bank_0
     ;ld a, 6
     call enable_bank_6
       ld a, 1
-      ; fxOjosACasa
 	  ld hl, fxComeFruta
 	  call Load_Fx
     call restore_bank_0

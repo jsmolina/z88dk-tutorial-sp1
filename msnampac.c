@@ -114,14 +114,10 @@ void all_lives_lost() {
   show_billboard(READY);
   in_wait_key();
 
-  //wait_music_stop();
-  for(idx = 0; idx != 20; ++idx) {
-    wait();
-  }
   stop_ay();
 
   hide_billboard();
-  sonidoSirena();
+  sonido2Sirena();
   pick = 1;
   reached_level = 0;
   slowticker = 0;

@@ -168,7 +168,7 @@ void nampac_go_home() {
 
 
 void loose_a_live() {
-    loose_a_live_sound();
+    sonido3PierdeVida();
     uint8_t i, j;
     hide_cherry();
     hide_points();
@@ -193,7 +193,8 @@ void loose_a_live() {
     nampac_go_home();
     if(lives > 0) {
         show_billboard(READY);
-        sonidoSirena();
+        stopCanal2();
+        sonido2Sirena();
     } else {
         show_billboard(GAME_OVER);
     }
@@ -229,7 +230,7 @@ inline void set_eaten(struct spritep * for_who) {
     for_who->last_dir = NONE;
     show_points(for_who->y, for_who->x);
     reset_colors(for_who);
-    eat_ghost_sound();
+    sonido13ComeGhost();
 }
 
 inline void init_ghost(struct spritep * for_who) {
@@ -650,11 +651,12 @@ void check_fsm() {
             pick += 1;
             points += 5; // 5 points each dot
             --remaining_points;
-            eat_ball_sound();
+            sonido1Bola();
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 90;
-            sonidoHuida();
+            stopCanal2();
+            sonido2Huida();
             for(idx = 0; idx != 4; ++idx) {
                 if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
                 || ghosts[idx]->active == SCATTER) && level < 19) {
@@ -745,7 +747,8 @@ void check_fsm() {
     }
 
     if(pill_eaten == 0) {
-        sonidoSirena();
+        stopCanal2();
+        sonido2Sirena();
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
             if(ghosts[idx]->active == FRIGHTENED) {
@@ -761,7 +764,7 @@ void check_fsm() {
 
     if(cherry.showing > 0) {
         if(pacman.x == cherry.x && pacman.y == cherry.y) {
-            eat_fruit_sound();
+            sonido1Fruta();
             hide_cherry();
             show_points(21, 14);
             points += 100;

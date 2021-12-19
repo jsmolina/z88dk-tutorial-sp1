@@ -27,14 +27,14 @@ extern unsigned char pick;
 extern void wait(void);
 extern void setup_int(void);
 
-extern void sonidoSirena();
-extern inline void sonidoHuida();
+extern void sonido2Sirena();
+extern inline void sonido2Huida();
 extern void start_ay();
 extern void stop_ay();
-extern inline void eat_ball_sound();
-extern inline void loose_a_live_sound();
-extern inline void eat_ghost_sound();
-extern inline void eat_fruit_sound();
-extern inline void stopCanal1();
-extern inline void stopCanal2();
+extern inline void sonido1Bola();
+extern inline void sonido3PierdeVida();
+extern inline void sonido13ComeGhost();
+extern inline void sonido1Fruta();
+extern void stopCanal2();
+
 #endif
