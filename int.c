@@ -44,10 +44,10 @@ wait(void)
 void start_ay() {
 __asm
     extern startMusic
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a, 6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
      call startMusic
     call restore_bank_0
 __endasm;
@@ -56,10 +56,10 @@ __endasm;
 void stop_ay() {
 __asm
     extern MuteAy
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a, 6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
      call MuteAy
     call restore_bank_0
 __endasm;
@@ -70,10 +70,10 @@ void sonidoSirena() {
 __asm
     extern fxSirena1
     extern Load_Fx
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a, 6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
       ld a, 2
 	  ld hl, fxSirena1
 	  call Load_Fx
@@ -81,14 +81,34 @@ __asm
 __endasm;
 }
 
+void stopCanal2() {
+    __asm
+    extern FxStop
+    call enable_bank_6
+      ld a, 2
+	  call FxStop
+    call restore_bank_0
+    __endasm;
+}
+
+void stopCanal1() {
+    __asm
+    extern FxStop
+    call enable_bank_6
+      ld a, 1
+	  call FxStop
+    call restore_bank_0
+    __endasm;
+}
+
 void sonidoHuida() {
 __asm
     extern fxHuidaFantasmas
     extern Load_Fx
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a,6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
       ld a, 2
 	  ld hl, fxHuidaFantasmas
 	  call Load_Fx
@@ -100,11 +120,11 @@ void eat_ball_sound() {
 __asm
     extern _pill_eaten
     extern playBall
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
     ld e, _pill_eaten
-    ld a, 6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
         call playBall
     call restore_bank_0
 __endasm;
@@ -114,10 +134,10 @@ void loose_a_live_sound() {
 __asm
     extern fxMuerte
     extern Load_Fx
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a,6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
       ld a, 2
 	  ld hl, fxMuerte
 	  call Load_Fx
@@ -130,10 +150,10 @@ void eat_ghost_sound() {
 __asm
     extern fxComeFantasma
     extern Load_Fx
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a,6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
       ld a, 1
       ; fxOjosACasa
 	  ld hl, fxComeFantasma
@@ -147,10 +167,10 @@ void eat_fruit_sound() {
 __asm
     extern fxComeFruta
     extern Load_Fx
-    extern enable_bank_n
+    extern enable_bank_6
     extern restore_bank_0
-    ld a,6
-    call enable_bank_n
+    ;ld a, 6
+    call enable_bank_6
       ld a, 1
       ; fxOjosACasa
 	  ld hl, fxComeFruta

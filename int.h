@@ -35,4 +35,6 @@ extern inline void eat_ball_sound();
 extern inline void loose_a_live_sound();
 extern inline void eat_ghost_sound();
 extern inline void eat_fruit_sound();
+extern inline void stopCanal1();
+extern inline void stopCanal2();
 #endif

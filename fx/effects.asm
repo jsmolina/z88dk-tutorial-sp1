@@ -11,6 +11,7 @@ PUBLIC	startMusic
 PUBLIC Load_Fx
 PUBLIC playBall
 PUBLIC waitMusicEnd
+PUBLIC FxStop
 
 EXTERN _pill_eaten
 EXTERN enable_bank_n

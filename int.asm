@@ -122,7 +122,10 @@ isr_skip:
 SECTION code_crt_common  ;; place very low in memory, out of top 16k
 
 PUBLIC enable_bank_n
+PUBLIC enable_bank_6
 
+enable_bank_6:
+    ld a, 6
 enable_bank_n:
 
    ; return address
