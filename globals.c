@@ -124,6 +124,7 @@ uint8_t frame = 0;
 
 uint8_t lives = 0;
 uint8_t level = 0;
+uint8_t current_siren;
 uint8_t repaint_lives = 1;
 uint8_t reached_level = 0;
 uint8_t slowticker = 0;

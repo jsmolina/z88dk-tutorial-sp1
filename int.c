@@ -66,26 +66,25 @@ __endasm;
 }
 
 void sonido2Sirena() {
-// todo variarla segun bolas comidas
 __asm
-    extern fxSirena1
+    extern playSirena
     extern Load_Fx
+    extern _current_siren
     extern enable_bank_6
     extern restore_bank_0
     ;ld a, 6
+    ld d, _current_siren
     call enable_bank_6
-      ld a, 2
-	  ld hl, fxSirena1
-	  call Load_Fx
+      call playSirena
     call restore_bank_0
 __endasm;
 }
 
-void stopCanal2() {
+void stopCanal3() {
     __asm
     extern FxStop
     call enable_bank_6
-      ld a, 2
+      ld a, 3
 	  call FxStop
     call restore_bank_0
     __endasm;
@@ -101,6 +100,7 @@ __asm
     ;ld a, 6
     call enable_bank_6
       ld a, 2
+      call FxStop
 	  ld hl, fxHuidaFantasmas
 	  call Load_Fx
     call restore_bank_0

@@ -10,6 +10,7 @@ SECTION BANK_6
 PUBLIC	startMusic
 PUBLIC Load_Fx
 PUBLIC playBall
+PUBLIC playSirena
 PUBLIC waitMusicEnd
 PUBLIC FxStop
 
@@ -90,10 +91,43 @@ playBall:
     jr z, cont
     ld hl, fxComeBola_1
     cont:
-        ld a, 1
-        call Load_Fx
-        ret
+      ld a, 1
+      call Load_Fx
+    ret
 
+playSirena:
+      ; asume que e tiene el valor current_siren (1,2,3,4,5)
+      ld a, d
+      cp 5
+      jr c, lessThan5
+      ld hl, fxSirena5
+      ld a, 2 ;; border red
+      out (254), a ;; border set
+      jr endIfStatement
+      lessThan5:
+        cp 4
+        jr c, lessThan4
+        ld hl, fxSirena4
+        jr endIfStatement
+        lessThan4:
+          cp 3
+          jr c, lessThan3
+          ld hl, fxSirena3
+          jr endIfStatement
+          lessThan3:
+            cp 2
+            jr c, lessThan2
+            ld hl, fxSirena2
+            jp endIfStatement
+            lessThan2:
+              ld a, 1 ; border blue
+              out (254), a ; border set
+              ld hl, fxSirena1
+      endIfStatement:
+      ld a, 2
+      call FxStop
+	  call Load_Fx
+	  ret
 
 ;;;
 ;;Load Music : Inicializa la tabla del player con los tracks en el canal A y B

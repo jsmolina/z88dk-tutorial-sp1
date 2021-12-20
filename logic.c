@@ -193,7 +193,6 @@ void loose_a_live() {
     nampac_go_home();
     if(lives > 0) {
         show_billboard(READY);
-        stopCanal2();
         sonido2Sirena();
     } else {
         show_billboard(GAME_OVER);
@@ -390,6 +389,8 @@ void move_one_ghost() {
     if(ghosts[idx]->active == GETTING_JAILED) {
         if(ghosts[idx]->default_y == ghosts[idx]->y && ghosts[idx]->default_x == ghosts[idx]->x) {
             ghosts[idx]->active = JAILED;
+            // stop getting jailed sound
+            stopCanal3();
             return;
         }
 
@@ -579,6 +580,7 @@ void move_ghosts() {
 
 void next_level() {
     // todo sound for next leevel
+    current_siren = 1;
     ++level;
     // helps determining scatter mode changes and some others
     slowticker = 0;
@@ -655,7 +657,6 @@ void check_fsm() {
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 90;
-            stopCanal2();
             sonido2Huida();
             for(idx = 0; idx != 4; ++idx) {
                 if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
@@ -747,7 +748,6 @@ void check_fsm() {
     }
 
     if(pill_eaten == 0) {
-        stopCanal2();
         sonido2Sirena();
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
@@ -776,6 +776,17 @@ void check_fsm() {
     } else if(random_value == 200) {
         show_cherry();
     }
+
+    if(remaining_points == 200) {
+        current_siren = 2;
+    } else if (remaining_points == 150) {
+        current_siren = 3;
+    } else if (remaining_points == 100) {
+        current_siren = 4;
+    } else if (remaining_points == 50) {
+        current_siren = 5;
+    }
+
 
     if(remaining_points == 0) {
         // level finished!
