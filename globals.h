@@ -201,7 +201,6 @@ extern uint8_t row;
 extern uint8_t col;
 extern uint8_t current;
 extern uint16_t points;
-extern uint8_t current_siren;
 extern uint8_t remaining_points;
 extern uint8_t reached_level;
 extern uint8_t slowticker;

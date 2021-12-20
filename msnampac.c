@@ -60,7 +60,7 @@ void all_lives_lost() {
   level = 0;
   map_num = 1;
   repaint_lives = 1;
-  current_siren = 1;
+  resetSiren();
 
 
   ghost_cyan.offset = GHOST_CYAN;

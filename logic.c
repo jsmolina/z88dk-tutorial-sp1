@@ -580,7 +580,7 @@ void move_ghosts() {
 
 void next_level() {
     // todo sound for next leevel
-    current_siren = 1;
+    resetSiren();
     ++level;
     // helps determining scatter mode changes and some others
     slowticker = 0;
@@ -778,13 +778,13 @@ void check_fsm() {
     }
 
     if(remaining_points == 200) {
-        current_siren = 2;
+        incSiren();
     } else if (remaining_points == 150) {
-        current_siren = 3;
+        incSiren();
     } else if (remaining_points == 100) {
-        current_siren = 4;
+        incSiren();
     } else if (remaining_points == 50) {
-        current_siren = 5;
+        incSiren();
     }
 
 

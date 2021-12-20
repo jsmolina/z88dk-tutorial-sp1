@@ -68,14 +68,37 @@ __endasm;
 void sonido2Sirena() {
 __asm
     extern playSirena
-    extern Load_Fx
-    extern _current_siren
     extern enable_bank_6
     extern restore_bank_0
-    ;ld a, 6
-    ld d, _current_siren
     call enable_bank_6
       call playSirena
+    call restore_bank_0
+__endasm;
+}
+
+void incSiren() {
+__asm
+    extern enable_bank_6
+    extern restore_bank_0
+    extern playSirena
+    extern FxStop
+    extern incSiren
+    call enable_bank_6
+      call incSiren
+      ld a, 2
+      call FxStop
+      call playSirena
+    call restore_bank_0
+__endasm;
+}
+
+void resetSiren() {
+__asm
+    extern enable_bank_6
+    extern restore_bank_0
+    extern resetSiren
+    call enable_bank_6
+      call resetSiren
     call restore_bank_0
 __endasm;
 }

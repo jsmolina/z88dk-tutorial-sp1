@@ -13,6 +13,8 @@ PUBLIC playBall
 PUBLIC playSirena
 PUBLIC waitMusicEnd
 PUBLIC FxStop
+PUBLIC incSiren
+PUBLIC resetSiren
 
 EXTERN _pill_eaten
 EXTERN enable_bank_n
@@ -32,6 +34,16 @@ waitMusicEnd:
     jr nz, while
     ret
 
+incSiren:
+    ld a, (current_siren)
+    inc a
+    ld (current_siren), a
+    ret
+
+resetSiren:
+    ld a, 1
+    ld (current_siren), a
+    ret
 
 IsFxPlayin:
   push hl
@@ -83,9 +95,10 @@ IsFxPlayin:
 ;
 ;para saber si la musica ha terminado de sonar, puedes verificar la
 ; variable playing_mus
-
+; https://wikiti.brandonw.net/index.php?title=Z80_Optimization#Look_up_Table
 
 playBall:
+    push hl
     ld hl, fxComeBola_2
     bit 0, e
     jr z, cont
@@ -93,16 +106,15 @@ playBall:
     cont:
       ld a, 1
       call Load_Fx
+    pop hl
     ret
 
 playSirena:
-      ; asume que e tiene el valor current_siren (1,2,3,4,5)
-      ld a, d
+      ; current_siren (1,2,3,4,5)
+      ld a, (current_siren)
       cp 5
       jr c, lessThan5
       ld hl, fxSirena5
-      ld a, 2 ;; border red
-      out (254), a ;; border set
       jr endIfStatement
       lessThan5:
         cp 4
@@ -120,8 +132,6 @@ playSirena:
             ld hl, fxSirena2
             jp endIfStatement
             lessThan2:
-              ld a, 1 ; border blue
-              out (254), a ; border set
               ld hl, fxSirena1
       endIfStatement:
       ld a, 2
@@ -164,6 +174,7 @@ sumamas:
 	dec a
 	jr nz, sumamas
 	ld (ix+6),a	;por defecto el volumen no cae
+	ld (ix+3),a ;numero de fines a leer 0, para procesar primero como código de control
 	ld (ix+0),l	;IX apunta a la tabla del canal de efectos
 	ld (ix+1),h
 	inc a		;aqui llegamos con A=0
@@ -731,3 +742,6 @@ fxHuidaFantasmas:
 	db $1a, $29, $1a, $24, $8d, $23, $08, $22, $46, $21, $d2, $82, $84, $4c
 	db $40
 	dw fxHuidaFantasmas + 1
+
+current_siren:
+    db 1
