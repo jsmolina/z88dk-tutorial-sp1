@@ -36,6 +36,7 @@ extern inline void sonido3PierdeVida();
 extern inline void sonido13ComeGhost();
 extern inline void sonido1Fruta();
 extern void stopCanal3();
+extern void stopCanal2();
 extern void incSiren();
 extern void resetSiren();
 

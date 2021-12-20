@@ -196,6 +196,7 @@ void loose_a_live() {
         sonido2Sirena();
     } else {
         show_billboard(GAME_OVER);
+        stopCanal2();
     }
     in_wait_key();
     hide_billboard();

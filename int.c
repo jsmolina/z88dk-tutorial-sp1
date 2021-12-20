@@ -113,6 +113,17 @@ void stopCanal3() {
     __endasm;
 }
 
+void stopCanal2() {
+    __asm
+    extern FxStop
+    call enable_bank_6
+      ld a, 2
+	  call FxStop
+    call restore_bank_0
+    __endasm;
+}
+
+
 
 void sonido2Huida() {
 __asm
