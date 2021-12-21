@@ -99,13 +99,17 @@ IsFxPlayin:
 
 playBall:
     push hl
-    ld hl, fxComeBola_2
-    bit 0, e
-    jr z, cont
     ld hl, fxComeBola_1
+    ld a, (current_bola)
+    bit 0, a ; test for bit 0
+    jr z, cont
+    ld hl, fxComeBola_2
     cont:
       ld a, 1
       call Load_Fx
+    ld a, (current_bola) ; get value
+    inc a ; will switch last bit (00, 01, 10, 11, ...)
+    ld (current_bola), a ; switch value
     pop hl
     ret
 
@@ -136,6 +140,7 @@ playSirena:
       endIfStatement:
       ld a, 2
       call FxStop
+      ld a, 2
 	  call Load_Fx
 	  ret
 
@@ -745,3 +750,6 @@ fxHuidaFantasmas:
 
 current_siren:
     db 1
+
+current_bola:
+    db 0

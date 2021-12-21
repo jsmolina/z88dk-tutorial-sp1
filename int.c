@@ -135,6 +135,7 @@ __asm
     call enable_bank_6
       ld a, 2
       call FxStop
+      ld a, 2
 	  ld hl, fxHuidaFantasmas
 	  call Load_Fx
     call restore_bank_0
@@ -143,12 +144,9 @@ __endasm;
 
 void sonido1Bola() {
 __asm
-    extern _pill_eaten
     extern playBall
     extern enable_bank_6
     extern restore_bank_0
-    ld e, _pill_eaten
-    ;ld a, 6
     call enable_bank_6
         call playBall
     call restore_bank_0
