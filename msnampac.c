@@ -55,11 +55,14 @@ void all_lives_lost() {
 
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
+  currentmap = &map[0][0];
   lives = 5;
   points = 0;
   level = 0;
   map_num = 1;
   repaint_lives = 1;
+  reached_level = 0;
+
   resetSiren();
 
 
@@ -104,11 +107,9 @@ void all_lives_lost() {
   }
 
   srand(tick);
-
+  remaining_points = MAP1_TOTAL_POINTS;
   nampac_go_home();
-
   reset_map();
-
   set_ghosts_default_coords();
   all_ghosts_go_home();
   start_ay();
@@ -120,7 +121,6 @@ void all_lives_lost() {
   hide_billboard();
   sonido2Sirena();
   pick = 1;
-  reached_level = 0;
   slowticker = 0;
 }
 
@@ -133,7 +133,6 @@ int main()
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
-  currentmap = &map[0][0];
 
   points_sp = add_points_sprite();
   billboard = add_billboard_sprite();

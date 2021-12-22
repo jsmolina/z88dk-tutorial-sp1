@@ -679,6 +679,7 @@ PUBLIC fxComeFruta
 PUBLIC fxComeFantasma
 PUBLIC fxOjosACasa
 PUBLIC fxMuerte
+; es una música que se pone cuando llevas mucho tiempo en el nivel y no acabas de comer todas las bolas
 PUBLIC fxTinTin
 PUBLIC fxSirena1
 PUBLIC fxSirena2

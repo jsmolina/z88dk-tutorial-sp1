@@ -168,6 +168,20 @@ __asm
 __endasm;
 }
 
+void sonido3InsertCoin() {
+__asm
+    extern fxInsert_coin
+    extern Load_Fx
+    extern enable_bank_6
+    extern restore_bank_0
+    ;ld a, 6
+    call enable_bank_6
+      ld a, 3
+	  ld hl, fxInsert_coin
+	  call Load_Fx
+    call restore_bank_0
+__endasm;
+}
 
 void sonido13ComeGhost() {
 __asm

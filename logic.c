@@ -580,8 +580,8 @@ void move_ghosts() {
 
 
 void next_level() {
-    // todo sound for next leevel
     resetSiren();
+    sonido3InsertCoin();
     ++level;
     // helps determining scatter mode changes and some others
     slowticker = 0;
@@ -593,18 +593,13 @@ void next_level() {
 
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-    } else if(map_num == 2){
-        remaining_points = MAP2_TOTAL_POINTS;
-    } else if(map_num == 3){
-        remaining_points = MAP3_TOTAL_POINTS;
-    }
-
-
-    if(map_num == 1) {
         currentmap = &map[0][0];
-    } else if(map_num == 2) {
+    } else if(map_num == 2){
+        // se pone este al morir
+        remaining_points = MAP2_TOTAL_POINTS;
         currentmap = &map2[0][0];
-    } else {
+    } else if(map_num == 3) {
+        remaining_points = MAP3_TOTAL_POINTS;
         currentmap = &map3[0][0];
     }
 

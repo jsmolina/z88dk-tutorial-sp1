@@ -39,5 +39,6 @@ extern void stopCanal3();
 extern void stopCanal2();
 extern void incSiren();
 extern void resetSiren();
+extern inline void sonido3InsertCoin();
 
 #endif
