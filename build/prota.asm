@@ -2,6 +2,8 @@ SECTION rodata_user
 
 ; Original: 192, 24 (=24 x 3 chars)
 ; Blocks: 2
+; sprite
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -13,6 +15,8 @@ SECTION rodata_user
 PUBLIC _sprite_protar1
 ._sprite_protar1
 
+PUBLIC _sprite_protar1_f1
+._sprite_protar1_f1
  defb @00000000
  defb @00000000
  defb @00001100
@@ -47,6 +51,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f2
 ._sprite_protar1_f2
  defb @00000000
  defb @00000000
@@ -82,6 +87,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f3
 ._sprite_protar1_f3
  defb @00000000
  defb @00000000
@@ -117,6 +123,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f4
 ._sprite_protar1_f4
  defb @00000000
  defb @00000000
@@ -152,6 +159,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f5
 ._sprite_protar1_f5
  defb @00000000
  defb @00000000
@@ -187,6 +195,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f6
 ._sprite_protar1_f6
  defb @00000000
  defb @00000000
@@ -222,6 +231,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f7
 ._sprite_protar1_f7
  defb @00000000
  defb @00000000
@@ -257,6 +267,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f8
 ._sprite_protar1_f8
  defb @00000000
  defb @00000000
@@ -292,6 +303,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f9
 ._sprite_protar1_f9
  defb @00000000
  defb @00000000
@@ -327,6 +339,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f10
 ._sprite_protar1_f10
  defb @00000000
  defb @00000000
@@ -362,6 +375,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f11
 ._sprite_protar1_f11
  defb @00000000
  defb @00000000
@@ -397,6 +411,7 @@ PUBLIC _sprite_protar1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar1_f12
 ._sprite_protar1_f12
  defb @00000000
  defb @00000000
@@ -435,6 +450,8 @@ PUBLIC _sprite_protar1
 PUBLIC _sprite_protar2
 ._sprite_protar2
 
+PUBLIC _sprite_protar2_f1
+._sprite_protar2_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -469,6 +486,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f2
 ._sprite_protar2_f2
  defb @00000000
  defb @00000000
@@ -504,6 +522,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f3
 ._sprite_protar2_f3
  defb @00000000
  defb @00000000
@@ -539,6 +558,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f4
 ._sprite_protar2_f4
  defb @00000000
  defb @00000000
@@ -574,6 +594,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f5
 ._sprite_protar2_f5
  defb @00000000
  defb @00000000
@@ -609,6 +630,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f6
 ._sprite_protar2_f6
  defb @00000000
  defb @00000000
@@ -644,6 +666,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f7
 ._sprite_protar2_f7
  defb @00000000
  defb @00000000
@@ -679,6 +702,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f8
 ._sprite_protar2_f8
  defb @00000000
  defb @00000000
@@ -714,6 +738,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f9
 ._sprite_protar2_f9
  defb @00000000
  defb @00000000
@@ -749,6 +774,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f10
 ._sprite_protar2_f10
  defb @00000000
  defb @00000000
@@ -784,6 +810,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f11
 ._sprite_protar2_f11
  defb @00000000
  defb @00000000
@@ -819,6 +846,7 @@ PUBLIC _sprite_protar2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar2_f12
 ._sprite_protar2_f12
  defb @00000000
  defb @00000000

@@ -2,6 +2,8 @@ SECTION rodata_user
 
 ; Original: 80, 24 (=10 x 3 chars)
 ; Blocks: 2
+; sprite
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -13,6 +15,8 @@ SECTION rodata_user
 PUBLIC _cerezas1
 ._cerezas1
 
+PUBLIC _cerezas1_f1
+._cerezas1_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -47,6 +51,7 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas1_f2
 ._cerezas1_f2
  defb @00000000
  defb @00000000
@@ -82,6 +87,7 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas1_f3
 ._cerezas1_f3
  defb @00000000
  defb @00000000
@@ -117,6 +123,7 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas1_f4
 ._cerezas1_f4
  defb @00000000
  defb @00000000
@@ -152,6 +159,7 @@ PUBLIC _cerezas1
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas1_f5
 ._cerezas1_f5
  defb @00000000
  defb @00000000
@@ -190,6 +198,8 @@ PUBLIC _cerezas1
 PUBLIC _cerezas2
 ._cerezas2
 
+PUBLIC _cerezas2_f1
+._cerezas2_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -224,6 +234,7 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas2_f2
 ._cerezas2_f2
  defb @00000000
  defb @00000000
@@ -259,6 +270,7 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas2_f3
 ._cerezas2_f3
  defb @00000000
  defb @00010000
@@ -294,6 +306,7 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas2_f4
 ._cerezas2_f4
  defb @00000000
  defb @00000000
@@ -329,6 +342,7 @@ PUBLIC _cerezas2
  defb @00000000
  defb @00000000
 
+PUBLIC _cerezas2_f5
 ._cerezas2_f5
  defb @00000000
  defb @00000000

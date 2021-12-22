@@ -2,6 +2,8 @@ SECTION rodata_user
 
 ; Original: 64, 24 (=8 x 3 chars)
 ; Blocks: 2
+; sprite
+ defb @00000000
  defb @00000000
  defb @00000000
  defb @00000000
@@ -13,6 +15,8 @@ SECTION rodata_user
 PUBLIC _sprite_protar_dead1
 ._sprite_protar_dead1
 
+PUBLIC _sprite_protar_dead1_f1
+._sprite_protar_dead1_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -47,6 +51,7 @@ PUBLIC _sprite_protar_dead1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead1_f2
 ._sprite_protar_dead1_f2
  defb @00000000
  defb @00000000
@@ -82,6 +87,7 @@ PUBLIC _sprite_protar_dead1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead1_f3
 ._sprite_protar_dead1_f3
  defb @00000000
  defb @00000000
@@ -117,6 +123,7 @@ PUBLIC _sprite_protar_dead1
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead1_f4
 ._sprite_protar_dead1_f4
  defb @00000000
  defb @00000000
@@ -155,6 +162,8 @@ PUBLIC _sprite_protar_dead1
 PUBLIC _sprite_protar_dead2
 ._sprite_protar_dead2
 
+PUBLIC _sprite_protar_dead2_f1
+._sprite_protar_dead2_f1
  defb @00000000
  defb @00000000
  defb @00000000
@@ -189,6 +198,7 @@ PUBLIC _sprite_protar_dead2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead2_f2
 ._sprite_protar_dead2_f2
  defb @00000000
  defb @00000000
@@ -224,6 +234,7 @@ PUBLIC _sprite_protar_dead2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead2_f3
 ._sprite_protar_dead2_f3
  defb @00000000
  defb @00000000
@@ -259,6 +270,7 @@ PUBLIC _sprite_protar_dead2
  defb @00000000
  defb @00000000
 
+PUBLIC _sprite_protar_dead2_f4
 ._sprite_protar_dead2_f4
  defb @00000000
  defb @00000000

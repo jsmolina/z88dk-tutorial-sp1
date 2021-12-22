@@ -450,3 +450,32 @@ https://github.com/jsmolina/z88dk-tutorial-sp1/pull/46
 Credits to jarlaxe for the graphics.
 
 
+### Assembly
+Credits to ThePoPe for Assemby and AY code.
+
+```
+playSirena:
+    ld hl, tabla_offsets
+    ld a, (current_siren)
+    dec a
+    add a,a
+    ld l,a
+    jr nc, no_acarrea
+    inc h
+    no_acarrea:
+        ld a,(hl)
+        inc hl
+        ld h,(hl)
+        ld l,a
+        ld a, 2
+        call FxStop
+        ld a, 2
+	    call Load_Fx
+        ret
+tabla_offsets:
+    dw fxSirena1
+    dw fxSirena2
+    dw fxSirena3
+    dw fxSirena4
+    dw fxSirena5
+```

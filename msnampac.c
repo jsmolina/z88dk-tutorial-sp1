@@ -3,7 +3,6 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <input.h>
-#include <sound.h> // for bit_beepfx()
 #include <string.h>
 #include <stdlib.h>
 #include <intrinsic.h>
@@ -29,7 +28,7 @@ void all_lives_lost() {
   for (idx=0; idx != 25; idx++) {
       sp1_TileEntry(65+idx, abecedary+idx*8);
   }
-
+  // todo poner tileentry como en misifu
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
   sp1_TileEntry('c', corner_left);
@@ -56,11 +55,15 @@ void all_lives_lost() {
 
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
+  currentmap = &map[0][0];
   lives = 5;
   points = 0;
   level = 0;
   map_num = 1;
   repaint_lives = 1;
+  reached_level = 0;
+
+  resetSiren();
 
 
   ghost_cyan.offset = GHOST_CYAN;
@@ -84,14 +87,13 @@ void all_lives_lost() {
 
   printatstr(18, 6, INK_GREEN | PAPER_BLACK, "JARLAXE - GRAPHICS");
   printatstr(19, 6, INK_RED | BRIGHT | PAPER_BLACK, "JORDI - CODING");
-  printatstr(20, 6, INK_CYAN | PAPER_BLACK, "SP1 POWERED");
+  printatstr(20, 6, INK_CYAN | PAPER_BLACK, "POPE - MUSIC");
   printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
 
 
   sp1_UpdateNow();
 
    while(1) {
-      // todo check joystick fire also so joystick is chosen
       if(in_key_pressed(IN_KEY_SCANCODE_1)) {
           joy = (JOYFUNC)in_stick_keyboard;
           break;
@@ -105,21 +107,20 @@ void all_lives_lost() {
   }
 
   srand(tick);
-
+  remaining_points = MAP1_TOTAL_POINTS;
   nampac_go_home();
-
   reset_map();
-
   set_ghosts_default_coords();
   all_ghosts_go_home();
+  start_ay();
   show_billboard(READY);
-
   in_wait_key();
+
+  stop_ay();
+
   hide_billboard();
-
-
+  sonido2Sirena();
   pick = 1;
-  reached_level = 0;
   slowticker = 0;
 }
 
@@ -128,12 +129,10 @@ int main()
 {
   setup_int();
 
-
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
   pacman.offset = 1;
   pacman.currentoffset = 1;
-  currentmap = &map[0][0];
 
   points_sp = add_points_sprite();
   billboard = add_billboard_sprite();

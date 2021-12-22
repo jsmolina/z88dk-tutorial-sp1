@@ -90,7 +90,6 @@ uint8_t map3[25][32] = {
 };
 
 uint8_t * currentmap;
-// todo puntero al mapa actual, posiciones diferentes para el mapa
 
 // 15
 
@@ -118,7 +117,7 @@ uint8_t row;
 uint8_t col;
 uint8_t current;
 uint16_t points = 0;
-uint8_t remaining_points = MAP1_TOTAL_POINTS;
+uint8_t remaining_points;
 
 uint8_t frame = 0;
 

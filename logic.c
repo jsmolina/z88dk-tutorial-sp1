@@ -1,7 +1,6 @@
 #include "logic.h"
 #include "int.h"
 #include "game_zx.h"
-#include <sound.h>
 #include <input.h>
 
 
@@ -169,6 +168,7 @@ void nampac_go_home() {
 
 
 void loose_a_live() {
+    sonido3PierdeVida();
     uint8_t i, j;
     hide_cherry();
     hide_points();
@@ -193,8 +193,10 @@ void loose_a_live() {
     nampac_go_home();
     if(lives > 0) {
         show_billboard(READY);
+        sonido2Sirena();
     } else {
         show_billboard(GAME_OVER);
+        stopCanal2();
     }
     in_wait_key();
     hide_billboard();
@@ -221,16 +223,17 @@ void reset_colors(struct spritep * for_who) {
     sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
 }
 
-void set_eaten(struct spritep * for_who) {
+inline void set_eaten(struct spritep * for_who) {
     for_who->active = GETTING_JAILED;
     for_who->offset = GHOST_EYES;
     for_who->direction = NONE;
     for_who->last_dir = NONE;
     show_points(for_who->y, for_who->x);
     reset_colors(for_who);
+    sonido13ComeGhost();
 }
 
-void init_ghost(struct spritep * for_who) {
+inline void init_ghost(struct spritep * for_who) {
     for_who->x = for_who->default_x;
     for_who->y = for_who->default_y;
     for_who->active = JAILED;
@@ -387,6 +390,8 @@ void move_one_ghost() {
     if(ghosts[idx]->active == GETTING_JAILED) {
         if(ghosts[idx]->default_y == ghosts[idx]->y && ghosts[idx]->default_x == ghosts[idx]->x) {
             ghosts[idx]->active = JAILED;
+            // stop getting jailed sound
+            stopCanal3();
             return;
         }
 
@@ -575,9 +580,8 @@ void move_ghosts() {
 
 
 void next_level() {
-    zx_border(INK_BLUE);
-    bit_beepfx_di_fastcall(BEEPFX_SCORE);
-    zx_border(INK_BLACK);
+    resetSiren();
+    sonido3InsertCoin();
     ++level;
     // helps determining scatter mode changes and some others
     slowticker = 0;
@@ -589,18 +593,13 @@ void next_level() {
 
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-    } else if(map_num == 2){
-        remaining_points = MAP2_TOTAL_POINTS;
-    } else if(map_num == 3){
-        remaining_points = MAP3_TOTAL_POINTS;
-    }
-
-
-    if(map_num == 1) {
         currentmap = &map[0][0];
-    } else if(map_num == 2) {
+    } else if(map_num == 2){
+        // se pone este al morir
+        remaining_points = MAP2_TOTAL_POINTS;
         currentmap = &map2[0][0];
-    } else {
+    } else if(map_num == 3) {
+        remaining_points = MAP3_TOTAL_POINTS;
         currentmap = &map3[0][0];
     }
 
@@ -634,7 +633,6 @@ void check_fsm() {
     if(points > 65500) {
         if(lives < 5) {
             ++lives;
-            bit_beepfx_di_fastcall(BEEPFX_BOOM_1);
         }
     }
     // row and col must be set at this point
@@ -651,9 +649,11 @@ void check_fsm() {
             pick += 1;
             points += 5; // 5 points each dot
             --remaining_points;
+            sonido1Bola();
         } else if(current == 11) {
             points += 20;  // energizers - are worth 20 points each
             pill_eaten = 90;
+            sonido2Huida();
             for(idx = 0; idx != 4; ++idx) {
                 if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
                 || ghosts[idx]->active == SCATTER) && level < 19) {
@@ -744,6 +744,7 @@ void check_fsm() {
     }
 
     if(pill_eaten == 0) {
+        sonido2Sirena();
         pill_eaten = NONE;
         for(idx = 0; idx != 4; ++idx) {
             if(ghosts[idx]->active == FRIGHTENED) {
@@ -759,9 +760,8 @@ void check_fsm() {
 
     if(cherry.showing > 0) {
         if(pacman.x == cherry.x && pacman.y == cherry.y) {
+            sonido1Fruta();
             hide_cherry();
-            bit_beep(10, 1200);
-            zx_border(INK_BLACK);
             show_points(21, 14);
             points += 100;
         }
@@ -771,9 +771,18 @@ void check_fsm() {
         }
     } else if(random_value == 200) {
         show_cherry();
-        zx_border(INK_RED);
-        zx_border(INK_BLACK);
     }
+
+    if(remaining_points == 200) {
+        incSiren();
+    } else if (remaining_points == 150) {
+        incSiren();
+    } else if (remaining_points == 100) {
+        incSiren();
+    } else if (remaining_points == 50) {
+        incSiren();
+    }
+
 
     if(remaining_points == 0) {
         // level finished!
