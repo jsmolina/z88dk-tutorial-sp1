@@ -286,7 +286,7 @@ That's not so useful for scrolling, so if you think on scrolling, then it's mayb
 better to do it yourself.
 
 ### .AY music
-TODO
+https://zxspectrumcoding.wordpress.com/2022/04/16/128k-programming-basics-using-z88dk-and-the-sccz80-compiler-lesson-13/#more-1150
 
 ## Memory ##
 Less lines are better as memory is short. e.g. if you are going to assign four struct properties, don't do it repeating the lines again and again, do it.
