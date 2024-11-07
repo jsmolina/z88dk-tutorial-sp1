@@ -421,7 +421,11 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 ## Text Printing
 `Zx_print_int _chr _char _str`
 `Zx_print_ink _border for colours`
-``` 
+```
+
+## Automatic Banking
+There's also a banking option that z88dk will automatically do it for you:
+https://github.com/z88dk/z88dk/blob/master/examples/banked/
 
 ### Masks
 Masks should have at least one pixel bordering the sprite.
