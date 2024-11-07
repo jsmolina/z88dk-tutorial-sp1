@@ -423,7 +423,7 @@ dzx7_standard(cartoon0, 16384);  // the original author made this src,dst even t
 `Zx_print_ink _border for colours`
 ```
 
-## Automatic Banking
+#### Automatic Banking
 There's also a banking option that z88dk will automatically do it for you:
 https://github.com/z88dk/z88dk/blob/master/examples/banked/
 
