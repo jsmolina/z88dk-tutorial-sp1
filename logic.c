@@ -1,4 +1,5 @@
 #include "logic.h"
+#include "globals.h"
 #include "int.h"
 #include "game_zx.h"
 #include <input.h>
@@ -799,4 +800,68 @@ void paint_lives() {
             sp1_PrintAtInv(0, 6 + idx, get_map_color(0) | PAPER_BLACK, 'a');
         }
     }
+}
+
+
+void animation(void) {
+    uint8_t i;
+    pacman.currentoffset = LEFTC1;
+    sp1_PrintAtInv(13, 1, INK_MAGENTA | INK_BLACK, 'k');
+    for (idx=32; idx > 12; idx--) {
+        col = idx;
+        for(i = 0; i != 4; ++i) {
+            ghosts[i]->x = col;
+            ghosts[i]->y = 12;
+            reset_colors(ghosts[i]);    
+            // ensure repaint: sp1 tricky
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, 2, 2, 0, 0);
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->y, ghosts[i]->x, 0, 0);
+            col -= 2;
+        }
+        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.currentoffset, 12, idx - 10, 0, 0);
+        if (pacman.currentoffset == LEFTC1) {
+            pacman.currentoffset = LEFTC2;
+        } else if (pacman.currentoffset == LEFTC2) {
+            pacman.currentoffset = LEFTC3;
+        } else {
+            pacman.currentoffset = LEFTC1;
+        }
+        //sp1_Invalidate(&full_screen);
+        sp1_UpdateNow();
+        wait();
+    }
+
+    sp1_PrintAtInv(13, 1, INK_MAGENTA | INK_BLACK, ' ');
+    for (idx=4; idx < 24; idx++) {
+        col = idx;
+        for(i = 0; i != 4; ++i) {
+            ghosts[i]->x = col;
+            ghosts[i]->y = 12;
+            // ensure repaint: sp1 tricky
+            //sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) GHOST_FRIGHTENED, 2, 2, 0, 0);
+            if((frame & 1) == 0) {
+                sp1_IterateSprChar(ghosts[i]->sp, initialiseColourBlue);
+            } else {
+                sp1_IterateSprChar(ghosts[i]->sp, initialiseColourWhite);
+            }
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) GHOST_FRIGHTENED, ghosts[i]->y, ghosts[i]->x, 0, 0);
+            col += 2;
+        }
+        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.currentoffset, 12, idx - 4, 0, 0);
+        if (pacman.currentoffset == RIGHTC1) {
+            pacman.currentoffset = RIGHTC2;
+        } else if (pacman.offset == RIGHTC2) {
+            pacman.currentoffset = RIGHTC3;
+        } else {
+            pacman.currentoffset = RIGHTC1;
+        }
+        //sp1_Invalidate(&full_screen);
+        sp1_UpdateNow();
+        wait();
+        frame++;
+        if(frame == 3) { // frame will go 0, 1, 2
+            frame = 0;
+        }
+    }
+    pacman.currentoffset = 1;
 }

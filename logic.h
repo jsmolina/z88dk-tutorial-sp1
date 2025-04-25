@@ -11,20 +11,22 @@
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 
-extern void check_fsm();
-extern uint8_t allow_next(uint8_t next);
-extern void set_eaten(struct spritep * for_who);
-extern void init_ghost(struct spritep * for_who);
-extern void hide_cherry();
-extern void show_cherry();
-extern void nampac_go_home();
-extern void all_ghosts_go_home();
-extern void reset_map();
-extern void set_ghosts_offsets();
-extern void show_billboard(uint8_t offset);
-extern void hide_billboard();
-extern void paint_lives() ;
-extern void hide_points();
-extern void set_ghosts_default_coords();
+void check_fsm(void);
+uint8_t allow_next(uint8_t next);
+void set_eaten(struct spritep * for_who);
+void init_ghost(struct spritep * for_who);
+void hide_cherry(void);
+void show_cherry(void);
+void nampac_go_home(void);
+void all_ghosts_go_home(void);
+void reset_map(void);
+void reset_colors(struct spritep * for_who);
+void set_ghosts_offsets(void);
+void show_billboard(uint8_t offset);
+void hide_billboard(void);
+void paint_lives(void) ;
+void hide_points(void);
+void set_ghosts_default_coords(void);
+void animation(void);
 
 #endif

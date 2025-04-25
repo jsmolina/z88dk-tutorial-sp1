@@ -19,15 +19,15 @@ extern struct sp1_ss * add_cherry_sprite();
 extern struct sp1_ss * add_billboard_sprite();
 extern struct sp1_ss * add_points_sprite();
 
-extern void initialiseColourBlue(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourWhite(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourYellow(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourGreen(unsigned int count, struct sp1_cs *c);
-extern void initialiseColourRedApple(unsigned int count, struct sp1_cs *c);
+void initialiseColourBlue(unsigned int count, struct sp1_cs *c);
+void initialiseColourWhite(unsigned int count, struct sp1_cs *c);
+void initialiseColourYellow(unsigned int count, struct sp1_cs *c);
+void initialiseColourGhostCyan(unsigned int count, struct sp1_cs *c);
+void initialiseColourGhostMagenta(unsigned int count, struct sp1_cs *c);
+void initialiseColourGhostRed(unsigned int count, struct sp1_cs *c);
+void initialiseColourGreenRed(unsigned int count, struct sp1_cs *c);
+void initialiseColourRedYellowWhiteCyan(unsigned int count, struct sp1_cs *c);
+void initialiseColourGreen(unsigned int count, struct sp1_cs *c);
+void initialiseColourRedApple(unsigned int count, struct sp1_cs *c);
 
 #endif

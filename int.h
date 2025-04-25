@@ -24,21 +24,21 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 extern unsigned char tick;
 extern unsigned char pick;
 
-extern void wait(void);
-extern void setup_int(void);
+void wait(void);
+void setup_int(void);
 
-extern void sonido2Sirena();
-extern inline void sonido2Huida();
-extern void start_ay();
-extern void stop_ay();
-extern inline void sonido1Bola();
-extern inline void sonido3PierdeVida();
-extern inline void sonido13ComeGhost();
-extern inline void sonido1Fruta();
-extern void stopCanal3();
-extern void stopCanal2();
-extern void incSiren();
-extern void resetSiren();
-extern inline void sonido3InsertCoin();
+void sonido2Sirena(void);
+inline void sonido2Huida(void);
+void start_ay(void);
+void stop_ay(void);
+inline void sonido1Bola(void);
+inline void sonido3PierdeVida(void);
+inline void sonido13ComeGhost(void);
+inline void sonido1Fruta(void);
+void stopCanal3(void);
+void stopCanal2(void);
+void incSiren(void);
+void resetSiren(void);
+inline void sonido3InsertCoin(void);
 
 #endif
