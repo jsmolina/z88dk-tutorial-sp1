@@ -79,7 +79,7 @@ void all_lives_lost() {
   ghost_yellow.default_color =  initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
-  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.0.5");
+  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.1");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
@@ -105,6 +105,9 @@ void all_lives_lost() {
           break;
       }
   }
+  // intro animation
+  start_ay();
+  animation();
 
   srand(tick);
   remaining_points = MAP1_TOTAL_POINTS;
@@ -112,7 +115,6 @@ void all_lives_lost() {
   reset_map();
   set_ghosts_default_coords();
   all_ghosts_go_home();
-  start_ay();
   show_billboard(READY);
   in_wait_key();
 
