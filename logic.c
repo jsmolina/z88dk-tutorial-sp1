@@ -804,6 +804,9 @@ void paint_lives() {
 
 
 void animation(void) {
+    sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL ,
+        INK_RED | PAPER_BLACK,
+        ' ' );
     uint8_t i;
     pacman.currentoffset = LEFTC1;
     sp1_PrintAtInv(13, 1, INK_MAGENTA | INK_BLACK, 'k');

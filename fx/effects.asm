@@ -1,4 +1,4 @@
-SECTION rodata_user
+SECTION code_user
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  TinyPlayer as PacMan style ;;;

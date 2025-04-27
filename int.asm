@@ -84,7 +84,6 @@ isr_skip:
    ; music
 
    ld a,0x80
-   ld i,a                      ; point I at uncontended bank
 
    ld a,h
    or l
@@ -95,7 +94,6 @@ isr_skip:
    call MusicPlay
    call UpdateAy
    ld a,0xd0
-   ld i,a                      ; restore I
 
    pop iy
    pop ix
