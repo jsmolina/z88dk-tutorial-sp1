@@ -1,4 +1,4 @@
-SECTION BANK_6
+SECTION rodata_user
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  TinyPlayer as PacMan style ;;;
@@ -17,8 +17,7 @@ PUBLIC incSiren
 PUBLIC resetSiren
 
 EXTERN _pill_eaten
-EXTERN enable_bank_n
-EXTERN restore_bank_0
+
 
 startMusic:
     ld hl, mInitGameA
