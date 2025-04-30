@@ -1,4 +1,4 @@
-SECTION BANK_6
+SECTION rodata_user
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  TinyPlayer as PacMan style ;;;

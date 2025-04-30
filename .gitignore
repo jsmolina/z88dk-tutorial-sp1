@@ -1,6 +1,7 @@
 # Prerequisites
 .DS_Store
 *.bin
+*.dsk
 *.tap
 dist/
 *.egg-info/

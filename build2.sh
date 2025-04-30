@@ -1,0 +1,1 @@
+zcc +zx  -Cz--plus3 -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000  @zproject.lst -Cz--screen=intro.scr  -o msnampac -create-app

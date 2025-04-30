@@ -1,33 +1,49 @@
-#include <z80.h>
-#include <stdlib.h>
+#include "game_zx.h"
+#include "globals.h"
+#include "int.h"
+#include "logic.h"
+#include "sprites.h"
 #include <arch/zx.h>
 #include <arch/zx/sp1.h>
 #include <input.h>
-#include <string.h>
-#include <stdlib.h>
 #include <intrinsic.h>
-#include <input.h>
-#include "logic.h"
-#include "sprites.h"
-#include "globals.h"
-#include "int.h"
-#include "game_zx.h"
+#include <stdlib.h>
+#include <z80.h>
 
+#pragma output CRT_ORG_CODE =                                                  \
+    24500 // org of compile todo this should be higher to allocate sprites
+#pragma output REGISTER_SP = 0xd000 // typical stack location when using sp1
+
+#pragma output CRT_ENABLE_CLOSE = 0  // don't bother closing files on exit
+#pragma output CRT_ENABLE_EIDI = 0x1 // disable interrupts at start
+#pragma output CRT_ON_EXIT = 0       // jump to 0 on exit
+
+#pragma output CLIB_STDIO_HEAP_SIZE = 0 // no stdio heap (no files)
+
+#pragma output CLIB_EXIT_STACK_SIZE = 0 // no atexit() functions
+
+#pragma output CLIB_FOPEN_MAX = -1 // no FILE* list
+#pragma output CLIB_OPEN_MAX = -1  // no fd table
+
+// CREATE A BLOCK MEMORY ALLOCATOR WITH ONE QUEUE
+#pragma output CLIB_BALLOC_TABLE_SIZE = 1
+
+// thanks, alvin, for this feedback
+#pragma output CRT_STACK_SIZE = 128
 
 void all_lives_lost() {
 
   // now sp1
-  sp1_Initialize( SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES | SP1_IFLAG_OVERWRITE_DFILE,
-                  INK_BLACK | PAPER_BLACK,
-                  ' ' );
+  sp1_Initialize(SP1_IFLAG_MAKE_ROTTBL | SP1_IFLAG_OVERWRITE_TILES |
+                     SP1_IFLAG_OVERWRITE_DFILE,
+                 INK_BLACK | PAPER_BLACK, ' ');
+
+  zx_border(INK_BLACK);
   // numbers
-  for (idx=0; idx != 10; idx++) {
-      sp1_TileEntry(48+idx, numbers+idx*8);
+  for (idx = 0; idx != 10; idx++) {
+    sp1_TileEntry(48 + idx, numbers + idx * 8);
   }
-  // abecedary
-  for (idx=0; idx != 25; idx++) {
-      sp1_TileEntry(65+idx, abecedary+idx*8);
-  }
+
   // todo poner tileentry como en misifu
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
@@ -65,45 +81,43 @@ void all_lives_lost() {
 
   resetSiren();
 
-
   ghost_cyan.offset = GHOST_CYAN;
-  ghost_cyan.default_color =  initialiseColourGhostCyan;
+  ghost_cyan.default_color = initialiseColourGhostCyan;
 
   ghost_red.offset = GHOST_RED;
-  ghost_red.default_color =  initialiseColourGhostRed;
+  ghost_red.default_color = initialiseColourGhostRed;
 
   ghost_magenta.offset = GHOST_MAGENTA;
-  ghost_magenta.default_color =  initialiseColourGhostMagenta;
+  ghost_magenta.default_color = initialiseColourGhostMagenta;
 
   ghost_yellow.offset = GHOST_YELLOW;
-  ghost_yellow.default_color =  initialiseColourYellow;
+  ghost_yellow.default_color = initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
   printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.1");
 
-  printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
-  printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");
-  printatstr(10, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "3.SINCLAIR");
+  printatstr(8, 10, INK_WHITE | BRIGHT | PAPER_BLACK, "1.KEYBOARD");
+  printatstr(9, 10, INK_WHITE | BRIGHT | PAPER_BLACK, "2.KEMPSTON");
+  printatstr(10, 10, INK_WHITE | BRIGHT | PAPER_BLACK, "3.SINCLAIR");
 
   printatstr(18, 6, INK_GREEN | PAPER_BLACK, "JARLAXE - GRAPHICS");
   printatstr(19, 6, INK_RED | BRIGHT | PAPER_BLACK, "JORDI - CODING");
   printatstr(20, 6, INK_CYAN | PAPER_BLACK, "POPE - MUSIC");
   printatstr(23, 6, INK_MAGENTA | BRIGHT | PAPER_BLACK, "TO GEMMA AND CLAUDIA");
 
-
   sp1_UpdateNow();
 
-   while(1) {
-      if(in_key_pressed(IN_KEY_SCANCODE_1)) {
-          joy = (JOYFUNC)in_stick_keyboard;
-          break;
-      } else if(in_key_pressed(IN_KEY_SCANCODE_2)) {
-          joy = (JOYFUNC)in_stick_kempston;
-          break;
-      } else if(in_key_pressed(IN_KEY_SCANCODE_3)) {
-          joy = (JOYFUNC)in_stick_sinclair1;
-          break;
-      }
+  while (1) {
+    if (in_key_pressed(IN_KEY_SCANCODE_1)) {
+      joy = (JOYFUNC)in_stick_keyboard;
+      break;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_2)) {
+      joy = (JOYFUNC)in_stick_kempston;
+      break;
+    } else if (in_key_pressed(IN_KEY_SCANCODE_3)) {
+      joy = (JOYFUNC)in_stick_sinclair1;
+      break;
+    }
   }
   // intro animation
   start_ay();
@@ -126,9 +140,7 @@ void all_lives_lost() {
   slowticker = 0;
 }
 
-
-int main()
-{
+int main() {
   setup_int();
 
   pacman.sp = add_sprite();
@@ -151,44 +163,47 @@ int main()
   all_lives_lost();
   hide_cherry();
 
-  while(1) {
+  while (1) {
 
-     if(lives == 0) {
-        all_lives_lost();
-     }
+    if (lives == 0) {
+      all_lives_lost();
+    }
 
-     in = (joy)(&joy_keys);
-     check_fsm();
-     // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
-     sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
-     for(idx = 0; idx != 4; ++idx) {
-          sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void*) ghosts[idx]->offset, ghosts[idx]->y, ghosts[idx]->x, 0, 0);
-     }
-     if(cherry.showing != 0) {
-         sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) cherry.offset, cherry.y, cherry.x, 0, 0);
-     }
+    in = (joy)(&joy_keys);
+    check_fsm();
+    // sprite, rectangle, offset (animations), y, x, rotationy, rotationx
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void *)pacman.offset, pacman.y,
+                   pacman.x, 0, 0);
+    for (idx = 0; idx != 4; ++idx) {
+      sp1_MoveSprAbs(ghosts[idx]->sp, &full_screen, (void *)ghosts[idx]->offset,
+                     ghosts[idx]->y, ghosts[idx]->x, 0, 0);
+    }
+    if (cherry.showing != 0) {
+      sp1_MoveSprAbs(cherry.sp, &full_screen, (void *)cherry.offset, cherry.y,
+                     cherry.x, 0, 0);
+    }
 
-     if(repaint_lives) {
-        paint_lives();
-        repaint_lives = 0;
-     }
+    if (repaint_lives) {
+      paint_lives();
+      repaint_lives = 0;
+    }
 
-     if(showing_points != NONE) {
-        --showing_points;
-        if (showing_points == 0) {
-            hide_points();
-        }
-     }
+    if (showing_points != NONE) {
+      --showing_points;
+      if (showing_points == 0) {
+        hide_points();
+      }
+    }
 
-     sp1_UpdateNow();
+    sp1_UpdateNow();
 
-     ++frame;
+    ++frame;
 
-     if(frame == 3) { // frame will go 0, 1, 2
-        frame = 0;
-        print_points();
-     }
+    if (frame == 3) { // frame will go 0, 1, 2
+      frame = 0;
+      print_points();
+    }
 
-     wait();
+    wait();
   }
 }
