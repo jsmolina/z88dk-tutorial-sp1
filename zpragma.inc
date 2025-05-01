@@ -1,6 +1,6 @@
 // COMPILE TIME CRT CONFIGURATION
 
-#pragma output CRT_ORG_CODE           = 24500      // org of compile todo this should be higher to allocate sprites
+#pragma output CRT_ORG_CODE           = 25000      // org of compile todo this should be higher to allocate sprites
 #pragma output REGISTER_SP            = 0xd000     // typical stack location when using sp1
 
 #pragma output CRT_ENABLE_CLOSE       = 0          // don't bother closing files on exit
