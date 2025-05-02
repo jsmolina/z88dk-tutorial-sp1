@@ -1,0 +1,22 @@
+# Ignorar archivos de sistema y editor
+**/.DS_Store
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+**/Thumbs.db
+
+# Ignorar Git y entornos virtuales
+.git/
+.gitignore
+**/.gitkeep
+Dockerfile
+
+# Ignorar binarios y archivos generados
+**/*.dsk
+**/*.rom
+**/*.bin
+**/*.o
+**/*.obj
+**/*.sym
+**/*.

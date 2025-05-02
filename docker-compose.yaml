@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  compile:  
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./out:/out
