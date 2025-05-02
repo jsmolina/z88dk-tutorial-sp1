@@ -1,10 +1,15 @@
 # SP1 TUTORIAL
 
 ## Building this project
-1. Makefile uses png2sp1sprite python scripts, which are available to be installed at: https://github.com/jsmolina/png2sp1sprite
+Graphic resources uses png2sp1sprite python scripts, which are available to be installed at: https://github.com/jsmolina/png2sp1sprite
 Just clone the repo and do a => python setup.py install 
-2. bas2tap is compiled for MacOS, you should first compile it yourself for Linux/Windows/whatever os you are using.
-3. Or... just run `make deps`
+
+Easiest way is to just use docker:
+* `docker-compose build && docker-compose up`
+
+But for convenience, there are shell scripts:
+* `build.sh`generates msnampac.tap
+* `build-p3.sh` generates msnampac.dsk
 
 ## Considerations before start
 * Do you want to make a 48k game or a 128k game?
