@@ -10,6 +10,7 @@ Easiest way is to just use docker:
 But for convenience, there are shell scripts:
 * `build.sh`generates msnampac.tap
 * `build-p3.sh` generates msnampac.dsk
+##  [see](PLUS3-DISK-NOTES.md) 
 
 ## Considerations before start
 * Do you want to make a 48k game or a 128k game?
