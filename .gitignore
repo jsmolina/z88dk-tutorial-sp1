@@ -2,8 +2,13 @@
 .DS_Store
 *.bin
 *.tap
+*.dsk
 dist/
 *.egg-info/
+bank6
+code
+disk
+screen
 
 .idea
 *.d
