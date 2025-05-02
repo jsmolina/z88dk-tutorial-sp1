@@ -92,7 +92,7 @@ alley.c
 and zpragma.inc (read z88dk documentation for more info about this). 
 The most important is CRT_ORG_CODE, it's where your code is placed in memory.
 ```
-#pragma output CRT_ORG_CODE           = 24500      // org of compile todo this should be higher to allocate sprites
+#pragma output CRT_ORG_CODE           = 25000      // org of compile todo this should be higher to allocate sprites
 #pragma output REGISTER_SP            = 0xd000     // typical stack location when using sp1
 
 #pragma output CRT_ENABLE_CLOSE       = 0          // don't bother closing files on exit
@@ -324,7 +324,7 @@ This loader will be a BASIC PROGRAM, like this loader.bas:
 60 LOAD ""CODE
 65 POKE VAL "23388",VAL "16"
 70 OUT VAL "32765",PEEK VAL "23388"
-80 RANDOMIZE USR VAL "24500"
+80 RANDOMIZE USR VAL "25000"
 
 ```
 1. Skip that Bytes: name message that is printed up on loading the code block overwrite part of the screen: POKE VAL "23739",VAL "111"
@@ -333,7 +333,7 @@ This loader will be a BASIC PROGRAM, like this loader.bas:
 computer switch in page 'n' of the RAM. You will then be able to use
 PEEK and POKE in the normal way to examine and change the page.
 4. Actual change of value using port: `OUT VAL "32765",PEEK VAL "23388"
-5. Run the game from CRT_ORG_CODE (defined in zpragma.inc): `RANDOMIZE USR VAL "24500"`
+5. Run the game from CRT_ORG_CODE (defined in zpragma.inc): `RANDOMIZE USR VAL "25000"`
 
 And then you'll convert the .bin files to real TAP files, and concat them finally in one unique file:
 ```
@@ -341,7 +341,7 @@ And then you'll convert the .bin files to real TAP files, and concat them finall
    	zcc +zx -v -m -startup=31 -clib=sdcc_iy -SO3 --max-allocs-per-node200000 @zproject.lst -pragma-include:zpragma.inc -o alley
 
 	appmake +zx -b screen.scr --org 16384 --noloader --blockname screen -o screen.tap
-	appmake +zx -b alley_CODE.bin --org 24500 --noloader --blockname code -o code.tap
+	appmake +zx -b alley_CODE.bin --org 25000 --noloader --blockname code -o code.tap
 	appmake +zx -b alley_BANK_6.bin --org 49152 --noloader --blockname bank6 -o bank6.tap
 	touch alley.tap
 	rm alley.tap
