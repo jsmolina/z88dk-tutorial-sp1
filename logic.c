@@ -579,11 +579,29 @@ void move_ghosts() {
 
 }
 
+// finishes frightened state for ghosts
+inline void end_frightened() {
+    sonido2Sirena();
+    pill_eaten = NONE;
+    for(idx = 0; idx != 4; ++idx) {
+        if(ghosts[idx]->active == FRIGHTENED) {
+            ghosts[idx]->active = CHASE;
+            reset_colors(ghosts[idx]);
+        }
+    }
+    sp1_IterateSprChar(ghost_red.sp, initialiseColourGhostRed);
+    sp1_IterateSprChar(ghost_cyan.sp, initialiseColourGhostCyan);
+    sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
+    sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
+}
+
 
 void next_level() {
+    stop_ay();
     resetSiren();
     sonido3InsertCoin();
     ++level;
+    end_frightened();
     // helps determining scatter mode changes and some others
     slowticker = 0;
     ++reached_level;
@@ -745,18 +763,7 @@ void check_fsm() {
     }
 
     if(pill_eaten == 0) {
-        sonido2Sirena();
-        pill_eaten = NONE;
-        for(idx = 0; idx != 4; ++idx) {
-            if(ghosts[idx]->active == FRIGHTENED) {
-                ghosts[idx]->active = CHASE;
-                reset_colors(ghosts[idx]);
-            }
-        }
-        sp1_IterateSprChar(ghost_red.sp, initialiseColourGhostRed);
-        sp1_IterateSprChar(ghost_cyan.sp, initialiseColourGhostCyan);
-        sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
-        sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
+        end_frightened();
     }
 
     if(cherry.showing > 0) {
