@@ -46,7 +46,6 @@ extern void enable_bank_n(void);
 extern void enable_bank_6(void);
 extern void restore_bank_0(void);
 
-// Copy 800 bytes for map_num (1-3) from BANK_5 into _currentmap
-void load_map_from_bank(uint8_t map_num) __z88dk_fastcall;
+extern void load_map1_from_bank();
 
 #endif

@@ -156,17 +156,6 @@ enable_bank_n:
 
 temp_sp: defw 0
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; void load_map_from_bank(uint8_t map_num)
-; All 3 maps are stored in BANK_5 at sequential 800-byte offsets:
-;   map 1 -> 0xC000 + 0
-;   map 2 -> 0xC000 + 800
-;   map 3 -> 0xC000 + 1600
-; Pages in bank 5, copies 800 bytes from the correct offset
-; into _currentmap, then restores bank 0.
-; SDCC sdcc_iy calling convention: first uint8_t arg in L.
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 SECTION code_crt_common
 
 ; currentmap must live below 0xC000 so it is accessible while bank 5 is paged in.
@@ -174,53 +163,7 @@ SECTION code_crt_common
 PUBLIC _currentmap
 _currentmap: defs 800, 0
 
-PUBLIC _load_map_from_bank
 
-_load_map_from_bank:
-
-    ; disable interrupts immediately: ISR uses enable_bank_n which does its
-    ; own pop hl / ld sp,0 and would corrupt the stack if it fired here.
-    di
-
-    ; L = map_num (1, 2, or 3) via __z88dk_fastcall
-    ld a, l
-    dec a               ; 0-based: 0, 1, or 2
-
-    ; select source address in HL
-    ld hl, 0xC000 + MAP1_OFFSET
-    or a
-    jr z, lm_page       ; map 1: offset 0
-    ld hl, 0xC000 + MAP2_OFFSET
-    dec a
-    jr z, lm_page       ; map 2: offset 800
-    ld hl, 0xC000 + MAP3_OFFSET ; map 3: offset 1600
-
-lm_page:
-    ; save SP (return address is still on the stack; move SP away from top 16K)
-    ld (temp_sp), sp
-    ld sp, 0
-
-    ; page in bank 5
-    ld a, 5 | 0x10      ; bank 5, normal ROM, screen 0
-    ld bc, 0x7ffd
-    out (c), a
-
-    ; copy 800 bytes: HL = bank5 source, DE = _currentmap, BC = 800
-    ld de, _currentmap
-    ld bc, 800
-    ldir
-
-    ; restore bank 0
-    ld a, 0x10
-    ld bc, 0x7ffd
-    out (c), a
-
-    ; restore SP (now points at the return address left by the caller's call)
-    ld sp, (temp_sp)
-    ei
-    ret
-
-;
 
 PUBLIC restore_bank_0
 
@@ -244,3 +187,5 @@ restore_bank_0:
    ; return
 
    jp (hl)
+
+

@@ -51,11 +51,11 @@ uint8_t get_map_char(uint8_t current) {
 void reset_map() {
     // Re-copy clean map data from banked RAM to restore eaten pills
     if(map_num == 1) {
-        load_map_from_bank(1);
+        load_map1_from_bank();
     } else if(map_num == 2) {
-        load_map_from_bank(2);
+        load_map1_from_bank();
     } else {
-        load_map_from_bank(3);
+        load_map1_from_bank();
     }
     for(row = 0; row != 24; ++row) {
       matrixrow = row * NCLS;
@@ -615,14 +615,14 @@ void next_level() {
 
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-        load_map_from_bank(1);
+        load_map1_from_bank();
     } else if(map_num == 2){
         // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        load_map_from_bank(2);
+        load_map1_from_bank();
     } else if(map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        load_map_from_bank(3);
+        load_map1_from_bank();
     }
 
     reset_map();

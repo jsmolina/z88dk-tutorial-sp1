@@ -217,3 +217,20 @@ __asm
     call restore_bank_0
 __endasm;
 }
+
+void load_map1_from_bank() {
+__asm
+    extern enable_bank_n
+    extern restore_bank_0
+    extern _currentmap
+    di
+    ld a, 5
+    call enable_bank_n
+        ld hl, 0xC000
+        ld de, _currentmap
+        ld bc, 800
+        ldir
+    call restore_bank_0
+    ei
+__endasm;
+}

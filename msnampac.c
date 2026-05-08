@@ -28,6 +28,7 @@ void all_lives_lost() {
   for (idx=0; idx != 25; idx++) {
       sp1_TileEntry(65+idx, abecedary+idx*8);
   }
+  
   // todo poner tileentry como en misifu
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
@@ -55,7 +56,8 @@ void all_lives_lost() {
 
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
-  load_map_from_bank(1);
+  // todo check level
+  load_map1_from_bank();
   lives = 5;
   points = 0;
   level = 0;
