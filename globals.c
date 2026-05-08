@@ -7,9 +7,6 @@ uint8_t tmp_val;
 uint8_t tmp_val2;
 uint8_t exit_count;
 
-// Working map buffer - loaded from banked RAM on level load
-uint8_t currentmap[25][32];
-
 // 15
 
 

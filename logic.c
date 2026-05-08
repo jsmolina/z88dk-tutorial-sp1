@@ -3,7 +3,6 @@
 #include "int.h"
 #include "game_zx.h"
 #include <input.h>
-#include <string.h>
 
 
 void show_billboard(uint8_t offset) {
@@ -54,9 +53,9 @@ void reset_map() {
     if(map_num == 1) {
         load_map_from_bank(1);
     } else if(map_num == 2) {
-        load_map_from_bank(3);
+        load_map_from_bank(2);
     } else {
-        load_map_from_bank(4);
+        load_map_from_bank(3);
     }
     for(row = 0; row != 24; ++row) {
       matrixrow = row * NCLS;
@@ -620,10 +619,10 @@ void next_level() {
     } else if(map_num == 2){
         // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        load_map_from_bank(3);
+        load_map_from_bank(2);
     } else if(map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        load_map_from_bank(4);
+        load_map_from_bank(3);
     }
 
     reset_map();

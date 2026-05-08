@@ -175,7 +175,7 @@ extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 
 // Working map buffer - filled from banked RAM on level load
-extern uint8_t currentmap[25][32];
+extern uint8_t currentmap[800];
 extern uint8_t random_value;
 extern uint8_t tmp_val;
 extern uint8_t tmp_val2;
