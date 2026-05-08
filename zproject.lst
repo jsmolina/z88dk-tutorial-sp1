@@ -1,6 +1,7 @@
 @build/binaries.lst
 @fx/fx.lst
 @font/font.lst
+@maps/maps.lst
 int.c
 game_zx.c
 logic.c

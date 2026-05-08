@@ -41,4 +41,12 @@ void incSiren(void);
 void resetSiren(void);
 inline void sonido3InsertCoin(void);
 
+// Bank switching (int.asm)
+extern void enable_bank_n(void);
+extern void enable_bank_6(void);
+extern void restore_bank_0(void);
+
+// Copy 800 bytes from banked map data at 0xC000 into _currentmap
+void load_map_from_bank(uint8_t bank);
+
 #endif

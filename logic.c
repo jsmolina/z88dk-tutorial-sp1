@@ -3,6 +3,7 @@
 #include "int.h"
 #include "game_zx.h"
 #include <input.h>
+#include <string.h>
 
 
 void show_billboard(uint8_t offset) {
@@ -49,15 +50,18 @@ uint8_t get_map_char(uint8_t current) {
 }
 
 void reset_map() {
+    // Re-copy clean map data from banked RAM to restore eaten pills
+    if(map_num == 1) {
+        load_map_from_bank(1);
+    } else if(map_num == 2) {
+        load_map_from_bank(3);
+    } else {
+        load_map_from_bank(4);
+    }
     for(row = 0; row != 24; ++row) {
       matrixrow = row * NCLS;
       for(col = 0; col != 32; ++col) {
-        if(currentmap[matrixrow + col] == 18) {
-            currentmap[matrixrow + col] = 11;
-        } else if(currentmap[matrixrow + col] == 16) {
-            currentmap[matrixrow + col] = 9;
-        }
-        current = currentmap[matrixrow + col]; // todo access currentmap
+        current = currentmap[matrixrow + col];
         sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
       }
 
@@ -612,14 +616,14 @@ void next_level() {
 
     if(map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-        currentmap = &map[0][0];
+        load_map_from_bank(1);
     } else if(map_num == 2){
         // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        currentmap = &map2[0][0];
+        load_map_from_bank(3);
     } else if(map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        currentmap = &map3[0][0];
+        load_map_from_bank(4);
     }
 
     reset_map();

@@ -55,7 +55,7 @@ void all_lives_lost() {
 
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
-  currentmap = &map[0][0];
+  load_map_from_bank(1);
   lives = 5;
   points = 0;
   level = 0;

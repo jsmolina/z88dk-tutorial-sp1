@@ -151,6 +151,63 @@ enable_bank_n:
 
 temp_sp: defw 0
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; void load_map_from_bank(uint8_t bank)
+; Pages in the given bank, copies 800 bytes from
+; 0xC000 into _currentmap, then restores bank 0.
+; SDCC sdcc_iy calling convention: first uint8_t arg
+; is passed in L register.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+SECTION code_crt_common
+
+EXTERN _currentmap
+
+PUBLIC _load_map_from_bank
+
+_load_map_from_bank:
+
+    ; L = bank number (SDCC sdcc_iy: first uint8_t arg in L)
+    ld a, l
+
+    ; save return address
+    pop hl
+    ld (lm_retaddr), hl
+
+    ; page in bank (move stack away from top 16k first)
+    ld (temp_sp), sp
+    ld sp, 0
+
+    and 0x07
+    or 0x10
+    ld bc, 0x7ffd
+    out (c), a
+
+    ; restore sp so ldir loop works
+    ld sp, (temp_sp)
+
+    ; copy 800 bytes from 0xC000 to _currentmap
+    ld hl, 0xC000
+    ld de, _currentmap
+    ld bc, 800
+    ldir
+
+    ; restore bank 0
+    ld (temp_sp), sp
+    ld sp, 0
+
+    ld a, 0x10
+    ld bc, 0x7ffd
+    out (c), a
+
+    ld sp, (temp_sp)
+
+    ; return
+    ld hl, (lm_retaddr)
+    jp (hl)
+
+lm_retaddr: defw 0
+
 ;
 
 PUBLIC restore_bank_0

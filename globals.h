@@ -174,9 +174,8 @@ extern uint8_t door[];
 extern uint8_t ghostpill[];
 extern uint8_t cartoon0[];
 
-extern uint8_t map[25][32];
-extern uint8_t map2[25][32];
-extern uint8_t map3[25][32];
+// Working map buffer - filled from banked RAM on level load
+extern uint8_t currentmap[25][32];
 extern uint8_t random_value;
 extern uint8_t tmp_val;
 extern uint8_t tmp_val2;
@@ -208,6 +207,10 @@ extern uint8_t frame;
 extern uint8_t showing_points;
 
 extern uint8_t map_num;
+// Map data lives in banked RAM; extern labels for bank data
+extern uint8_t _map1_data[];
+extern uint8_t _map2_data[];
+extern uint8_t _map3_data[];
 extern uint8_t lives;
 extern uint8_t level;
 extern uint8_t repaint_lives;
@@ -230,7 +233,6 @@ extern uint8_t letterboxes9[];
 extern uint8_t vidas[];
 extern uint8_t numbers[];
 extern uint8_t abecedary[];
-extern uint8_t * currentmap;
 
 #endif
 
