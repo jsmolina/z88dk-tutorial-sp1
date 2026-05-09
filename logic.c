@@ -773,7 +773,7 @@ void check_fsm() {
         incSiren();
     }
 
-    if (remaining_points == 0 || in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
+    if (remaining_points == 0) {
         // level finished!
         next_level();
     }
