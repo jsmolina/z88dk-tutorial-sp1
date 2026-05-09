@@ -1,28 +1,26 @@
 #include "logic.h"
+#include "game_zx.h"
 #include "globals.h"
 #include "int.h"
-#include "game_zx.h"
 #include <input.h>
 
-
 void show_billboard(uint8_t offset) {
-    if(offset == READY) {
+    if (offset == READY) {
         sp1_IterateSprChar(billboard, initialiseColourYellow);
     } else {
         sp1_IterateSprChar(billboard, initialiseColourGhostRed);
     }
 
-    sp1_MoveSprAbs(billboard, &full_screen, (void *) offset, 18, 11, 0, 0);
+    sp1_MoveSprAbs(billboard, &full_screen, (void*)offset, 18, 11, 0, 0);
     sp1_UpdateNow();
 }
 
 void hide_billboard() {
-    sp1_MoveSprAbs(billboard, &full_screen, (void *) READY, 18, 32, 0, 0);
+    sp1_MoveSprAbs(billboard, &full_screen, (void*)READY, 18, 32, 0, 0);
 }
 
-
 uint8_t get_map_color(uint8_t current) {
-    if(current == I) {
+    if (current == I) {
         return INK_WHITE;
     } else if (current == K) {
         return INK_MAGENTA;
@@ -30,9 +28,9 @@ uint8_t get_map_color(uint8_t current) {
         return INK_WHITE;
     }
     // INK_BLUE for level 1, INK_CYAN level2
-    if(map_num == 3) {
+    if (map_num == 3) {
         return INK_MAGENTA | BRIGHT;
-    } else if(map_num == 2) {
+    } else if (map_num == 2) {
         return INK_CYAN | BRIGHT;
     }
     return INK_BLUE;
@@ -40,8 +38,7 @@ uint8_t get_map_color(uint8_t current) {
 
 uint8_t get_map_char(uint8_t current) {
 
-    if (current == 0)
-    {
+    if (current == 0) {
         return ' ';
     }
 
@@ -50,36 +47,35 @@ uint8_t get_map_char(uint8_t current) {
 
 void reset_map() {
     // Re-copy clean map data from banked RAM to restore eaten pills
-    if(map_num == 1) {
+    if (map_num == 1) {
         load_map1_from_bank();
-    } else if(map_num == 2) {
-        load_map1_from_bank();
+    } else if (map_num == 2) {
+        load_map2_from_bank();
     } else {
-        load_map1_from_bank();
+        load_map3_from_bank();
     }
-    for(row = 0; row != 24; ++row) {
-      matrixrow = row * NCLS;
-      for(col = 0; col != 32; ++col) {
-        current = currentmap[matrixrow + col];
-        sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
-      }
-
-  }
-  printatstr(0, 21, INK_WHITE | PAPER_BLACK, "1UP-");
-  printatstr(0, 1, INK_WHITE | PAPER_BLACK, "LIVE-");
+    for (row = 0; row != 24; ++row) {
+        matrixrow = row * NCLS;
+        for (col = 0; col != 32; ++col) {
+            current = currentmap[matrixrow + col];
+            sp1_PrintAtInv(row, col, get_map_color(current) | INK_BLACK, get_map_char(current));
+        }
+    }
+    printatstr(0, 21, INK_WHITE | PAPER_BLACK, "1UP-");
+    printatstr(0, 1, INK_WHITE | PAPER_BLACK, "LIVE-");
 }
 
 void set_ghosts_default_coords() {
     current = 12;
-    for(idx = 0; idx != 4; ++idx) {
+    for (idx = 0; idx != 4; ++idx) {
         ghosts[idx]->default_x = current;
         current = current + 2;
 
-        if(map_num == 1) {
+        if (map_num == 1) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP1;
-        } else if(map_num == 2) {
+        } else if (map_num == 2) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP2;
-        } else if(map_num == 3) {
+        } else if (map_num == 3) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP3;
         }
     }
@@ -90,16 +86,16 @@ void show_cherry() {
     cherry.x = 13;
     cherry.showing = 100;
 
-    if(level == 0) {
+    if (level == 0) {
         cherry.offset = CHERRY;
         sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
-    } else if(level == 1) {
+    } else if (level == 1) {
         cherry.offset = STRAWBERRY;
         sp1_IterateSprChar(cherry.sp, initialiseColourGreenRed);
-    } else if(level == 2) {
+    } else if (level == 2) {
         cherry.offset = COCKTAIL;
         sp1_IterateSprChar(cherry.sp, initialiseColourRedYellowWhiteCyan);
-    } else if(level == 3) {
+    } else if (level == 3) {
         cherry.offset = APPLE;
         sp1_IterateSprChar(cherry.sp, initialiseColourRedApple);
     } else if (level == 4) {
@@ -112,36 +108,35 @@ void hide_cherry() {
     cherry.y = 21;
     cherry.x = 32;
     cherry.showing = 0;
-    sp1_MoveSprAbs(cherry.sp, &full_screen, (void*) 0, cherry.y, cherry.x, 0, 0);
+    sp1_MoveSprAbs(cherry.sp, &full_screen, (void*)0, cherry.y, cherry.x, 0, 0);
 }
 
 void show_points(uint8_t y, uint8_t x) {
-    sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, y, x, 0, 0);
+    sp1_MoveSprAbs(points_sp, &full_screen, (void*)POINTS_100, y, x, 0, 0);
     sp1_UpdateNow();
     showing_points = 10;
 }
 
 void hide_points() {
-    sp1_MoveSprAbs(points_sp, &full_screen, (void*) POINTS_100, 32, 14, 0, 0);
+    sp1_MoveSprAbs(points_sp, &full_screen, (void*)POINTS_100, 32, 14, 0, 0);
 }
 
-void check_keys()
-{
+void check_keys() {
     // checks keys
     // allow jump in directions
     if ((in & IN_STICK_UP) && allow_next(currentmap[matrixrow - NCLS + col])) {
         pacman.currentoffset = UP1;
         pacman.direction = DIR_UP;
 
-    } else if((in & IN_STICK_DOWN) && allow_next(currentmap[matrixrow + NCLS + col])) {
+    } else if ((in & IN_STICK_DOWN) && allow_next(currentmap[matrixrow + NCLS + col])) {
         pacman.currentoffset = DOWN1;
         pacman.direction = DIR_DOWN;
     }
 
-    if((in & IN_STICK_LEFT) && allow_next(currentmap[matrixrow + (col - 1)])) {
+    if ((in & IN_STICK_LEFT) && allow_next(currentmap[matrixrow + (col - 1)])) {
         pacman.currentoffset = LEFTC1;
         pacman.direction = DIR_LEFT;
-    } else if((in & IN_STICK_RIGHT) && allow_next(currentmap[matrixrow + (col + 1)])) {
+    } else if ((in & IN_STICK_RIGHT) && allow_next(currentmap[matrixrow + (col + 1)])) {
         pacman.currentoffset = RIGHTC1;
         pacman.direction = DIR_RIGHT;
     }
@@ -149,7 +144,7 @@ void check_keys()
 
 void all_ghosts_go_home() {
     uint8_t i;
-    for(i = 0; i != 4; ++i) {
+    for (i = 0; i != 4; ++i) {
         init_ghost(ghosts[i]);
     }
 }
@@ -166,10 +161,9 @@ void nampac_go_home() {
         pacman.offset = UP1;
         pacman.direction = DIR_UP;
     }
-    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, 2, 2, 0, 0);
-    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, pacman.x, 0, 0);
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*)pacman.offset, 2, 2, 0, 0);
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*)pacman.offset, pacman.y, pacman.x, 0, 0);
 }
-
 
 void loose_a_live() {
     sonido3PierdeVida();
@@ -181,21 +175,21 @@ void loose_a_live() {
     all_ghosts_go_home();
 
     // prota dead animation, first hide the sprite from the screen
-    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.offset, pacman.y, 32, 0, 0);
+    sp1_MoveSprAbs(pacman.sp, &full_screen, (void*)pacman.offset, pacman.y, 32, 0, 0);
     // 1, 33, 65, 97
-    for(j = 1; j < 129; j += 32) {
-        sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) j, pacman.y, pacman.x, 0, 0);
+    for (j = 1; j < 129; j += 32) {
+        sp1_MoveSprAbs(pacman.alt, &full_screen, (void*)j, pacman.y, pacman.x, 0, 0);
         sp1_UpdateNow();
-        for(i = 0; i != 5; ++i) {
+        for (i = 0; i != 5; ++i) {
             wait();
         }
     }
 
-    sp1_MoveSprAbs(pacman.alt, &full_screen, (void*) col, pacman.y, 32, 0, 0);
+    sp1_MoveSprAbs(pacman.alt, &full_screen, (void*)col, pacman.y, 32, 0, 0);
     sp1_UpdateNow();
 
     nampac_go_home();
-    if(lives > 0) {
+    if (lives > 0) {
         show_billboard(READY);
         sonido2Sirena();
     } else {
@@ -204,7 +198,6 @@ void loose_a_live() {
     }
     in_wait_key();
     hide_billboard();
-
 }
 
 uint8_t allow_next(uint8_t next) {
@@ -212,22 +205,22 @@ uint8_t allow_next(uint8_t next) {
 }
 
 // resets ghosts colours to default ones (when eaten, when finished ellude mode)
-void reset_colors(struct spritep * for_who) {
+void reset_colors(struct spritep* for_who) {
 
-    if(for_who->default_color == initialiseColourGhostRed) {
+    if (for_who->default_color == initialiseColourGhostRed) {
         for_who->currentoffset = GHOST_RED;
-    } else if(for_who->default_color == initialiseColourGhostCyan) {
+    } else if (for_who->default_color == initialiseColourGhostCyan) {
         for_who->currentoffset = GHOST_CYAN;
-    } else if(for_who->default_color == initialiseColourGhostMagenta) {
+    } else if (for_who->default_color == initialiseColourGhostMagenta) {
         for_who->currentoffset = GHOST_MAGENTA;
-    } else if(for_who->default_color == initialiseColourYellow) {
+    } else if (for_who->default_color == initialiseColourYellow) {
         for_who->currentoffset = GHOST_YELLOW;
     }
     sp1_IterateSprChar(for_who->sp, for_who->default_color);
-    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*)for_who->offset, for_who->default_y, for_who->default_x, 0, 0);
 }
 
-inline void set_eaten(struct spritep * for_who) {
+inline void set_eaten(struct spritep* for_who) {
     for_who->active = GETTING_JAILED;
     for_who->offset = GHOST_EYES;
     for_who->direction = NONE;
@@ -237,7 +230,7 @@ inline void set_eaten(struct spritep * for_who) {
     sonido13ComeGhost();
 }
 
-inline void init_ghost(struct spritep * for_who) {
+inline void init_ghost(struct spritep* for_who) {
     for_who->x = for_who->default_x;
     for_who->y = for_who->default_y;
     for_who->active = JAILED;
@@ -246,22 +239,21 @@ inline void init_ghost(struct spritep * for_who) {
     reset_colors(for_who);
 
     // ensure repaint: sp1 tricky
-    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, 2, 2, 0, 0);
-    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*) for_who->offset, for_who->y, for_who->x, 0, 0);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*)for_who->offset, 2, 2, 0, 0);
+    sp1_MoveSprAbs(for_who->sp, &full_screen, (void*)for_who->offset, for_who->y, for_who->x, 0, 0);
 }
 
-
-uint8_t goto_xy(struct spritep * for_who, uint8_t x, uint8_t y) {
-    if(for_who->x != x) {
-        if(for_who->x > x) {
+uint8_t goto_xy(struct spritep* for_who, uint8_t x, uint8_t y) {
+    if (for_who->x != x) {
+        if (for_who->x > x) {
             --for_who->x;
-        } else if(for_who->x < x) {
+        } else if (for_who->x < x) {
             ++for_who->x;
         }
     } else {
-        if(for_who->y > y) {
+        if (for_who->y > y) {
             --for_who->y;
-        } else if(for_who->y < y) {
+        } else if (for_who->y < y) {
             ++for_who->y;
         } else {
             return CHASE;
@@ -270,28 +262,27 @@ uint8_t goto_xy(struct spritep * for_who, uint8_t x, uint8_t y) {
     return JAILED_EXITING;
 }
 
-struct spritep * has_collision() {
-    if(abs(pacman.x - ghosts[idx]->x) < 2 && abs(pacman.y - ghosts[idx]->y) < 2) {
+struct spritep* has_collision() {
+    if (abs(pacman.x - ghosts[idx]->x) < 2 && abs(pacman.y - ghosts[idx]->y) < 2) {
         // eat
         return ghosts[idx];
     }
     return NULL;
 }
 
-
 uint8_t could_go(uint8_t dir) {
-    switch(dir) {
-        case DIR_RIGHT:
-            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
+    switch (dir) {
+    case DIR_RIGHT:
+        return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x + 1)]) && ghosts[idx]->last_dir != DIR_LEFT;
         break;
-        case DIR_LEFT:
-            return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
+    case DIR_LEFT:
+        return allow_next(currentmap[matrixrow_ghost + (ghosts[idx]->x - 1)]) && ghosts[idx]->last_dir != DIR_RIGHT;
         break;
-        case DIR_DOWN:
-            return allow_next(currentmap[(matrixrow_ghost + NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_UP;
+    case DIR_DOWN:
+        return allow_next(currentmap[(matrixrow_ghost + NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_UP;
         break;
-        case DIR_UP:
-            return allow_next(currentmap[(matrixrow_ghost - NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_DOWN;
+    case DIR_UP:
+        return allow_next(currentmap[(matrixrow_ghost - NCLS) + ghosts[idx]->x]) && ghosts[idx]->last_dir != DIR_DOWN;
         break;
     }
     return 0;
@@ -303,31 +294,31 @@ void then_go(uint8_t dir) {
 }
 
 uint8_t move_ghost_in_his_direction() {
-    if(!could_go(ghosts[idx]->direction)) {
+    if (!could_go(ghosts[idx]->direction)) {
         ghosts[idx]->direction = NONE;
         return 0;
     }
 
-    switch(ghosts[idx]->direction) {
-        case DIR_RIGHT:
-            ghosts[idx]->x += 1;
-            break;
-        case DIR_LEFT:
-            ghosts[idx]->x -= 1;
-            break;
-        case DIR_DOWN:
-            ghosts[idx]->y += 1;
-            break;
-        case DIR_UP:
-            ghosts[idx]->y -= 1;
-            break;
+    switch (ghosts[idx]->direction) {
+    case DIR_RIGHT:
+        ghosts[idx]->x += 1;
+        break;
+    case DIR_LEFT:
+        ghosts[idx]->x -= 1;
+        break;
+    case DIR_DOWN:
+        ghosts[idx]->y += 1;
+        break;
+    case DIR_UP:
+        ghosts[idx]->y -= 1;
+        break;
     }
     return 1;
 }
 
 void choose_random_direction() {
     tmp_val = ghosts[idx]->last_dir;
-    while(!(could_go(tmp_val))) {
+    while (!(could_go(tmp_val))) {
         tmp_val = (rand() & 3) + 1;
     }
     then_go(tmp_val);
@@ -350,7 +341,7 @@ uint8_t ghost_gotoIA(uint8_t px, uint8_t py) {
     // si suma + 1 en la direccion que va a tomar, deberia ser la distancia
     // mas pequeña
     // si misma distancia, primero arriba, izquierda, abajo, derecha
-    if(could_go(DIR_UP)) {
+    if (could_go(DIR_UP)) {
         mincost = euclidean_dist(ghosts[idx]->x, ghosts[idx]->y - 1, px, py);
         chosen = DIR_UP;
     }
@@ -382,65 +373,63 @@ void move_one_ghost() {
     matrixrow_ghost = (ghosts[idx]->y + 1) * NCLS;
 
     // make ghost flicker if elude mode and almost finishing pill eaten
-    if(pill_eaten < 40 && ghosts[idx]->active == FRIGHTENED) {
-        if((frame & 1) == 0) {
+    if (pill_eaten < 40 && ghosts[idx]->active == FRIGHTENED) {
+        if ((frame & 1) == 0) {
             sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourBlue);
         } else {
             sp1_IterateSprChar(ghosts[idx]->sp, initialiseColourWhite);
         }
     }
 
-
-    if(ghosts[idx]->active == GETTING_JAILED) {
-        if(ghosts[idx]->default_y == ghosts[idx]->y && ghosts[idx]->default_x == ghosts[idx]->x) {
+    if (ghosts[idx]->active == GETTING_JAILED) {
+        if (ghosts[idx]->default_y == ghosts[idx]->y && ghosts[idx]->default_x == ghosts[idx]->x) {
             ghosts[idx]->active = JAILED;
             // stop getting jailed sound
             stopCanal3();
             return;
         }
 
-        if(ghosts[idx]->default_y  > ghosts[idx]->y) {
+        if (ghosts[idx]->default_y > ghosts[idx]->y) {
             ++ghosts[idx]->y;
-        } else if(ghosts[idx]->default_y  < ghosts[idx]->y ) {
+        } else if (ghosts[idx]->default_y < ghosts[idx]->y) {
             --ghosts[idx]->y;
         }
 
-        if(ghosts[idx]->default_x  > ghosts[idx]->x  ) {
+        if (ghosts[idx]->default_x > ghosts[idx]->x) {
             ++ghosts[idx]->x;
-        } else if(ghosts[idx]->default_x  < ghosts[idx]->x ) {
+        } else if (ghosts[idx]->default_x < ghosts[idx]->x) {
             --ghosts[idx]->x;
         }
-
 
         return;
     }
 
     // first check collisions
-    if(ghosts[idx]->active == FRIGHTENED) {
+    if (ghosts[idx]->active == FRIGHTENED) {
         // check collission before move
         collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
+        if (collided_sprite != NULL) {
             // eat but skip to be moved
             set_eaten(collided_sprite);
             return;
         }
     } else { // CHASE or SCATTER
         collided_sprite = has_collision();
-        if(collided_sprite != NULL) {
+        if (collided_sprite != NULL) {
             loose_a_live();
             return;
         }
     }
 
-    if(ghosts[idx]->active == FRIGHTENED) {
+    if (ghosts[idx]->active == FRIGHTENED) {
         // direction constants go from 1 to 4
         tmp_val = ghosts[idx]->last_dir;
-        while(!(could_go(tmp_val))) {
+        while (!(could_go(tmp_val))) {
             tmp_val = (rand() & 3) + 1;
         }
         then_go(tmp_val);
 
-    } else if(ghosts[idx]->active == CHASE) {
+    } else if (ghosts[idx]->active == CHASE) {
 
         if (idx == GRED) {
             // blinky is directly targeting pacman
@@ -450,7 +439,7 @@ void move_one_ghost() {
             tmp_val = pacman.x;
             tmp_val2 = pacman.y;
 
-            if(pacman.direction == DIR_LEFT) {
+            if (pacman.direction == DIR_LEFT) {
                 tmp_val -= 4;
             } else if (pacman.direction == DIR_RIGHT) {
                 tmp_val += 4;
@@ -461,10 +450,10 @@ void move_one_ghost() {
                 tmp_val2 += 4;
             }
             then_go(ghost_gotoIA(tmp_val, tmp_val2));
-        } else if(idx == GCYAN) {
+        } else if (idx == GCYAN) {
             tmp_val = pacman.x;
             tmp_val2 = pacman.y;
-            if(pacman.direction == DIR_LEFT) {
+            if (pacman.direction == DIR_LEFT) {
                 tmp_val -= 2;
             } else if (pacman.direction == DIR_RIGHT) {
                 tmp_val += 2;
@@ -476,20 +465,20 @@ void move_one_ghost() {
             }
             // Inky has 180 degrees over RED (blinky) target vector!
             then_go(ghost_gotoIA(tmp_val - ghost_red.x, tmp_val2 - ghost_red.y));
-        } else if(idx == GYELLOW) {
-           //Clyde
-           // go chase, except when close, so then x=0, y= 24
-           if (abs(ghosts[idx]->x - pacman.x) > 4 && abs(ghosts[idx]->y - pacman.y) > 4) {
+        } else if (idx == GYELLOW) {
+            // Clyde
+            //  go chase, except when close, so then x=0, y= 24
+            if (abs(ghosts[idx]->x - pacman.x) > 4 && abs(ghosts[idx]->y - pacman.y) > 4) {
                 then_go(ghost_gotoIA(pacman.x, pacman.y));
-           } else {
+            } else {
                 // if so close, scatter
                 then_go(ghost_gotoIA(0, 24));
-           }
+            }
         }
 
-    } else if(ghosts[idx]->active == SCATTER) {
+    } else if (ghosts[idx]->active == SCATTER) {
 
-        if(idx == GCYAN) {
+        if (idx == GCYAN) {
             then_go(ghost_gotoIA(32, 24));
         } else if (idx == GRED) {
             then_go(ghost_gotoIA(32, 0));
@@ -500,94 +489,90 @@ void move_one_ghost() {
         }
     }
 
-
-    if(ghosts[idx]->direction != NONE) { // not found already a collision
+    if (ghosts[idx]->direction != NONE) { // not found already a collision
         if (ghosts[idx]->active == FRIGHTENED && (((frame + idx) & 1) == 0)) {
             // no move for altern frames: make ghost slower
             return;
         }
         move_ghost_in_his_direction();
     }
-
 }
 
 void move_ghosts() {
     // &ghost_red, &ghost_cyan, &ghost_magenta, &ghost_yellow
 
-    switch(idx) {
-        case GCYAN:
-            move_one_ghost();
-            break;
-        case GRED:
-            move_one_ghost();
-            break;
+    switch (idx) {
+    case GCYAN:
+        move_one_ghost();
+        break;
+    case GRED:
+        move_one_ghost();
+        break;
 
-        case GMAGENTA:
-            move_one_ghost();
-            break;
+    case GMAGENTA:
+        move_one_ghost();
+        break;
 
-        case GYELLOW:
-            move_one_ghost();
+    case GYELLOW:
+        move_one_ghost();
     }
 
     // switches to scatter or chase, except blinky that depends on number of remaining points
-    if (idx == GRED ) {
-        if(reached_level == 0 && remaining_points < 20) {
+    if (idx == GRED) {
+        if (reached_level == 0 && remaining_points < 20) {
             return;
-        } else if(reached_level == 1 && remaining_points < 30) {
+        } else if (reached_level == 1 && remaining_points < 30) {
             return;
-        } else if(reached_level >= 2 && reached_level <= 5 && remaining_points < 40) {
+        } else if (reached_level >= 2 && reached_level <= 5 && remaining_points < 40) {
             return;
-        } else if(reached_level >= 6 && reached_level <= 8 && remaining_points < 50) {
+        } else if (reached_level >= 6 && reached_level <= 8 && remaining_points < 50) {
             return;
-        } else if(reached_level >= 9 && reached_level <= 11 && remaining_points < 60) {
+        } else if (reached_level >= 9 && reached_level <= 11 && remaining_points < 60) {
             return;
-        } else if(reached_level >= 12 && reached_level <= 14 && remaining_points < 80) {
+        } else if (reached_level >= 12 && reached_level <= 14 && remaining_points < 80) {
             return;
-        } else if(reached_level > 14  && remaining_points < 120) {
+        } else if (reached_level > 14 && remaining_points < 120) {
             // blinky almost always chase after passing 14 times!
             return;
         }
     }
 
-    if((ghosts[idx]->active == CHASE || ghosts[idx]->active == SCATTER)) {
+    if ((ghosts[idx]->active == CHASE || ghosts[idx]->active == SCATTER)) {
 
-        if(idx == GCYAN && frame == 1) { // only advances if ghosts are actively moving and for one ghost
+        if (idx == GCYAN && frame == 1) { // only advances if ghosts are actively moving and for one ghost
             ++slowticker;
         }
 
-        if(slowticker == 8) {
+        if (slowticker == 8) {
             // go scatter
             ghosts[idx]->active = SCATTER;
-        } else if(slowticker == 30) {
+        } else if (slowticker == 30) {
             ghosts[idx]->active = CHASE;
 
-        } else if(slowticker == 38) {
+        } else if (slowticker == 38) {
             ghosts[idx]->active = SCATTER;
-        } else if(slowticker == 55) {
+        } else if (slowticker == 55) {
             ghosts[idx]->active = CHASE;
 
-        } else if(slowticker == 63) {
+        } else if (slowticker == 63) {
             ghosts[idx]->active = SCATTER;
-        } else if(slowticker == 85) {
+        } else if (slowticker == 85) {
             ghosts[idx]->active = CHASE;
 
-        } else if((reached_level < 3 && slowticker == 91) || (reached_level > 3 && slowticker == 155) ) {
+        } else if ((reached_level < 3 && slowticker == 91) || (reached_level > 3 && slowticker == 155)) {
             ghosts[idx]->active = SCATTER;
-        } else if(slowticker == 160 || slowticker == 96) {
+        } else if (slowticker == 160 || slowticker == 96) {
             ghosts[idx]->active = CHASE;
         }
     }
-
-
 }
 
 // finishes frightened state for ghosts
 inline void end_frightened() {
     sonido2Sirena();
     pill_eaten = NONE;
-    for(idx = 0; idx != 4; ++idx) {
-        if(ghosts[idx]->active == FRIGHTENED) {
+    for (idx = 0; idx != 4; ++idx) {
+        if (ghosts[idx]->active == FRIGHTENED) {
             ghosts[idx]->active = CHASE;
             reset_colors(ghosts[idx]);
         }
@@ -597,7 +582,6 @@ inline void end_frightened() {
     sp1_IterateSprChar(ghost_magenta.sp, initialiseColourGhostMagenta);
     sp1_IterateSprChar(ghost_yellow.sp, initialiseColourYellow);
 }
-
 
 void next_level() {
     stop_ay();
@@ -609,20 +593,20 @@ void next_level() {
     slowticker = 0;
     ++reached_level;
     ++map_num;
-    if(map_num > 3) {
+    if (map_num > 3) {
         map_num = 1;
     }
 
-    if(map_num == 1) {
+    if (map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
         load_map1_from_bank();
-    } else if(map_num == 2){
+    } else if (map_num == 2) {
         // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        load_map1_from_bank();
-    } else if(map_num == 3) {
+        load_map2_from_bank();
+    } else if (map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        load_map1_from_bank();
+        load_map3_from_bank();
     }
 
     reset_map();
@@ -632,7 +616,7 @@ void next_level() {
     nampac_go_home();
     all_ghosts_go_home();
 
-    if(level == 5) {
+    if (level == 5) {
         level = 0;
     }
 
@@ -641,19 +625,18 @@ void next_level() {
     hide_billboard();
 }
 
-
 void check_fsm() {
     random_value = rand();
     row = pacman.y + 1;
-    if(row > 22) {
+    if (row > 22) {
         row = 22;
     }
     col = pacman.x;
-    if(col > 31) {
+    if (col > 31) {
         col = 31;
     }
-    if(points > 65500) {
-        if(lives < 5) {
+    if (points > 65500) {
+        if (lives < 5) {
             ++lives;
         }
     }
@@ -663,28 +646,29 @@ void check_fsm() {
 
     // pill eat
     current = currentmap[matrixrow + col];
-    if(current != 16 && current != 18) {
+    if (current != 16 && current != 18) {
         currentmap[matrixrow + col] = current + 7; // 9 + 7 = 16, 11 + 7 = 18
-        sp1_PrintAtInv(row, col,  INK_BLACK, ' ');
+        sp1_PrintAtInv(row, col, INK_BLACK, ' ');
 
-        if(current == 9) {
+        if (current == 9) {
             pick += 1;
             points += 5; // 5 points each dot
             --remaining_points;
             sonido1Bola();
-        } else if(current == 11) {
-            points += 20;  // energizers - are worth 20 points each
+        } else if (current == 11) {
+            points += 20; // energizers - are worth 20 points each
             pill_eaten = 90;
             sonido2Huida();
-            for(idx = 0; idx != 4; ++idx) {
-                if((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
-                || ghosts[idx]->active == SCATTER) && level < 19) {
+            for (idx = 0; idx != 4; ++idx) {
+                if ((ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+                        || ghosts[idx]->active == SCATTER)
+                    && level < 19) {
                     // "sacar pies en polvorosa"
-                    if(ghosts[idx]->direction == DIR_LEFT) {
+                    if (ghosts[idx]->direction == DIR_LEFT) {
                         then_go(DIR_RIGHT);
-                    } else if(ghosts[idx]->direction == DIR_RIGHT) {
+                    } else if (ghosts[idx]->direction == DIR_RIGHT) {
                         then_go(DIR_LEFT);
-                    } else if(ghosts[idx]->direction == DIR_UP) {
+                    } else if (ghosts[idx]->direction == DIR_UP) {
                         then_go(DIR_DOWN);
                     } else {
                         then_go(DIR_UP);
@@ -699,92 +683,87 @@ void check_fsm() {
     }
 
     // side change
-    if((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) ||
-        (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG) ||
-        (map_num == 3 && pacman.y == MAP3_Y_SIDE_CHG)) {
-        if(pacman.x < 2 && pacman.direction == DIR_LEFT) {
+    if ((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) || (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG) || (map_num == 3 && pacman.y == MAP3_Y_SIDE_CHG)) {
+        if (pacman.x < 2 && pacman.direction == DIR_LEFT) {
             pacman.x = 30;
-        } else if(pacman.x >= 29 && pacman.direction == DIR_RIGHT) {
+        } else if (pacman.x >= 29 && pacman.direction == DIR_RIGHT) {
             pacman.x = 1;
         }
     }
 
-    if(pacman.direction == DIR_UP && allow_next(currentmap[matrixrow - NCLS + col])) {
+    if (pacman.direction == DIR_UP && allow_next(currentmap[matrixrow - NCLS + col])) {
         --pacman.y;
-    } else if(pacman.direction == DIR_DOWN && allow_next(currentmap[matrixrow + NCLS + col])) {
+    } else if (pacman.direction == DIR_DOWN && allow_next(currentmap[matrixrow + NCLS + col])) {
         ++pacman.y;
-    } else if(pacman.direction == DIR_LEFT && allow_next(currentmap[matrixrow + (col - 1)])) {
+    } else if (pacman.direction == DIR_LEFT && allow_next(currentmap[matrixrow + (col - 1)])) {
         --pacman.x;
-    } else if(pacman.direction == DIR_RIGHT && allow_next(currentmap[matrixrow + (col + 1)])) {
+    } else if (pacman.direction == DIR_RIGHT && allow_next(currentmap[matrixrow + (col + 1)])) {
         ++pacman.x;
     }
 
-    if(frame == 0) {
+    if (frame == 0) {
         pacman.offset = pacman.currentoffset;
-    } else if(frame == 1) {
+    } else if (frame == 1) {
         pacman.offset = pacman.currentoffset + 32;
-    } else if(frame == 2) {
+    } else if (frame == 2) {
         pacman.offset = pacman.currentoffset + 64;
     }
 
     // IA FOR GHOSTS
-    for(idx = 0; idx != 4; ++idx) {
+    for (idx = 0; idx != 4; ++idx) {
         random_value = rand();
-        if(ghosts[idx]->active == JAILED_EXITING) {
-            if(points > 300 || (points > 10 && idx != 1)) {
+        if (ghosts[idx]->active == JAILED_EXITING) {
+            if (points > 300 || (points > 10 && idx != 1)) {
                 ghosts[idx]->active = goto_xy(ghosts[idx], 15, ghosts[idx]->default_y - 3);
             }
-        } else if(ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
+        } else if (ghosts[idx]->active == CHASE || ghosts[idx]->active == FRIGHTENED
             || ghosts[idx]->active == GETTING_JAILED || ghosts[idx]->active == SCATTER) {
             move_ghosts();
-        } else if(ghosts[idx]->active <= JAILED && random_value < 100) {
+        } else if (ghosts[idx]->active <= JAILED && random_value < 100) {
             --ghosts[idx]->active;
         }
         // side change
-        if((map_num == 1 && ghosts[idx]->y == MAP1_Y_SIDE_CHG) ||
-            (map_num == 2 && ghosts[idx]->y == MAP2_Y_SIDE_CHG)||
-            (map_num == 3 && ghosts[idx]->y == MAP3_Y_SIDE_CHG)) {
-            if(ghosts[idx]->x < 2 && ghosts[idx]->direction == DIR_LEFT) {
+        if ((map_num == 1 && ghosts[idx]->y == MAP1_Y_SIDE_CHG) || (map_num == 2 && ghosts[idx]->y == MAP2_Y_SIDE_CHG) || (map_num == 3 && ghosts[idx]->y == MAP3_Y_SIDE_CHG)) {
+            if (ghosts[idx]->x < 2 && ghosts[idx]->direction == DIR_LEFT) {
                 ghosts[idx]->x = 29;
-            } else if(ghosts[idx]->x > 28 && ghosts[idx]->direction == DIR_RIGHT) {
+            } else if (ghosts[idx]->x > 28 && ghosts[idx]->direction == DIR_RIGHT) {
                 ghosts[idx]->x = 1;
             }
         }
 
-        if(ghosts[idx]->active != GETTING_JAILED) {
-            if(frame == 0 || frame == 2) {
+        if (ghosts[idx]->active != GETTING_JAILED) {
+            if (frame == 0 || frame == 2) {
                 ghosts[idx]->offset = ghosts[idx]->currentoffset;
-            } else if(frame == 1) {
+            } else if (frame == 1) {
                 ghosts[idx]->offset = ghosts[idx]->currentoffset + 32;
             }
         }
     }
     // while has eaten pill
-    if(pill_eaten != NONE) {
+    if (pill_eaten != NONE) {
         --pill_eaten;
-
     }
 
-    if(pill_eaten == 0) {
+    if (pill_eaten == 0) {
         end_frightened();
     }
 
-    if(cherry.showing > 0) {
-        if(pacman.x == cherry.x && pacman.y == cherry.y) {
+    if (cherry.showing > 0) {
+        if (pacman.x == cherry.x && pacman.y == cherry.y) {
             sonido1Fruta();
             hide_cherry();
             show_points(21, 14);
             points += 100;
         }
         --cherry.showing;
-        if(cherry.showing == 0) {
+        if (cherry.showing == 0) {
             hide_cherry();
         }
-    } else if(random_value == 200) {
+    } else if (random_value == 200) {
         show_cherry();
     }
 
-    if(remaining_points == 200) {
+    if (remaining_points == 200) {
         incSiren();
     } else if (remaining_points == 150) {
         incSiren();
@@ -794,17 +773,15 @@ void check_fsm() {
         incSiren();
     }
 
-
-    if(remaining_points == 0) {
+    if (remaining_points == 0 || in_key_pressed(IN_KEY_SCANCODE_SPACE)) {
         // level finished!
         next_level();
     }
-
 }
 
 void paint_lives() {
-    for(idx = 0; idx != 5; ++idx) {
-        if(idx < lives) {
+    for (idx = 0; idx != 5; ++idx) {
+        if (idx < lives) {
             sp1_PrintAtInv(0, 6 + idx, INK_YELLOW | PAPER_BLACK | BRIGHT, 'z');
         } else {
             sp1_PrintAtInv(0, 6 + idx, get_map_color(0) | PAPER_BLACK, 'a');
@@ -812,23 +789,22 @@ void paint_lives() {
     }
 }
 
-
 void animation(void) {
     uint8_t i;
     pacman.currentoffset = LEFTC1;
     sp1_PrintAtInv(13, 1, INK_MAGENTA | INK_BLACK, 'k');
-    for (idx=32; idx > 12; idx--) {
+    for (idx = 32; idx > 12; idx--) {
         col = idx;
-        for(i = 0; i != 4; ++i) {
+        for (i = 0; i != 4; ++i) {
             ghosts[i]->x = col;
             ghosts[i]->y = 12;
-            reset_colors(ghosts[i]);    
+            reset_colors(ghosts[i]);
             // ensure repaint: sp1 tricky
-            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, 2, 2, 0, 0);
-            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) ghosts[i]->offset, ghosts[i]->y, ghosts[i]->x, 0, 0);
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*)ghosts[i]->offset, 2, 2, 0, 0);
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*)ghosts[i]->offset, ghosts[i]->y, ghosts[i]->x, 0, 0);
             col -= 2;
         }
-        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.currentoffset, 12, idx - 10, 0, 0);
+        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*)pacman.currentoffset, 12, idx - 10, 0, 0);
         if (pacman.currentoffset == LEFTC1) {
             pacman.currentoffset = LEFTC2;
         } else if (pacman.currentoffset == LEFTC2) {
@@ -836,28 +812,28 @@ void animation(void) {
         } else {
             pacman.currentoffset = LEFTC1;
         }
-        //sp1_Invalidate(&full_screen);
+        // sp1_Invalidate(&full_screen);
         sp1_UpdateNow();
         wait();
     }
 
     sp1_PrintAtInv(13, 1, INK_MAGENTA | INK_BLACK, ' ');
-    for (idx=4; idx < 24; idx++) {
+    for (idx = 4; idx < 24; idx++) {
         col = idx;
-        for(i = 0; i != 4; ++i) {
+        for (i = 0; i != 4; ++i) {
             ghosts[i]->x = col;
             ghosts[i]->y = 12;
             // ensure repaint: sp1 tricky
-            //sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) GHOST_FRIGHTENED, 2, 2, 0, 0);
-            if((frame & 1) == 0) {
+            // sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) GHOST_FRIGHTENED, 2, 2, 0, 0);
+            if ((frame & 1) == 0) {
                 sp1_IterateSprChar(ghosts[i]->sp, initialiseColourBlue);
             } else {
                 sp1_IterateSprChar(ghosts[i]->sp, initialiseColourWhite);
             }
-            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*) GHOST_FRIGHTENED, ghosts[i]->y, ghosts[i]->x, 0, 0);
+            sp1_MoveSprAbs(ghosts[i]->sp, &full_screen, (void*)GHOST_FRIGHTENED, ghosts[i]->y, ghosts[i]->x, 0, 0);
             col += 2;
         }
-        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*) pacman.currentoffset, 12, idx - 4, 0, 0);
+        sp1_MoveSprAbs(pacman.sp, &full_screen, (void*)pacman.currentoffset, 12, idx - 4, 0, 0);
         if (pacman.currentoffset == RIGHTC1) {
             pacman.currentoffset = RIGHTC2;
         } else if (pacman.offset == RIGHTC2) {
@@ -865,11 +841,11 @@ void animation(void) {
         } else {
             pacman.currentoffset = RIGHTC1;
         }
-        //sp1_Invalidate(&full_screen);
+        // sp1_Invalidate(&full_screen);
         sp1_UpdateNow();
         wait();
         frame++;
-        if(frame == 3) { // frame will go 0, 1, 2
+        if (frame == 3) { // frame will go 0, 1, 2
             frame = 0;
         }
     }
