@@ -28,6 +28,7 @@ void all_lives_lost() {
   for (idx=0; idx != 25; idx++) {
       sp1_TileEntry(65+idx, abecedary+idx*8);
   }
+  
   // todo poner tileentry como en misifu
   sp1_TileEntry('a', horizontal);
   sp1_TileEntry('b', vertical);
@@ -55,7 +56,8 @@ void all_lives_lost() {
 
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
-  currentmap = &map[0][0];
+  // todo check level
+  load_map1_from_bank();
   lives = 5;
   points = 0;
   level = 0;
@@ -79,7 +81,7 @@ void all_lives_lost() {
   ghost_yellow.default_color =  initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
-  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.2");
+  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.3");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");

@@ -217,3 +217,54 @@ __asm
     call restore_bank_0
 __endasm;
 }
+
+void load_map1_from_bank() {
+__asm
+    extern enable_bank_n
+    extern restore_bank_0
+    extern _currentmap
+    di
+    ld a, 4
+    call enable_bank_n
+        ld hl, 0xC000
+        ld de, _currentmap
+        ld bc, 800
+        ldir
+    call restore_bank_0
+    ei
+__endasm;
+}
+
+void load_map2_from_bank() {
+__asm
+    extern enable_bank_n
+    extern restore_bank_0
+    extern _currentmap
+    di
+    ld a, 4
+    call enable_bank_n
+        ld hl, 0xC000 + 800
+        ld de, _currentmap
+        ld bc, 800
+        ldir
+    call restore_bank_0
+    ei
+__endasm;
+}
+
+void load_map3_from_bank() {
+__asm
+    extern enable_bank_n
+    extern restore_bank_0
+    extern _currentmap
+    di
+    ld a, 4
+    call enable_bank_n
+        ld hl, 0xC000 + 1600
+        ld de, _currentmap
+        ld bc, 800
+        ldir
+    call restore_bank_0
+    ei
+__endasm;
+}

@@ -7,6 +7,11 @@ EXTERN UpdateAy
 EXTERN letsplay
 EXTERN MuteAy
 
+MAP_SIZE    EQU 800
+MAP1_OFFSET EQU 0
+MAP2_OFFSET EQU MAP_SIZE
+MAP3_OFFSET EQU MAP_SIZE * 2
+
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -151,7 +156,14 @@ enable_bank_n:
 
 temp_sp: defw 0
 
-;
+SECTION code_crt_common
+
+; currentmap must live below 0xC000 so it is accessible while bank 5 is paged in.
+; Placing it here alongside the banking routines guarantees that.
+PUBLIC _currentmap
+_currentmap: defs 800, 0
+
+
 
 PUBLIC restore_bank_0
 
@@ -175,3 +187,5 @@ restore_bank_0:
    ; return
 
    jp (hl)
+
+

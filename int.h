@@ -41,4 +41,13 @@ void incSiren(void);
 void resetSiren(void);
 inline void sonido3InsertCoin(void);
 
+// Bank switching (int.asm)
+extern void enable_bank_n(void);
+extern void enable_bank_6(void);
+extern void restore_bank_0(void);
+
+extern void load_map1_from_bank();
+extern void load_map2_from_bank();
+extern void load_map3_from_bank();
+
 #endif
