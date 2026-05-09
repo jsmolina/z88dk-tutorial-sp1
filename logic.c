@@ -53,10 +53,19 @@ void reset_map() {
     if(map_num == 1) {
         load_map1_from_bank();
     } else if(map_num == 2) {
-        load_map1_from_bank();
+        load_map2_from_bank();
     } else {
-        load_map1_from_bank();
+        load_map3_from_bank();
     }
+    if(currentmap[0] != 3) {
+          zx_border(INK_BLUE);
+          in_wait_key();
+  }
+  if(currentmap[1] != 1 || currentmap[2] != 1) {
+          zx_border(INK_RED);
+          in_wait_key();
+  }
+  
     for(row = 0; row != 24; ++row) {
       matrixrow = row * NCLS;
       for(col = 0; col != 32; ++col) {
@@ -617,12 +626,11 @@ void next_level() {
         remaining_points = MAP1_TOTAL_POINTS;
         load_map1_from_bank();
     } else if(map_num == 2){
-        // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        load_map1_from_bank();
+        load_map2_from_bank();
     } else if(map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        load_map1_from_bank();
+        load_map3_from_bank();
     }
 
     reset_map();

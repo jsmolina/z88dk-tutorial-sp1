@@ -124,8 +124,6 @@ isr_skip:
 ; banking
 ;;;;;;;;;
 
-SECTION code_crt_common  ;; place very low in memory, out of top 16k
-
 PUBLIC enable_bank_n
 PUBLIC enable_bank_6
 
@@ -140,7 +138,7 @@ enable_bank_n:
    ; move stack pointer
 
    ld (temp_sp),sp
-   ld sp,0
+   ld sp,temp_stack_top
 
    ; enable bank
 
@@ -154,16 +152,17 @@ enable_bank_n:
 
    jp (hl)
 
+; Working variables in low RAM
 temp_sp: defw 0
 
-SECTION code_crt_common
+; Safe temporary stack area in low memory (used by enable_bank_n)
+temp_stack: defs 16
+temp_stack_top:
 
 ; currentmap must live below 0xC000 so it is accessible while bank 5 is paged in.
-; Placing it here alongside the banking routines guarantees that.
+; code_crt_common is placed very low in memory, guaranteeing this.
 PUBLIC _currentmap
 _currentmap: defs 800, 0
-
-
 
 PUBLIC restore_bank_0
 
@@ -188,4 +187,59 @@ restore_bank_0:
 
    jp (hl)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Map loaders — pure asm, no stack tricks
+; Bank 5 paged in/out via direct port I/O
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+PUBLIC _load_map1_from_bank
+
+_load_map1_from_bank:
+   di
+   ld a,0x15              ; bank 5: bit4=1 (ROM select), bits 0-2 = 5
+   ld bc,0x7ffd
+   out (c),a
+   ld hl,0xC000 + MAP1_OFFSET
+   ld de,_currentmap
+   ld bc,MAP_SIZE
+   ldir
+   ld a,0x10              ; bank 0
+   ld bc,0x7ffd
+   out (c),a
+   ei
+   ret
+
+PUBLIC _load_map2_from_bank
+
+_load_map2_from_bank:
+   di
+   ld a,0x15
+   ld bc,0x7ffd
+   out (c),a
+   ld hl,0xC000 + MAP2_OFFSET
+   ld de,_currentmap
+   ld bc,MAP_SIZE
+   ldir
+   ld a,0x10
+   ld bc,0x7ffd
+   out (c),a
+   ei
+   ret
+
+PUBLIC _load_map3_from_bank
+
+_load_map3_from_bank:
+   di
+   ld a,0x15
+   ld bc,0x7ffd
+   out (c),a
+   ld hl,0xC000 + MAP3_OFFSET
+   ld de,_currentmap
+   ld bc,MAP_SIZE
+   ldir
+   ld a,0x10
+   ld bc,0x7ffd
+   out (c),a
+   ei
+   ret
 
