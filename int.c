@@ -224,7 +224,7 @@ __asm
     extern restore_bank_0
     extern _currentmap
     di
-    ld a, 5
+    ld a, 7
     call enable_bank_n
         ld hl, 0xC000
         ld de, _currentmap

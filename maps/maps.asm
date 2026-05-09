@@ -1,11 +1,11 @@
-; All map data stored in BANK_5 (paged at 0xC000)
+; All map data stored in BANK_7 (paged at 0xC000)
 ; Layout:
 ;   _map1_data at 0xC000        (offset 0)
 ;   _map2_data at 0xC000 + 800  (offset 800)
 ;   _map3_data at 0xC000 + 1600 (offset 1600)
 ; Total: 2400 bytes
 
-SECTION BANK_5
+SECTION BANK_7
 
 PUBLIC _map1_data
 PUBLIC _map2_data
