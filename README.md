@@ -489,3 +489,9 @@ tabla_offsets:
     dw fxSirena4
     dw fxSirena5
 ```
+
+# Map editor!
+There's a published map editor in:
+https://jsmolina.github.io/z88dk-tutorial-sp1/
+
+open maps.asm and copy all the lines (including defb) from one on the maps. Click on import and you'll see the map how it will look on the spectrum.
