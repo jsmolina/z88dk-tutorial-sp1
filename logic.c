@@ -47,13 +47,7 @@ uint8_t get_map_char(uint8_t current) {
 
 void reset_map() {
     // Re-copy clean map data from banked RAM to restore eaten pills
-    if (map_num == 1) {
-        load_map1_from_bank();
-    } else if (map_num == 2) {
-        load_map2_from_bank();
-    } else {
-        load_map3_from_bank();
-    }
+    load_map_from_bank();
     for (row = 0; row != 24; ++row) {
         matrixrow = row * NCLS;
         for (col = 0; col != 32; ++col) {
@@ -77,6 +71,8 @@ void set_ghosts_default_coords() {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP2;
         } else if (map_num == 3) {
             ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP3;
+        } else if (map_num == 4) {
+            ghosts[idx]->default_y = Y_GHOSTS_HOME_MAP1;
         }
     }
 }
@@ -593,21 +589,20 @@ void next_level() {
     slowticker = 0;
     ++reached_level;
     ++map_num;
-    if (map_num > 3) {
+    if (map_num > 4) {
         map_num = 1;
     }
 
     if (map_num == 1) {
         remaining_points = MAP1_TOTAL_POINTS;
-        load_map1_from_bank();
     } else if (map_num == 2) {
-        // se pone este al morir
         remaining_points = MAP2_TOTAL_POINTS;
-        load_map2_from_bank();
     } else if (map_num == 3) {
         remaining_points = MAP3_TOTAL_POINTS;
-        load_map3_from_bank();
+    } else if (map_num == 4) {
+        remaining_points = MAP4_TOTAL_POINTS;
     }
+    load_map_from_bank();
 
     reset_map();
     set_ghosts_default_coords();
@@ -683,7 +678,7 @@ void check_fsm() {
     }
 
     // side change
-    if ((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) || (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG) || (map_num == 3 && pacman.y == MAP3_Y_SIDE_CHG)) {
+    if ((map_num == 1 && pacman.y == MAP1_Y_SIDE_CHG) || (map_num == 2 && pacman.y == MAP2_Y_SIDE_CHG) || (map_num == 3 && pacman.y == MAP3_Y_SIDE_CHG) || (map_num == 4 && pacman.y == MAP4_Y_SIDE_CHG)) {
         if (pacman.x < 2 && pacman.direction == DIR_LEFT) {
             pacman.x = 30;
         } else if (pacman.x >= 29 && pacman.direction == DIR_RIGHT) {
@@ -773,7 +768,7 @@ void check_fsm() {
         incSiren();
     }
 
-    if (remaining_points == 0) {
+    if (remaining_points == 0 || in_key_pressed(IN_KEY_SCANCODE_6)) {
         // level finished!
         next_level();
     }

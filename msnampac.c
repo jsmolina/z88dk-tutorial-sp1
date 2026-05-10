@@ -57,11 +57,11 @@ void all_lives_lost() {
   zx_border(INK_BLACK);
   sp1_Invalidate(&full_screen);
   // todo check level
-  load_map1_from_bank();
+  map_num = 1;
+  load_map_from_bank();
   lives = 5;
   points = 0;
   level = 0;
-  map_num = 1;
   repaint_lives = 1;
   reached_level = 0;
 
@@ -81,7 +81,7 @@ void all_lives_lost() {
   ghost_yellow.default_color =  initialiseColourYellow;
 
   printatstr(4, 10, INK_YELLOW | BRIGHT | PAPER_BLACK, "MS.NAM-PAC");
-  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.3");
+  printatstr(5, 10, INK_YELLOW | PAPER_BLACK, "  V0.5");
 
   printatstr(8, 10, INK_WHITE |BRIGHT | PAPER_BLACK, "1.KEYBOARD");
   printatstr(9, 10, INK_WHITE|BRIGHT | PAPER_BLACK, "2.KEMPSTON");

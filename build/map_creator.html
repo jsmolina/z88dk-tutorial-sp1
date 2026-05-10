@@ -92,6 +92,17 @@
         margin-top: 20px;
       }
 
+      .pill-counter {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        font-size: 16px;
+      }
+
       button {
         padding: 8px 16px;
         margin-right: 10px;
@@ -122,6 +133,8 @@
       <div class="icon-selector" id="iconSelector"></div>
 
       <div class="canvas-grid" id="canvasGrid"></div>
+
+      <div class="pill-counter" id="pillCounter">Pills: 0</div>
 
       <div class="controls">
         <button onclick="exportMap()">Export Map</button>
@@ -265,6 +278,10 @@
         } else {
           cell.style.backgroundImage = "none";
         }
+
+        // Update pill counter and auto-export
+        updatePillCounter();
+        exportMap();
       }
 
       // Highlight icon button of current cell
@@ -286,6 +303,25 @@
         });
       }
 
+      // Count pills in the map
+      function countPills() {
+        let count = 0;
+        for (let row = 0; row < ROWS; row++) {
+          for (let col = 0; col < COLS; col++) {
+            if (mapMatrix[row][col] === 9) {
+              count++;
+            }
+          }
+        }
+        return count;
+      }
+
+      // Update pill counter display
+      function updatePillCounter() {
+        const count = countPills();
+        document.getElementById("pillCounter").textContent = `Pills: ${count}`;
+      }
+
       // Undo last action
       function undoAction() {
         if (undoHistory.length === 0) return;
@@ -303,6 +339,10 @@
         } else {
           cell.style.backgroundImage = "none";
         }
+
+        // Update pill counter and auto-export
+        updatePillCounter();
+        exportMap();
       }
 
       // Export map
@@ -341,6 +381,9 @@
             }
           }
         }
+
+        // Update pill counter after import
+        updatePillCounter();
       }
 
       // Clear map
@@ -353,6 +396,7 @@
         });
         document.getElementById("mapData").value = "";
         undoHistory = [];
+        updatePillCounter();
       }
 
       // Initialize
