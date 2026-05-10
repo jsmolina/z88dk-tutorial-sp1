@@ -10,6 +10,7 @@
 #define MAP1_Y_SIDE_CHG 12
 #define MAP2_Y_SIDE_CHG 10
 #define MAP3_Y_SIDE_CHG 12
+#define MAP4_Y_SIDE_CHG 1
 #define RIGHTC1 1
 #define RIGHTC2 33
 #define RIGHTC3 65
@@ -41,6 +42,7 @@
 #define MAP1_TOTAL_POINTS 238
 #define MAP2_TOTAL_POINTS 251
 #define MAP3_TOTAL_POINTS 254
+#define MAP4_TOTAL_POINTS 236
 
 #define DIR_UP 1
 #define DIR_DOWN 2

@@ -8,6 +8,7 @@ unsigned char tick;
 unsigned char timer;
 unsigned char pick;
 unsigned char music_playing;
+unsigned int current_map_offset;
 
 
 
@@ -218,52 +219,28 @@ __asm
 __endasm;
 }
 
-void load_map1_from_bank() {
+void load_map_from_bank() {
+    // Calculate offset in C before banking
+    current_map_offset = 0xC000 + ((map_num - 1) * 800);
+    
 __asm
     extern enable_bank_n
     extern restore_bank_0
     extern _currentmap
+    extern _current_map_offset
+    
     di
+    
+    ; Load the pre-calculated offset from C variable
+    ld de, (_current_map_offset)
+    
     ld a, 4
     call enable_bank_n
-        ld hl, 0xC000
-        ld de, _currentmap
-        ld bc, 800
-        ldir
-    call restore_bank_0
-    ei
-__endasm;
-}
-
-void load_map2_from_bank() {
-__asm
-    extern enable_bank_n
-    extern restore_bank_0
-    extern _currentmap
-    di
-    ld a, 4
-    call enable_bank_n
-        ld hl, 0xC000 + 800
-        ld de, _currentmap
-        ld bc, 800
-        ldir
-    call restore_bank_0
-    ei
-__endasm;
-}
-
-void load_map3_from_bank() {
-__asm
-    extern enable_bank_n
-    extern restore_bank_0
-    extern _currentmap
-    di
-    ld a, 4
-    call enable_bank_n
-        ld hl, 0xC000 + 1600
-        ld de, _currentmap
-        ld bc, 800
-        ldir
+    ld hl, de
+    ld de, _currentmap
+    ld bc, 800
+    ldir
+    
     call restore_bank_0
     ei
 __endasm;
