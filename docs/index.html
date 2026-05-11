@@ -81,7 +81,7 @@
       .grid-cell {
         width: 16px;
         height: 16px;
-        border: 1px solid #222;
+        border: 1px solid #555;
         cursor: crosshair;
         background-color: #000;
         background-size: cover;
@@ -133,14 +133,27 @@
       <div class="icon-selector" id="iconSelector"></div>
 
       <div class="canvas-grid" id="canvasGrid"></div>
-
-      <div class="pill-counter" id="pillCounter">Pills: 0</div>
+      <div
+        style="
+          width: 100%;
+          display: flex;
+          align-items: center;
+          margin-top: 10px;
+        "
+      >
+        <div class="pill-counter" id="pillCounter">Pills: 0</div>
+        <img
+          src="./explain_pill.png"
+          alt="Pills require a margin"
+          title="NOTE: Pills require a margin: they cannot be placed directly next to walls or corners."
+          style="vertical-align: middle; margin: 10px"
+        />
+      </div>
 
       <div class="controls">
         <button onclick="exportMap()">Export Map</button>
         <button onclick="importMap()">Import Map</button>
         <button onclick="clearMap()">Clear Map</button>
-        <button onclick="undoAction()">Undo</button>
         <button onclick="undoAction()">Undo</button>
         <textarea
           id="mapData"
@@ -356,6 +369,9 @@
 
       // Import map
       function importMap() {
+        if (confirm("Sure?") === false) {
+          return;
+        }
         const data = document.getElementById("mapData").value;
         const lines = data.trim().split("\n");
 
@@ -388,6 +404,10 @@
 
       // Clear map
       function clearMap() {
+        if (confirm("Sure?") === false) {
+          return;
+        }
+
         mapMatrix = Array(ROWS)
           .fill(null)
           .map(() => Array(COLS).fill(0));
