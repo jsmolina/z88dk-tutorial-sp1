@@ -94,8 +94,8 @@
 
       .pill-counter {
         display: inline-block;
-        padding: 10px 20px;
-        background-color: #28a745;
+        padding: 4px 10px;
+        background-color: black;
         color: white;
         border-radius: 4px;
         font-weight: bold;
@@ -136,12 +136,14 @@
       <div
         style="
           width: 100%;
-          display: flex;
+          display: grid-flex;
           align-items: center;
           margin-top: 10px;
         "
       >
         <div class="pill-counter" id="pillCounter">Pills: 0</div>
+        <button onclick="undoAction()">Undo</button>
+        <div id="currRow" style="clear: right">row: x, col: y</div>
         <img
           src="./explain_pill.png"
           alt="Pills require a margin"
@@ -151,10 +153,16 @@
       </div>
 
       <div class="controls">
-        <button onclick="exportMap()">Export Map</button>
+        <button style="background-color: blueviolet" onclick="exportMap()">
+          Copy to clipboard
+        </button>
         <button onclick="importMap()">Import Map</button>
-        <button onclick="clearMap()">Clear Map</button>
-        <button onclick="undoAction()">Undo</button>
+        <button style="background-color: red" onclick="clearMap()">
+          Clear Map
+        </button>
+        <button style="background-color: yellowgreen" onclick="importSample()">
+          Draw example map
+        </button>
         <textarea
           id="mapData"
           placeholder="Import/Export data will appear here..."
@@ -165,6 +173,8 @@
     <script>
       const ROWS = 24;
       const COLS = 32;
+      const sample_map =
+        "defb 3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,13,13,1,1,1,1,1,1,1,1,1,1,1,1,1,1,4\ndefb 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2\ndefb 2,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2,2,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2\ndefb 2,9,0,3,1,4,9,0,3,1,1,1,4,9,0,2,2,9,0,3,1,1,1,4,9,0,3,1,4,9,0,2\ndefb 2,11,0,2,0,2,9,0,2,0,0,0,2,9,0,2,2,9,0,2,0,0,0,2,9,0,2,0,2,11,0,2\ndefb 2,9,0,5,1,6,9,0,5,1,1,1,6,9,0,5,6,9,0,5,1,1,1,6,9,0,5,1,6,9,0,2\ndefb 2,9,0,0,0,0,9,0,0,0,0,0,0,9,0,0,0,9,0,0,0,0,0,0,9,0,0,0,0,9,0,2\ndefb 2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2\ndefb 2,9,0,19,1,20,9,0,21,9,0,19,1,1,1,13,13,1,1,1,20,9,0,21,9,0,19,1,20,9,0,2\ndefb 2,9,0,0,0,0,9,0,2,9,0,0,0,0,0,2,2,0,0,0,0,9,0,2,9,0,0,0,0,9,0,2\ndefb 2,9,9,9,9,9,9,0,2,9,9,9,9,9,0,2,2,9,9,9,9,9,0,2,9,9,9,9,9,9,0,2\ndefb 5,1,1,1,1,20,9,0,24,1,1,1,20,9,0,5,6,9,0,19,1,1,1,23,9,0,19,1,1,1,1,6\ndefb 0,0,0,0,0,0,9,0,2,0,0,0,0,9,0,0,0,9,0,0,0,0,0,2,9,0,0,0,0,0,0,0\ndefb 0,9,9,9,9,9,9,0,2,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2,9,9,9,9,9,9,0,0\ndefb 3,1,1,1,1,20,9,0,2,9,0,3,1,1,20,25,25,19,1,1,4,9,0,2,9,0,19,1,1,1,1,4\ndefb 2,0,0,0,0,0,9,0,2,9,0,2,0,0,0,0,0,0,0,0,2,9,0,2,9,0,0,0,0,0,0,2\ndefb 2,9,9,9,9,9,9,0,2,9,0,2,0,0,0,0,0,0,0,0,2,9,0,2,9,9,9,9,9,9,0,2\ndefb 2,9,0,3,1,4,9,0,22,9,0,5,1,1,1,1,1,1,1,1,6,9,0,22,9,0,3,1,4,9,0,2\ndefb 2,9,0,2,0,2,9,0,0,9,0,0,0,0,0,0,0,0,0,0,0,9,0,0,9,0,2,0,2,9,0,2\ndefb 2,11,0,2,0,2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2,0,2,11,0,2\ndefb 2,9,0,5,1,6,9,0,19,1,1,20,9,0,19,1,1,20,9,0,19,1,1,20,9,0,5,1,6,9,0,2\ndefb 2,9,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,0,9,0,0,0,0,9,0,2\ndefb 2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,0,2\ndefb 5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6\ndefb 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 
       const icons = [
         { value: 0, image: "del.png" },
@@ -296,10 +306,18 @@
         updatePillCounter();
         exportMap();
       }
+      function clearRowColDisplay() {
+        const currRow = document.getElementById("currRow");
+        currRow.textContent = `row: x, col: y`;
+      }
 
       // Highlight icon button of current cell
       function highlightCurrentIcon(row, col) {
         clearHighlight();
+        clearRowColDisplay();
+        const currRow = document.getElementById("currRow");
+        currRow.textContent = `row: ${row}, col: ${col}`;
+
         const cellValue = mapMatrix[row][col];
         if (cellValue !== 0) {
           const btn = document.querySelector(`[data-value="${cellValue}"]`);
@@ -360,16 +378,16 @@
 
       // Export map
       function exportMap() {
-        let output = "";
-        for (let row = 0; row < ROWS; row++) {
-          output += "defb " + mapMatrix[row].join(",") + "\n";
-        }
-        document.getElementById("mapData").value = output;
+        window.Clipboard.writeText(
+          mapMatrix.map((row) => `defb ${row.join(",")}`).join("\n"),
+        ).then(() => {
+          console.log("Map data copied to clipboard");
+        });
       }
 
       // Import map
       function importMap() {
-        if (confirm("Sure?") === false) {
+        if (confirm("Sure to import?") === false) {
           return;
         }
         const data = document.getElementById("mapData").value;
@@ -388,6 +406,16 @@
                 `[data-row="${row}"][data-col="${col}"]`,
               );
               const icon = icons.find((i) => i.value === values[col]);
+              if (!icon) {
+                alert(
+                  "Invalid value in row " +
+                    row +
+                    " col " +
+                    col +
+                    ": " +
+                    values[col],
+                );
+              }
 
               if (icon && values[col] !== 0) {
                 cell.style.backgroundImage = `url(${icon.image})`;
@@ -400,6 +428,11 @@
 
         // Update pill counter after import
         updatePillCounter();
+      }
+
+      function importSample() {
+        document.getElementById("mapData").value = sample_map;
+        importMap();
       }
 
       // Clear map
