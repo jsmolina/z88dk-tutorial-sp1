@@ -124,6 +124,24 @@
         font-family: monospace;
         font-size: 12px;
       }
+
+      .copy-tooltip {
+        position: absolute;
+        background-color: black;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 13px;
+        pointer-events: none;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+        white-space: nowrap;
+        z-index: 1000;
+      }
+
+      .copy-tooltip.fade-out {
+        opacity: 0;
+      }
     </style>
   </head>
   <body>
@@ -153,7 +171,11 @@
       </div>
 
       <div class="controls">
-        <button style="background-color: blueviolet" onclick="exportMap()">
+        <button
+          id="exportBtn"
+          style="background-color: blueviolet"
+          onclick="exportMap()"
+        >
           Copy to clipboard
         </button>
         <button onclick="importMap()">Import Map</button>
@@ -378,10 +400,19 @@
 
       // Export map
       function exportMap() {
-        window.Clipboard.writeText(
-          mapMatrix.map((row) => `defb ${row.join(",")}`).join("\n"),
-        ).then(() => {
-          console.log("Map data copied to clipboard");
+        const text = mapMatrix.map((row) => `defb ${row.join(",")}`).join("\n");
+        document.getElementById("mapData").value = text;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.getElementById("exportBtn");
+          const rect = btn.getBoundingClientRect();
+          const tooltip = document.createElement("div");
+          tooltip.className = "copy-tooltip";
+          tooltip.textContent = "Copied!";
+          tooltip.style.left = rect.left + window.scrollX + "px";
+          tooltip.style.top = rect.top + window.scrollY - 32 + "px";
+          document.body.appendChild(tooltip);
+          setTimeout(() => tooltip.classList.add("fade-out"), 1000);
+          setTimeout(() => tooltip.remove(), 1500);
         });
       }
 
