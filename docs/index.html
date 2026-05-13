@@ -326,7 +326,7 @@
 
         // Update pill counter and auto-export
         updatePillCounter();
-        exportMap();
+        updateMapData();
       }
       function clearRowColDisplay() {
         const currRow = document.getElementById("currRow");
@@ -395,7 +395,12 @@
 
         // Update pill counter and auto-export
         updatePillCounter();
-        exportMap();
+        updateMapData();
+      }
+
+      function updateMapData(row, col, value) {
+        const text = mapMatrix.map((row) => `defb ${row.join(",")}`).join("\n");
+        document.getElementById("mapData").value = text;
       }
 
       // Export map
