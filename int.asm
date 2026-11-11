@@ -137,6 +137,20 @@ enable_bank_n:
 
    pop hl
 
+   ; Preserve the caller's interrupt state and keep interrupts out of the
+   ; banked-stack window. LD A,I reports the previous IFF2 state in P/V.
+   push af
+   ld a,i
+   di
+   jp po,banking_iff_disabled
+   ld a,1
+   jr banking_save_iff
+banking_iff_disabled:
+   xor a
+banking_save_iff:
+   ld (temp_iff),a
+   pop af
+
    ; move stack pointer
 
    ld (temp_sp),sp
@@ -155,6 +169,7 @@ enable_bank_n:
    jp (hl)
 
 temp_sp: defw 0
+temp_iff: defb 0
 
 SECTION code_crt_common
 
@@ -184,8 +199,14 @@ restore_bank_0:
    ld bc,0x7ffd
    out (c),a
 
+   ; Restore interrupts only if they were enabled on entry. In particular,
+   ; this keeps an ISR's nested bank switch from enabling interrupts early.
+   ld a,(temp_iff)
+   or a
+   jp z,banking_keep_interrupts_disabled
+   ei
+banking_keep_interrupts_disabled:
+
    ; return
 
    jp (hl)
-
-
