@@ -28,18 +28,18 @@ void wait(void);
 void setup_int(void);
 
 void sonido2Sirena(void);
-inline void sonido2Huida(void);
+void sonido2Huida(void);
 void start_ay(void);
 void stop_ay(void);
-inline void sonido1Bola(void);
-inline void sonido3PierdeVida(void);
-inline void sonido13ComeGhost(void);
-inline void sonido1Fruta(void);
+void sonido1Bola(void);
+void sonido3PierdeVida(void);
+void sonido13ComeGhost(void);
+void sonido1Fruta(void);
 void stopCanal3(void);
 void stopCanal2(void);
 void incSiren(void);
 void resetSiren(void);
-inline void sonido3InsertCoin(void);
+void sonido3InsertCoin(void);
 
 // Bank switching (int.asm)
 extern void enable_bank_n(void);
