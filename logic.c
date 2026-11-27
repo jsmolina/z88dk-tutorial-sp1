@@ -32,6 +32,8 @@ uint8_t get_map_color(uint8_t current) {
         return INK_MAGENTA | BRIGHT;
     } else if (map_num == 2) {
         return INK_CYAN | BRIGHT;
+    } else if (map_num == 5) {
+        return INK_GREEN;
     }
     return INK_BLUE;
 }
@@ -589,7 +591,7 @@ void next_level() {
     slowticker = 0;
     ++reached_level;
     ++map_num;
-    if (map_num > 4) {
+    if (map_num > 5) {
         map_num = 1;
     }
 
@@ -601,6 +603,8 @@ void next_level() {
         remaining_points = MAP3_TOTAL_POINTS;
     } else if (map_num == 4) {
         remaining_points = MAP4_TOTAL_POINTS;
+    } else if (map_num == 5) {
+        remaining_points = MAP5_TOTAL_POINTS;
     }
     load_map_from_bank();
 
